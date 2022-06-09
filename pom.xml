@@ -11,6 +11,7 @@
   <modules>
     <module>SocketClient</module>
     <module>SocketServer</module>
+    <module>ReferenceSocketClient</module>
   </modules>
 
   <name>RobotWorlds</name>

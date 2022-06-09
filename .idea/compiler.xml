@@ -6,9 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ReferenceSocketClient" />
         <module name="SocketServer" />
         <module name="SocketClient" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ReferenceClient" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

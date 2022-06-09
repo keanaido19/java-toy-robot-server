@@ -46,7 +46,7 @@ class FireTest {
                 "  \"state\": {\n" +
                 "    \"shots\": 2\n" +
                 "  }\n" +
-                "}", testFire.execute(worldTest, args));
+                "}", testFire.execute(worldTest, args, null));
     }
 
     @Test
@@ -65,7 +65,7 @@ class FireTest {
                 "  \"state\": {\n" +
                 "    \"shots\": 2\n" +
                 "  }\n" +
-                "}", testFire.execute(worldTest, args));
+                "}", testFire.execute(worldTest, args, null));
     }
 
     @Test
@@ -87,7 +87,7 @@ class FireTest {
                 "  \"state\": {\n" +
                 "    \"shots\": 2\n" +
                 "  }\n" +
-                "}", testFire.execute(worldTest, args));
+                "}", testFire.execute(worldTest, args, null));
     }
 
     @Test
@@ -121,7 +121,7 @@ class FireTest {
                 "  \"state\": {\n" +
                 "    \"shots\": 2\n" +
                 "  }\n" +
-                "}", testFire.execute(worldTest, args));
+                "}", testFire.execute(worldTest, args, null));
     }
 
     @Test
@@ -147,6 +147,6 @@ class FireTest {
                 "  \"state\": {\n" +
                 "    \"shots\": 2\n" +
                 "  }\n" +
-                "}", testFire.execute(worldTest, args));
+                "}", testFire.execute(worldTest, args, null));
     }
 }

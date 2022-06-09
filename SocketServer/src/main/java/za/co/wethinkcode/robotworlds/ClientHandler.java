@@ -15,8 +15,7 @@ public class ClientHandler implements Runnable{
     public static ArrayList<ClientHandler> users = new ArrayList<>();
     public static ArrayList<Robot> robots = new ArrayList<>();
     public static World world;
-    public Gson gsonPretty = new GsonBuilder()
-            .setPrettyPrinting().create();
+    public Gson gsonPretty = new GsonBuilder().create();
     static {
         try {
             world = new World(robots);
@@ -24,7 +23,7 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         }
     }
-
+    public Robot robot;
     Gson gson = new Gson();
     RequestMessage requestMessage;
     private Socket socket;
@@ -44,7 +43,6 @@ public class ClientHandler implements Runnable{
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.clientUsername = bufferedReader.readLine();
             this.shieldRepairCheck = false;
             this.reloadCheck = false;
             users.add(this);
@@ -54,6 +52,8 @@ public class ClientHandler implements Runnable{
     }
 
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+        robots.remove(robot);
+        world.robots.remove(robot);
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();
@@ -72,16 +72,21 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
         String commandFromClient;
-        while (socket.isConnected()) {
-            try {
-                commandFromClient = bufferedReader.readLine();
+        try {
+            while (socket.isConnected() && (commandFromClient =
+                    bufferedReader.readLine()) != null) {
                 if(!repairFinished() || !reloadFinished()){
                     continue;
                 }
                 try {
                     clientCommand = ClientCommands.create(commandFromClient);
                     requestMessage = gson.fromJson(commandFromClient, RequestMessage.class);
-                    String message = clientCommand.execute(world, requestMessage.arguments);
+                    String message =
+                            clientCommand.execute(
+                                    world,
+                                    requestMessage.arguments,
+                                    this
+                            );
                     bufferedWriter.write(message);
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
@@ -89,15 +94,15 @@ public class ClientHandler implements Runnable{
                     if(clientCommand instanceof Quit){
                         this.closeEverything(socket,bufferedReader,bufferedWriter);
                     }
-                    } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     try {
                         Forward.DataJson dataJson = new Forward.DataJson("Could not parse arguments");
                         ErrorResponseJson errorResponseJson = new ErrorResponseJson("ERROR", dataJson);
                         bufferedWriter.write(gsonPretty.toJson(errorResponseJson));
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
-                        }catch(IOException f) {
-                            System.out.println("ioexception f");
+                    }catch(IOException f) {
+                        System.out.println("ioexception f");
                     }
                 } catch (ClientCommands.CommandNotFoundException e) {
                     Forward.DataJson dataJson = new Forward.DataJson("Unsupported command");
@@ -106,10 +111,10 @@ public class ClientHandler implements Runnable{
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
                 }
-            } catch (IOException e) {
-                closeEverything(socket, bufferedReader, bufferedWriter);
-                break;
             }
+            closeEverything(socket, bufferedReader, bufferedWriter);
+        } catch (IOException e) {
+            closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
 
@@ -131,7 +136,7 @@ public class ClientHandler implements Runnable{
             ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
             return json.getReloadTime();
         } catch (FileNotFoundException e) {
-            System.out.println("No config file present");
+//            System.out.println("No config file present");
         }
         return 5;
     }
@@ -143,7 +148,7 @@ public class ClientHandler implements Runnable{
             ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
             return json.getShieldRepairTime();
         } catch (FileNotFoundException e) {
-            System.out.println("No config file present");
+//            System.out.println("No config file present");
         }
         return 5;
     }

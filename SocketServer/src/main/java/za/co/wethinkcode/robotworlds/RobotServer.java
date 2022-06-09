@@ -4,9 +4,13 @@ import com.google.gson.Gson;
 import za.co.wethinkcode.robotworlds.ServerCommands.ServerCommand;
 import za.co.wethinkcode.robotworlds.World.SquareObstacle;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Random;
+import java.util.Scanner;
 
 public class RobotServer {
 
@@ -97,11 +101,11 @@ public class RobotServer {
         ConfigFileJson.GridJson gridJson;
         Gson gson = new Gson();
         gridJson = mapSizeChooser();
-        int visibility = integerChooser("visibility");
+        int visibility = 10;
         SquareObstacle[] obstaclesList = obstacleChooser(gridJson);
-        int shieldRepairTime = integerChooser("shield repair time");
-        int reloadTime = integerChooser("reload time");
-        int maxShieldStrength = integerChooser("max shield strength");
+        int shieldRepairTime = 5;
+        int reloadTime = 5;
+        int maxShieldStrength = 5;
         String json = gson.toJson(new ConfigFileJson(gridJson,visibility,obstaclesList,
                 shieldRepairTime,reloadTime,maxShieldStrength));
         System.out.println("Thank you server configuration being set up.");
@@ -115,24 +119,7 @@ public class RobotServer {
     }
 
     static ConfigFileJson.GridJson mapSizeChooser(){
-        Scanner scanner = new Scanner(System.in);
-        String[] mapSizes = {"small", "medium" , "large"};
-        String mapSize;
-        System.out.println("First how large would you like the grid?\n" +
-                "small(10 by 10) , medium(30 by 30) or large(50 by 50).");
-        do{
-            mapSize = scanner.nextLine();
-        }while(!Arrays.asList(mapSizes).contains(mapSize));
-        switch (mapSize){
-            case "small":
-                return new ConfigFileJson.GridJson(5,5);
-            case "medium":
-                return new ConfigFileJson.GridJson(15,15);
-            case "large":
-                return new ConfigFileJson.GridJson(25,25);
-        }
-        System.out.println("Default of small selected.");
-        return new ConfigFileJson.GridJson(10,10);
+        return new ConfigFileJson.GridJson(0,0);
     }
 
     static int integerChooser(String configTypeChoice){
@@ -154,29 +141,7 @@ public class RobotServer {
     }
 
     static SquareObstacle[] obstacleChooser(ConfigFileJson.GridJson mapSize){
-        Scanner scanner = new Scanner(System.in);
-        String obstaclesChoice;
-        String[] obstaclesChoices = {"none", "one" , "several", "ten", "twenty"};
-        System.out.println("Next how many obstacles would you like in the world? " +
-                "(None),(One),(Several),(Ten),(Twenty)");
-        do{
-            obstaclesChoice = scanner.nextLine();
-        }while(!Arrays.asList(obstaclesChoices).contains(obstaclesChoice));
-
-        switch (obstaclesChoice.toLowerCase()){
-            case "none":
-                return obstaclesMaker(0, mapSize.x,mapSize.y);
-            case "one":
-                return obstaclesMaker(1, mapSize.x,mapSize.y);
-            case "several":
-                return obstaclesMaker(3, mapSize.x,mapSize.y);
-            case "ten":
-                return obstaclesMaker(10, mapSize.x,mapSize.y);
-            case "twenty":
-                return obstaclesMaker(20, mapSize.x,mapSize.y);
-
-        }
-        return new SquareObstacle[0];
+        return obstaclesMaker(0, mapSize.x,mapSize.y);
     }
 
     static SquareObstacle[] obstaclesMaker(int obstaclesAmount , int xSize, int ySize){
@@ -217,7 +182,7 @@ public class RobotServer {
     public static void main(String[] args) throws IOException {
 
         System.out.println("Welcome to Robot Worlds Server Cpt18 please take a moment to configure server settings.");
-        int port = portChoice();
+        int port = 5000;
         myIp();
         fileConfig();
         ServerSocket serverSocket = new ServerSocket(port);

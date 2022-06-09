@@ -16,40 +16,41 @@ public class Launch extends ClientCommands {
     }
 
     @Override
-    public String execute(World world, String[] arguments) {
+    public String execute(
+            World world,
+            String[] arguments,
+            ClientHandler clientHandler
+    ) {
+        Robot robot;
+        Position freePosition = findFreeSpace(world);
+
         switch (getArgument()){
             case "normal":
-                Normal robot = new Normal(world, getArgument2(), getArgument());
-                Position freePosition = findFreeSpace(world);
-                robot.setRobotPosition(freePosition.getX(),freePosition.getY());
-                ClientHandler.robots.add(robot);
-                return responseFormulator(robot);
+                robot = new Normal(world, getArgument2(), getArgument());
+                break;
             case "machinegun":
-                MachineGun machineGun = new MachineGun(world, getArgument2(), getArgument());
-                freePosition = findFreeSpace(world);
-                machineGun.setRobotPosition(freePosition.getX(),freePosition.getY());
-                ClientHandler.robots.add(machineGun);
-                return responseFormulator(machineGun);
+                robot = new MachineGun(world, getArgument2(), getArgument());
+                break;
             case "sniper":
-                Sniper sniper = new Sniper(world, getArgument2(), getArgument());
-                freePosition = findFreeSpace(world);
-                sniper.setRobotPosition(freePosition.getX(),freePosition.getY());
-                ClientHandler.robots.add(sniper);
-                return responseFormulator(sniper);
+                robot = new Sniper(world, getArgument2(), getArgument());
+                break;
             case "tank":
-                Tank tank = new Tank(world, getArgument2(), getArgument());
-                freePosition = findFreeSpace(world);
-                tank.setRobotPosition(freePosition.getX(),freePosition.getY());
-                ClientHandler.robots.add(tank);
-                return responseFormulator(tank);
+                robot = new Tank(world, getArgument2(), getArgument());
+                break;
+            default:
+                return "Invalid tank type selected";
         }
-    return "Invalid tank type selected";
+
+        robot.setRobotPosition(freePosition.getX(),freePosition.getY());
+        ClientHandler.robots.add(robot);
+
+        if (null != clientHandler) clientHandler.robot = robot;
+
+        return responseFormulator(robot);
     }
 
     private String responseFormulator(Robot robot){
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
+        Gson gson = new GsonBuilder().create();
         int[] position = {robot.getCurrentPosition().getX(), robot.getCurrentPosition().getY()};
         StateResponse stateResponse = new StateResponse(position, robot.getCurrentDirection().toString(),
                 robot.getShields(), robot.getShots(), robot.getStatus());
@@ -62,9 +63,10 @@ public class Launch extends ClientCommands {
         Random random = new Random();
         while(true){
             boolean free = true;
-            Position freePosition = new Position((random.nextInt(world.getBOTTOM_RIGHT().getX() -
-                    (world.getTOP_LEFT().getX())) + (world.getTOP_LEFT().getX())),
-                    (random.nextInt(world.getTOP_LEFT().getY() -(world.getBOTTOM_RIGHT().getY()))) + (world.getBOTTOM_RIGHT().getY()));
+//            Position freePosition = new Position((random.nextInt(world.getBOTTOM_RIGHT().getX() -
+//                    (world.getTOP_LEFT().getX())) + (world.getTOP_LEFT().getX())),
+//                    (random.nextInt(world.getTOP_LEFT().getY() -(world.getBOTTOM_RIGHT().getY()))) + (world.getBOTTOM_RIGHT().getY()));
+            Position freePosition = new Position(0, 0);
             for(Obstacle obstacles: world.getOBSTACLES()){
                 if(obstacles.blocksPosition(freePosition)){
                     free = false;

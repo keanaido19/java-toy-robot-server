@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.ClientCommands;
 
+import za.co.wethinkcode.robotworlds.ClientHandler;
 import za.co.wethinkcode.robotworlds.World.World;
 import com.google.gson.Gson;
 
@@ -30,7 +31,11 @@ public abstract class ClientCommands implements CommandInterface {
         return argument2;
     }
 
-    public abstract String execute(World world, String[] arguments);
+    public abstract String execute(
+            World world,
+            String[] arguments,
+            ClientHandler clientHandler
+    );
 
     public static ClientCommands create(String instruction) throws CommandNotFoundException {
         Gson gson = new Gson();

@@ -18,7 +18,7 @@ public class Fire extends ClientCommands {
     }
 
     @Override
-    public String execute(World world, String[] arguments) {
+    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();

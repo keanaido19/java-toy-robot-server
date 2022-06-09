@@ -37,6 +37,6 @@ class RepairTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"REPAIR\"\n" +
                 "  }\n" +
-                "}", repairTest.execute(worldTest, args));
+                "}", repairTest.execute(worldTest, args, null));
     }
 }

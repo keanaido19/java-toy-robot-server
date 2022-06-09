@@ -3,6 +3,7 @@ package za.co.wethinkcode.robotworlds.ClientCommands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import za.co.wethinkcode.robotworlds.ClientHandler;
 import za.co.wethinkcode.robotworlds.Robot.Robot;
 import za.co.wethinkcode.robotworlds.World.World;
 
@@ -17,7 +18,7 @@ public class Forward extends ClientCommands{
     }
 
     @Override
-    public String execute(World world, String[] arguments) {
+    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();

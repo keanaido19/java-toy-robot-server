@@ -16,28 +16,28 @@ class LaunchTest {
             World worldTest = new World(robots);
             Launch launchTest = new Launch("normal", "bob");
             String[] args = {};
-            assertEquals("{\n" +
-                    "  \"result\": \"OK\",\n" +
-                    "  \"data\": {\n" +
-                    "    \"position\": [\n" +
-                    "      0,\n" +
-                    "      0\n" +
-                    "    ],\n" +
-                    "    \"visibility\": 0,\n" +
-                    "    \"reload\": 0,\n" +
-                    "    \"repair\": 0,\n" +
-                    "    \"shields\": 0\n" +
-                    "  },\n" +
-                    "  \"state\": {\n" +
-                    "    \"position\": [\n" +
-                    "      0,\n" +
-                    "      0\n" +
-                    "    ],\n" +
-                    "    \"direction\": \"NORTH\",\n" +
-                    "    \"shields\": 3,\n" +
-                    "    \"shots\": 3,\n" +
-                    "    \"status\": \"normal\"\n" +
-                    "  }\n" +
-                    "}", launchTest.execute(worldTest,args ));
+            assertEquals("{" +
+                    "\"result\":\"OK\"," +
+                    "\"data\":{" +
+                    "\"position\":[" +
+                    "0," +
+                    "0" +
+                    "]," +
+                    "\"visibility\":0," +
+                    "\"reload\":0," +
+                    "\"repair\":0," +
+                    "\"shields\":0" +
+                    "}," +
+                    "\"state\":{" +
+                    "\"position\":[" +
+                    "0," +
+                    "0" +
+                    "]," +
+                    "\"direction\":\"NORTH\"," +
+                    "\"shields\":3," +
+                    "\"shots\":3," +
+                    "\"status\":\"normal\"" +
+                    "}" +
+                    "}", launchTest.execute(worldTest,args, null));
         }
     }

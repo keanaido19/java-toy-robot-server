@@ -29,7 +29,7 @@ class TurnTest {
                 "  \"state\": {\n" +
                 "    \"direction\": \"EAST\"\n" +
                 "  }\n" +
-                "}", turnTest.execute(worldTest, args));
+                "}", turnTest.execute(worldTest, args, null));
     }
 
     @Test
@@ -41,7 +41,7 @@ class TurnTest {
         robots.add(test);
         Turn turnTest = new Turn("Bob", "right");
         String[] args = {};
-        turnTest.execute(worldTest, args);
+        turnTest.execute(worldTest, args, null);
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
@@ -50,7 +50,7 @@ class TurnTest {
                 "  \"state\": {\n" +
                 "    \"direction\": \"SOUTH\"\n" +
                 "  }\n" +
-                "}", turnTest.execute(worldTest, args));
+                "}", turnTest.execute(worldTest, args, null));
     }
 
     @Test
@@ -62,9 +62,9 @@ class TurnTest {
         robots.add(test);
         Turn turnTest = new Turn("Bob", "right");
         String[] args = {};
-        turnTest.execute(worldTest, args);
-        turnTest.execute(worldTest, args);
-        turnTest.execute(worldTest, args);
+        turnTest.execute(worldTest, args, null);
+        turnTest.execute(worldTest, args, null);
+        turnTest.execute(worldTest, args, null);
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
@@ -73,7 +73,7 @@ class TurnTest {
                 "  \"state\": {\n" +
                 "    \"direction\": \"NORTH\"\n" +
                 "  }\n" +
-                "}", turnTest.execute(worldTest, args));
+                "}", turnTest.execute(worldTest, args,null ));
     }
 
     @Test
@@ -93,7 +93,7 @@ class TurnTest {
                 "  \"state\": {\n" +
                 "    \"direction\": \"WEST\"\n" +
                 "  }\n" +
-                "}", turnTest.execute(worldTest, args));
+                "}", turnTest.execute(worldTest, args, null));
     }
 
     @Test
@@ -105,7 +105,7 @@ class TurnTest {
         robots.add(test);
         Turn turnTest = new Turn("Bob", "left");
         String[] args = {};
-        turnTest.execute(worldTest, args);
+        turnTest.execute(worldTest, args, null);
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
@@ -114,7 +114,7 @@ class TurnTest {
                 "  \"state\": {\n" +
                 "    \"direction\": \"SOUTH\"\n" +
                 "  }\n" +
-                "}", turnTest.execute(worldTest, args));
+                "}", turnTest.execute(worldTest, args, null));
     }
 
     @Test
@@ -126,9 +126,9 @@ class TurnTest {
         robots.add(test);
         Turn turnTest = new Turn("Bob", "left");
         String[] args = {};
-        turnTest.execute(worldTest,args);
-        turnTest.execute(worldTest,args);
-        turnTest.execute(worldTest,args);
+        turnTest.execute(worldTest,args, null);
+        turnTest.execute(worldTest,args, null);
+        turnTest.execute(worldTest,args, null);
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
@@ -137,6 +137,6 @@ class TurnTest {
                 "  \"state\": {\n" +
                 "    \"direction\": \"NORTH\"\n" +
                 "  }\n" +
-                "}", turnTest.execute(worldTest, args));
+                "}", turnTest.execute(worldTest, args, null));
     }
 }

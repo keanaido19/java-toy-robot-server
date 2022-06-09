@@ -15,7 +15,7 @@ public class World {
     public Position BOTTOM_RIGHT = new Position(getEdge(true), -(getEdge(false)));
     public int VISIBILITY;
     protected SquareObstacle[] OBSTACLES;
-    protected ArrayList<Robot> robots;
+    public ArrayList<Robot> robots;
 
 
     public World(ArrayList<Robot> robotArrayList) throws FileNotFoundException {
@@ -31,7 +31,7 @@ public class World {
             ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
             return json.getObstacles();
         } catch (FileNotFoundException e) {
-            System.out.println("No config file present");
+//            System.out.println("No config file present");
         }
         return new SquareObstacle[]{new SquareObstacle(5, 5)};
     }
@@ -57,7 +57,7 @@ public class World {
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("No config file present");
+//            System.out.println("No config file present");
         }
         return 0;
     }
@@ -69,7 +69,7 @@ public class World {
             ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
             return json.getVisibility();
         } catch (FileNotFoundException e) {
-            System.out.println("No config file present");
+//            System.out.println("No config file present");
         }
         return 5;
     }

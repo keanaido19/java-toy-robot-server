@@ -2,6 +2,7 @@ package za.co.wethinkcode.robotworlds.ClientCommands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import za.co.wethinkcode.robotworlds.ClientHandler;
 import za.co.wethinkcode.robotworlds.Direction;
 import za.co.wethinkcode.robotworlds.Position;
 import za.co.wethinkcode.robotworlds.Robot.Robot;
@@ -21,7 +22,7 @@ public class Look extends ClientCommands{
     }
 
     @Override
-    public String execute(World world, String[] arguments) {
+    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
         StateResponseJSon state;
         for(Robot robot : world.getRobots()){
             if(robot.getRobotName().equals(getArgument())){

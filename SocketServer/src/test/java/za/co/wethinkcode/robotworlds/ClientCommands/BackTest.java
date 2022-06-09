@@ -27,19 +27,19 @@ class BackTest {
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
-                "    \"message\": \"Done\"\n" +
+                "    \"message\": \"Edge\"\n" +
                 "  },\n" +
                 "  \"state\": {\n" +
                 "    \"position\": [\n" +
                 "      0,\n" +
-                "      -5\n" +
+                "      0\n" +
                 "    ],\n" +
                 "    \"direction\": \"NORTH\",\n" +
                 "    \"shields\": 3,\n" +
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -65,7 +65,7 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -94,7 +94,7 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -123,7 +123,7 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -153,7 +153,7 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -183,7 +183,7 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -210,7 +210,7 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 
     @Test
@@ -225,11 +225,11 @@ class BackTest {
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
-                "    \"message\": \"Done\"\n" +
+                "    \"message\": \"Edge\"\n" +
                 "  },\n" +
                 "  \"state\": {\n" +
                 "    \"position\": [\n" +
-                "      -5,\n" +
+                "      0,\n" +
                 "      0\n" +
                 "    ],\n" +
                 "    \"direction\": \"EAST\",\n" +
@@ -237,6 +237,6 @@ class BackTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testBack.execute(worldTest, args));
+                "}", testBack.execute(worldTest, args, null));
     }
 }

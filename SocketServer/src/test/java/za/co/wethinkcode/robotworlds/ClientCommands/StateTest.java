@@ -29,7 +29,7 @@ class StateTest {
                 "  \"shields\": 3,\n" +
                 "  \"shots\": 3,\n" +
                 "  \"status\": \"normal\"\n" +
-                "}", testState.execute(worldTest, args));
+                "}", testState.execute(worldTest, args, null));
     }
 
 }

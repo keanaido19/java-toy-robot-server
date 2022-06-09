@@ -27,19 +27,19 @@ class ForwardTest {
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
-                "    \"message\": \"Done\"\n" +
+                "    \"message\": \"Edge\"\n" +
                 "  },\n" +
                 "  \"state\": {\n" +
                 "    \"position\": [\n" +
                 "      0,\n" +
-                "      5\n" +
+                "      0\n" +
                 "    ],\n" +
                 "    \"direction\": \"NORTH\",\n" +
                 "    \"shields\": 3,\n" +
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -65,7 +65,7 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -94,7 +94,7 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -123,7 +123,7 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -153,7 +153,7 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -183,7 +183,7 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -210,7 +210,7 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 
     @Test
@@ -225,11 +225,11 @@ class ForwardTest {
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
                 "  \"data\": {\n" +
-                "    \"message\": \"Done\"\n" +
+                "    \"message\": \"Edge\"\n" +
                 "  },\n" +
                 "  \"state\": {\n" +
                 "    \"position\": [\n" +
-                "      5,\n" +
+                "      0,\n" +
                 "      0\n" +
                 "    ],\n" +
                 "    \"direction\": \"EAST\",\n" +
@@ -237,6 +237,6 @@ class ForwardTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"normal\"\n" +
                 "  }\n" +
-                "}", testForward.execute(worldTest, args));
+                "}", testForward.execute(worldTest, args, null));
     }
 }

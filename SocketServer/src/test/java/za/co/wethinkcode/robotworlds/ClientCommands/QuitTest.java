@@ -33,7 +33,7 @@ class QuitTest {
         robots.add(test3);
         Quit quit = new Quit("Bill");
         String[] args = {};
-        quit.execute(worldTest,args);
+        quit.execute(worldTest,args, null);
         assertEquals(worldTest.getRobots().size(), 2);
     }
 

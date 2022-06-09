@@ -21,7 +21,7 @@ class ReloadTest {
         robots.add(test);
         Fire fireTest = new Fire("Bob");
         String[] args = {};
-        fireTest.execute(worldTest, args);
+        fireTest.execute(worldTest, args, null);
         Reload reloadTest = new Reload("Bob");
         assertEquals("{\n" +
                 "  \"result\": \"OK\",\n" +
@@ -38,6 +38,6 @@ class ReloadTest {
                 "    \"shots\": 3,\n" +
                 "    \"status\": \"RELOAD\"\n" +
                 "  }\n" +
-                "}", reloadTest.execute(worldTest, args));
+                "}", reloadTest.execute(worldTest, args, null));
     }
 }

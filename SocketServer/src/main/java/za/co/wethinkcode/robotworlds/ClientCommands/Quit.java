@@ -13,7 +13,7 @@ public class Quit extends ClientCommands{
     }
 
     @Override
-    public String execute(World world, String[] arguments) {
+    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
 
         try {
             for (Robot robot : world.getRobots()) {

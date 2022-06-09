@@ -10,12 +10,11 @@ import za.co.wethinkcode.robotworlds.World.SquareObstacle;
 import za.co.wethinkcode.robotworlds.World.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Look extends ClientCommands{
     ArrayList<ObjectJson> objects = new ArrayList<>();
-    Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .create();
+    Gson gson = new GsonBuilder().create();
 
     public Look(String name) {
         super("look",name);
@@ -43,11 +42,14 @@ public class Look extends ClientCommands{
                         startWest(world.VISIBILITY, robot, world);
                         break;
                 }
-            ObjectJson[] objectJson = objects.toArray(new ObjectJson[0]);
-            DataJson data = new DataJson(objectJson);
-            LookResponseJson lookResponseJson = new LookResponseJson("ok", data, state);
-            objects.clear();
-            return gson.toJson(lookResponseJson);
+                HashMap<String,Object> data = new HashMap<>();
+                data.put("objects", objects.toArray(new ObjectJson[0]));
+                data.put("position", position);
+                data.put("visibility",world.VISIBILITY);
+                LookResponseJson lookResponseJson = new LookResponseJson("OK",
+                        data, state);
+                objects.clear();
+                return gson.toJson(lookResponseJson);
             }
         }
         return null;
@@ -279,13 +281,13 @@ public class Look extends ClientCommands{
                 if(myRobot.getCurrentPosition().getY() >= 0) {
                     if ((world.getTOP_LEFT().getY() - myRobot.getCurrentPosition().getY() <= world.VISIBILITY)) {
                         objectJson = new ObjectJson(directionCheck(1), "EDGE",
-                                world.getTOP_LEFT().getY() - myRobot.getCurrentPosition().getY());
+                                world.getTOP_LEFT().getY() - myRobot.getCurrentPosition().getY() + 1);
                         objects.add(objectJson);
                     }
                 }else if(myRobot.getCurrentPosition().getY() < 0){
                     if ((world.getTOP_LEFT().getY() + (-myRobot.getCurrentPosition().getY()) <= world.VISIBILITY)){
                         objectJson = new ObjectJson(directionCheck(1), "EDGE",
-                                world.getTOP_LEFT().getY() + (-myRobot.getCurrentPosition().getY()));
+                                world.getTOP_LEFT().getY() + (-myRobot.getCurrentPosition().getY()) + 1);
                         objects.add(objectJson);
                     }
                 }
@@ -294,13 +296,13 @@ public class Look extends ClientCommands{
                 if(myRobot.getCurrentPosition().getX() >= 0) {
                     if ((world.getBOTTOM_RIGHT().getX() - myRobot.getCurrentPosition().getX()) <= world.VISIBILITY) {
                         objectJson = new ObjectJson(directionCheck(2), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX() - (myRobot.getCurrentPosition().getX())));
+                                (world.getBOTTOM_RIGHT().getX() - (myRobot.getCurrentPosition().getX()) + 1));
                         objects.add(objectJson);
                     }
                 }else if(myRobot.getCurrentPosition().getX() < 0) {
                     if ((world.getBOTTOM_RIGHT().getX() + (-myRobot.getCurrentPosition().getX())) <= world.VISIBILITY){
                         objectJson = new ObjectJson(directionCheck(2), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX()) + (-myRobot.getCurrentPosition().getX()));
+                                (world.getBOTTOM_RIGHT().getX()) + (-myRobot.getCurrentPosition().getX()) + 1);
                         objects.add(objectJson);
                     }
                 }
@@ -309,13 +311,13 @@ public class Look extends ClientCommands{
                 if(myRobot.getCurrentPosition().getY() >= 0){
                     if((world.getTOP_LEFT().getY() + myRobot.getCurrentPosition().getY() <= world.VISIBILITY)){
                         objectJson = new ObjectJson(directionCheck(3), "EDGE",
-                                world.getTOP_LEFT().getY() + myRobot.getCurrentPosition().getY());
+                                world.getTOP_LEFT().getY() + myRobot.getCurrentPosition().getY() + 1);
                         objects.add(objectJson);
                     }
                 }else if(myRobot.getCurrentPosition().getY() < 0){
                     if((world.getTOP_LEFT().getY() - (-myRobot.getCurrentPosition().getY()) <= world.VISIBILITY)){
                         objectJson = new ObjectJson(directionCheck(3), "EDGE",
-                                world.getTOP_LEFT().getY() - (-myRobot.getCurrentPosition().getY()));
+                                world.getTOP_LEFT().getY() - (-myRobot.getCurrentPosition().getY()) + 1);
                         objects.add(objectJson);
                     }
                 }
@@ -324,13 +326,13 @@ public class Look extends ClientCommands{
                 if(myRobot.getCurrentPosition().getX() >= 0){
                     if(((world.getBOTTOM_RIGHT().getX()) + (myRobot.getCurrentPosition().getX()))<= world.VISIBILITY){
                         objectJson = new ObjectJson(directionCheck(4), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX()) + myRobot.getCurrentPosition().getX());
+                                (world.getBOTTOM_RIGHT().getX()) + myRobot.getCurrentPosition().getX() + 1);
                         objects.add(objectJson);
                     }
                 }else if (myRobot.getCurrentPosition().getX() < 0){
                     if(((world.getBOTTOM_RIGHT().getX()) - (-myRobot.getCurrentPosition().getX()))<= world.VISIBILITY){
                         objectJson = new ObjectJson(directionCheck(4), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX()  - (-myRobot.getCurrentPosition().getX())));
+                                (world.getBOTTOM_RIGHT().getX()  - (-myRobot.getCurrentPosition().getX()) + 1));
                         objects.add(objectJson);
                     }
                 }
@@ -340,13 +342,13 @@ public class Look extends ClientCommands{
 
     public static class ObjectJson {
         String direction;
-        String objectType;
-        int steps;
+        String type;
+        int distance;
 
-        public ObjectJson(String direction, String objectType, int steps) {
+        public ObjectJson(String direction, String type, int distance) {
             this.direction = direction;
-            this.objectType = objectType;
-            this.steps = steps;
+            this.type = type;
+            this.distance = distance;
         }
     }
     public static class DataJson {
@@ -374,10 +376,14 @@ public class Look extends ClientCommands{
 
     public static class LookResponseJson{
             String result;
-            DataJson data;
+            HashMap<String,Object> data;
             StateResponseJSon state;
 
-            public LookResponseJson(String result, DataJson data, StateResponseJSon state){
+            public LookResponseJson(
+                    String result,
+                    HashMap<String,Object> data,
+                    StateResponseJSon state
+            ){
                 this.result = result;
                 this.data = data;
                 this.state = state;

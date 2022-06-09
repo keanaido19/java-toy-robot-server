@@ -101,7 +101,7 @@ public class RobotServer {
         ConfigFileJson.GridJson gridJson;
         Gson gson = new Gson();
         gridJson = mapSizeChooser();
-        int visibility = 10;
+        int visibility = 1;
         SquareObstacle[] obstaclesList = obstacleChooser(gridJson);
         int shieldRepairTime = 5;
         int reloadTime = 5;

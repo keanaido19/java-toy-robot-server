@@ -24,6 +24,15 @@ public class Launch extends ClientCommands {
         Robot robot;
         Position freePosition = findFreeSpace(world);
 
+        if (null == freePosition) {
+            Gson gson = new Gson();
+            Forward.DataJson dataJson =
+                    new Forward.DataJson("No more space in this world");
+            ErrorResponseJson errorResponseJson =
+                    new ErrorResponseJson("ERROR", dataJson);
+            return gson.toJson(errorResponseJson);
+        }
+
         switch (getArgument()){
             case "normal":
                 robot = new Normal(world, getArgument2(), getArgument());
@@ -61,6 +70,7 @@ public class Launch extends ClientCommands {
 
     private Position findFreeSpace(World world){
         Random random = new Random();
+        int counter = 0;
         while(true){
             boolean free = true;
 //            Position freePosition = new Position((random.nextInt(world.getBOTTOM_RIGHT().getX() -
@@ -70,17 +80,19 @@ public class Launch extends ClientCommands {
             for(Obstacle obstacles: world.getOBSTACLES()){
                 if(obstacles.blocksPosition(freePosition)){
                     free = false;
+                    break;
                 }
-            for(Robot robots: world.getRobots())    {
-                if(robots.getCurrentPosition().getX() == freePosition.getX()
-                        && robots.getCurrentPosition().getY() == freePosition.getY()){
+            }
+            for(Robot robots: world.getRobots()) {
+                if (robots.getCurrentPosition().getX() == freePosition.getX()
+                        && robots.getCurrentPosition().getY() == freePosition.getY()) {
                     free = false;
+                    break;
                 }
             }
-            }
-            if(free){
-                return freePosition;
-            }
+            if(free)return freePosition;
+            if (1000 <= counter) return null;
+            counter ++;
         }
     }
 

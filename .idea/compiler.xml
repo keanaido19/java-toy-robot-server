@@ -6,11 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="SocketServer" />
+        <module name="SocketClient" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Robot_Client" target="11" />
-      <module name="Robot_Server" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>

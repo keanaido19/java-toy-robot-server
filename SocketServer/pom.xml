@@ -89,6 +89,9 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>
+                                ${project.parent.basedir}/target
+                            </outputDirectory>
                             <archive>
                                 <manifest>
                                     <mainClass>

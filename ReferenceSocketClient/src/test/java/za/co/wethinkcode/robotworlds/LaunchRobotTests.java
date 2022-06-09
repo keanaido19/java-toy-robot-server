@@ -121,4 +121,52 @@ class LaunchRobotTests {
                         .contains("No more space in this world")
         );
     }
+
+    @Test
+    void validLaunchShouldFailRobotAlreadyExists() {
+        String request;
+        JsonNode response;
+
+        // Given that I am connected to a running Robot Worlds server
+        // And there is already someone else connected to the same running
+        //      Robot Worlds server
+        // And the name of their robot is the same name I wish to name my robot
+        // And the world is of size 1x1 (The world is configured or hardcoded
+        //      to this size)
+        assertTrue(serverClient.isConnected());
+        request = "{" +
+                "  \"robot\": \"HAL\"," +
+                "  \"command\": \"launch\"," +
+                "  \"arguments\": [\"sniper\",\"5\",\"5\"]" +
+                "}";
+        response = serverClient.sendRequest(request);
+        assertNotNull(response.get("result"));
+        assertEquals("OK", response.get("result").asText());
+        assertNotNull(response.get("data"));
+        assertNotNull(response.get("data").get("position"));
+        assertEquals(0, response.get("data").get("position").get(0).asInt());
+        assertEquals(0, response.get("data").get("position").get(1).asInt());
+        assertNotNull(response.get("state"));
+
+        // When I send a valid launch request to the server
+        request = "{" +
+                "  \"robot\": \"HAL\"," +
+                "  \"command\": \"launch\"," +
+                "  \"arguments\": [\"sniper\",\"5\",\"5\"]" +
+                "}";
+        response = serverClient.sendRequest(request);
+
+        // Then I should get an error response
+        assertNotNull(response.get("result"));
+        assertEquals("ERROR", response.get("result").asText());
+
+        // And the message "Too many of you in this world"
+        assertNotNull(response.get("data"));
+        assertNotNull(response.get("data").get("message"));
+        System.out.println(response.get("data").get("message").asText());
+        assertTrue(
+                response.get("data").get("message").asText()
+                        .contains("Too many of you in this world")
+        );
+    }
 }

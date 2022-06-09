@@ -21,17 +21,28 @@ public class Launch extends ClientCommands {
             String[] arguments,
             ClientHandler clientHandler
     ) {
-        Robot robot;
+        Gson gson = new Gson();
+        Forward.DataJson dataJson;
+        ErrorResponseJson errorResponseJson;
+
+        for (Robot r : world.getRobots()) {
+            if (getArgument2().equals(r.getRobotName())) {
+                dataJson = new Forward.DataJson("Too many of you in this world");
+                errorResponseJson =
+                        new ErrorResponseJson("ERROR", dataJson);
+                return gson.toJson(errorResponseJson);
+            }
+        }
+
         Position freePosition = findFreeSpace(world);
 
         if (null == freePosition) {
-            Gson gson = new Gson();
-            Forward.DataJson dataJson =
-                    new Forward.DataJson("No more space in this world");
-            ErrorResponseJson errorResponseJson =
-                    new ErrorResponseJson("ERROR", dataJson);
+            dataJson = new Forward.DataJson("No more space in this world");
+            errorResponseJson = new ErrorResponseJson("ERROR", dataJson);
             return gson.toJson(errorResponseJson);
         }
+
+        Robot robot;
 
         switch (getArgument()){
             case "normal":

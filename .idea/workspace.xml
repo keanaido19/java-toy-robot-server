@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="114505b0-8581-418e-b962-3c273a7f313b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/co/wethinkcode/robotworlds/RobotWorldClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/co/wethinkcode/robotworlds/RobotWorldJsonClient.java" afterDir="false" />
+    <list default="true" id="114505b0-8581-418e-b962-3c273a7f313b" name="Changes" comment="Added given launch acceptance tests to the project.">
+      <change afterPath="$PROJECT_DIR$/src/test/java/za/co/wethinkcode/robotworlds/LaunchRobotTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/co/wethinkcode/robotworlds/RobotWorldJsonClientTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +17,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -29,6 +29,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -38,32 +39,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-11&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/keanaido021/problems/Java/GroupProject/GeraldLawsonBrownfieldsProject/libs&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.13927579&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "dart.analysis.tool.window.visible": "false",
+    "jdk.selected.JAVA_MODULE": "corretto-11",
+    "last_opened_file_path": "/home/keanaido021/problems/Java/GroupProject/GeraldLawsonBrownfieldsProject/libs",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.13927579",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="za.co.wethinkcode.robotworlds" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.RobotClient">
+  <component name="RunManager" selected="JUnit.LaunchRobotTests">
     <configuration name="RobotClient" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="za.co.wethinkcode.robotworlds.RobotClient" />
       <module name="SocketClient" />
@@ -91,31 +100,47 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BackTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SocketClient" />
+    <configuration name="LaunchRobotTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="RobotWorlds" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.co.wethinkcode.robotworlds.ClientCommands.*" />
+          <option name="PATTERN" value="za.co.wethinkcode.robotworlds.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="za.co.wethinkcode.robotworlds.ClientCommands" />
-      <option name="MAIN_CLASS_NAME" value="za.co.wethinkcode.robotworlds.ClientCommands.BackTest" />
+      <option name="PACKAGE_NAME" value="za.co.wethinkcode.robotworlds" />
+      <option name="MAIN_CLASS_NAME" value="za.co.wethinkcode.robotworlds.LaunchRobotTests" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FireTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SocketClient" />
+    <configuration name="LaunchRobotTests.validLaunchShouldSucceed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="RobotWorlds" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.co.wethinkcode.robotworlds.ClientCommands.*" />
+          <option name="PATTERN" value="za.co.wethinkcode.robotworlds.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="za.co.wethinkcode.robotworlds.ClientCommands" />
-      <option name="MAIN_CLASS_NAME" value="za.co.wethinkcode.robotworlds.ClientCommands.FireTest" />
+      <option name="PACKAGE_NAME" value="za.co.wethinkcode.robotworlds" />
+      <option name="MAIN_CLASS_NAME" value="za.co.wethinkcode.robotworlds.LaunchRobotTests" />
+      <option name="METHOD_NAME" value="validLaunchShouldSucceed" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RobotWorldJsonClientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="RobotWorlds" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="za.co.wethinkcode.robotworlds.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="za.co.wethinkcode.robotworlds" />
+      <option name="MAIN_CLASS_NAME" value="za.co.wethinkcode.robotworlds.RobotWorldJsonClientTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -127,10 +152,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LaunchRobotTests" />
         <item itemvalue="JAR Application.reference-server-0.1.0.jar" />
         <item itemvalue="Application.RobotServer" />
-        <item itemvalue="JUnit.BackTest" />
-        <item itemvalue="JUnit.FireTest" />
+        <item itemvalue="JUnit.LaunchRobotTests.validLaunchShouldSucceed" />
+        <item itemvalue="JUnit.RobotWorldJsonClientTest" />
       </list>
     </recent_temporary>
   </component>
@@ -145,7 +171,23 @@
       <workItem from="1654762048595" duration="437000" />
       <workItem from="1654762549620" duration="335000" />
       <workItem from="1654763255569" duration="777000" />
+      <workItem from="1654774721063" duration="1074000" />
     </task>
+    <task id="LOCAL-00001" summary="Added given launch acceptance tests to the project.">
+      <created>1654775636449</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1654775636449</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added given launch acceptance tests to the project.">
+      <created>1654775732331</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654775732331</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,5 +203,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added given launch acceptance tests to the project." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added given launch acceptance tests to the project." />
   </component>
 </project>

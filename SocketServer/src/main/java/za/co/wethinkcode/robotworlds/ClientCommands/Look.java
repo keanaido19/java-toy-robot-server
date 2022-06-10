@@ -3,6 +3,7 @@ package za.co.wethinkcode.robotworlds.ClientCommands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.DataObject;
 import za.co.wethinkcode.robotworlds.Direction;
 import za.co.wethinkcode.robotworlds.Position;
 import za.co.wethinkcode.robotworlds.Robot.Robot;
@@ -42,10 +43,12 @@ public class Look extends ClientCommands{
                         startWest(world.VISIBILITY, robot, world);
                         break;
                 }
-                HashMap<String,Object> data = new HashMap<>();
-                data.put("objects", objects.toArray(new ObjectJson[0]));
-                data.put("position", position);
-                data.put("visibility",world.VISIBILITY);
+                DataObject data =
+                        new DataObject(
+                                world.VISIBILITY,
+                                position,
+                                objects.toArray(new ObjectJson[0])
+                        );
                 LookResponseJson lookResponseJson = new LookResponseJson("OK",
                         data, state);
                 objects.clear();
@@ -376,12 +379,12 @@ public class Look extends ClientCommands{
 
     public static class LookResponseJson{
             String result;
-            HashMap<String,Object> data;
+            DataObject data;
             StateResponseJSon state;
 
             public LookResponseJson(
                     String result,
-                    HashMap<String,Object> data,
+                    DataObject data,
                     StateResponseJSon state
             ){
                 this.result = result;

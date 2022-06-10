@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,5 +66,73 @@ public class StateRobotTest {
                 response.get("data").get("message").asText());
 
 
+    }
+
+    @Test
+    void validStateCommandShouldSucceed() {
+        String request;
+        JsonNode response;
+        // Given that I am connected to a running Robot Worlds server
+        // And the world is of size 1x1 (The world is configured or hardcoded to this size)
+        Assertions.assertTrue(serverClient.isConnected());
+
+        request = "{" +
+                "  \"robot\": \"HAL\"," +
+                "  \"command\": \"launch\"," +
+                "  \"arguments\": [\"sniper\",\"5\",\"5\"]" +
+                "}";
+        response = serverClient.sendRequest(request);
+
+        // When I send a valid state request to the server
+        request = "{" +
+                "  \"robot\": \"HAL\"," +
+                "  \"command\": \"state\"," +
+                "  \"arguments\": [\"\"]" +
+                "}";
+        response = serverClient.sendRequest(request);
+
+        System.out.println(response);
+
+        // Then I should get a valid response from the server
+        Assertions.assertNotNull(response.get("result"));
+        Assertions.assertEquals("OK", response.get("result").asText());
+
+        // And the position should be (x:0, y:0)
+        Assertions.assertNotNull(response.get("state"));
+        Assertions.assertNotNull(response.get("state").get("position"));
+        Assertions.assertEquals(0, response.get("data").get("position").get(0).asInt());
+        Assertions.assertEquals(0, response.get("data").get("position").get(1).asInt());
+
+        // And I should receive some data
+        Assertions.assertNotNull(response.get("data"));
+        Assertions.assertEquals(
+                "{\"visibility\":1,\"position\":[0,0],\"objects\":[]}",
+                response.get("data").toString());
+
+        // And the direction should be North
+        Assertions.assertNotNull(response.get("state").get("direction"));
+        Assertions.assertEquals("\"NORTH\"",
+                response.get("state").get("direction").toString());
+
+        // And I should have shields
+        Assertions.assertNotNull(response.get("state").get("shields"));
+        Assertions.assertTrue(
+                0 <= response.get("state").get("shields").asInt()
+        );
+
+        // And I should have shots
+        Assertions.assertNotNull(response.get("state").get("shots"));
+        Assertions.assertTrue(
+                0 <= response.get("state").get("shots").asInt()
+        );
+
+        // And I should have a status
+        Assertions.assertNotNull(response.get("state").get("status"));
+        String status = response.get("state").get("status").toString();
+        Assertions.assertEquals(0, status.indexOf("\""));
+        Assertions.assertEquals(
+                status.length() - 1,
+                status.lastIndexOf("\"")
+        );
     }
 }

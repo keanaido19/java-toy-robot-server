@@ -3,8 +3,12 @@ package za.co.wethinkcode.robotworlds.ClientCommands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.DataObject;
 import za.co.wethinkcode.robotworlds.Robot.Robot;
 import za.co.wethinkcode.robotworlds.World.World;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class State extends ClientCommands{
 
@@ -14,14 +18,29 @@ public class State extends ClientCommands{
 
     @Override
     public String execute(World world, String[] arguments, ClientHandler clientHandler) {
-        StateResponseJSon stateResponseJSon;
+        Look.StateResponseJSon stateResponseJSon;
         Gson gson = new GsonBuilder().create();
         for(Robot robot : world.getRobots()){
             if(robot.getRobotName().equals(getArgument())){
                 int[] position = {robot.getCurrentPosition().getX(), robot.getCurrentPosition().getY()};
-                stateResponseJSon = new StateResponseJSon(position, robot.getCurrentDirection().toString(),
+                stateResponseJSon = new Look.StateResponseJSon(position,
+                        robot.getCurrentDirection().toString(),
                         robot.getShields(),robot.getShots(),robot.getStatus());
-                return gson.toJson(stateResponseJSon);
+
+                DataObject data =
+                        new DataObject(
+                                world.VISIBILITY,
+                                position,
+                                new ArrayList<Look.ObjectJson>()
+                                        .toArray(new Look.ObjectJson[0])
+                        );
+                Look.LookResponseJson lookResponseJson =
+                        new Look.LookResponseJson(
+                                "OK",
+                                data,
+                                stateResponseJSon
+                        );
+                return gson.toJson(lookResponseJson);
             }
         }
 

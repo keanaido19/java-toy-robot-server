@@ -20,16 +20,12 @@ class StateTest {
         robots.add(test);
         State testState = new State("Bob");
         String[] args = {};
-        assertEquals("{" +
-                "\"position\":[" +
-                "0," +
-                "0" +
-                "]," +
-                "\"direction\":\"NORTH\"," +
-                "\"shields\":3," +
-                "\"shots\":3," +
-                "\"status\":\"normal\"" +
-                "}", testState.execute(worldTest, args, null));
+        assertEquals("{\"result\":\"OK\",\"data\":" +
+                "{\"visibility\":5,\"position\":[0,0],\"objects\":[]}," +
+                "\"state\":{\"position\":[0,0],\"direction\":\"NORTH\"," +
+                "\"shields\":3,\"shots\":3,\"status\":\"normal\"}}",
+                testState.execute(worldTest, args, null)
+        );
     }
 
 }

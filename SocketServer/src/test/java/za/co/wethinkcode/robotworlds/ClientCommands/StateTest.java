@@ -20,15 +20,15 @@ class StateTest {
         robots.add(test);
         State testState = new State("Bob");
         String[] args = {};
-        assertEquals("{\n" +
-                "  \"position\": [\n" +
-                "    0,\n" +
-                "    0\n" +
-                "  ],\n" +
-                "  \"direction\": \"NORTH\",\n" +
-                "  \"shields\": 3,\n" +
-                "  \"shots\": 3,\n" +
-                "  \"status\": \"normal\"\n" +
+        assertEquals("{" +
+                "\"position\":[" +
+                "0," +
+                "0" +
+                "]," +
+                "\"direction\":\"NORTH\"," +
+                "\"shields\":3," +
+                "\"shots\":3," +
+                "\"status\":\"normal\"" +
                 "}", testState.execute(worldTest, args, null));
     }
 

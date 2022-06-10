@@ -15,9 +15,7 @@ public class State extends ClientCommands{
     @Override
     public String execute(World world, String[] arguments, ClientHandler clientHandler) {
         StateResponseJSon stateResponseJSon;
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
+        Gson gson = new GsonBuilder().create();
         for(Robot robot : world.getRobots()){
             if(robot.getRobotName().equals(getArgument())){
                 int[] position = {robot.getCurrentPosition().getX(), robot.getCurrentPosition().getY()};
@@ -26,7 +24,13 @@ public class State extends ClientCommands{
                 return gson.toJson(stateResponseJSon);
             }
         }
-        return "Robot not found!!";
+
+        Forward.DataJson dataJson =
+                new Forward.DataJson("Robot does not exist");
+        ErrorResponseJson errorResponseJson =
+                new ErrorResponseJson("ERROR", dataJson);
+
+        return gson.toJson(errorResponseJson);
     }
 
     public static class StateResponseJSon{

@@ -202,12 +202,14 @@ public class RobotServer {
         public void run() {
             super.run();
             while (true) {
-                String serverCommand = scanner.nextLine();
-                try {
-                    command = ServerCommand.create(serverCommand);
-                    command.execute(ClientHandler.users, ClientHandler.robots, ClientHandler.world);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Command is unrecognised");
+                if (scanner.hasNextLine()) {
+                    String serverCommand = scanner.nextLine();
+                    try {
+                        command = ServerCommand.create(serverCommand);
+                        command.execute(ClientHandler.users, ClientHandler.robots, ClientHandler.world);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Command is unrecognised");
+                    }
                 }
             }
         }

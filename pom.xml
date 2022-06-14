@@ -7,7 +7,7 @@
   <groupId>za.co.wethinkcode.robotworlds</groupId>
   <artifactId>RobotWorlds</artifactId>
   <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <modules>
     <module>SocketClient</module>
     <module>SocketServer</module>
@@ -15,14 +15,20 @@
   </modules>
 
   <name>RobotWorlds</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://gitlab.wethinkco.de/mxomagub021/gerald_lawson.git</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
+
+  <scm>
+    <connection>scm:git@gitlab.wethinkco.de:mxomagub021/gerald_lawson.git</connection>
+    <developerConnection>scm:git@gitlab.wethinkco.de:mxomagub021/gerald_lawson.git</developerConnection>
+    <url>https://gitlab.wethinkco.de/mxomagub021/gerald_lawson.git</url>
+    <tag>@{project.version}</tag>
+  </scm>
 
   <dependencies>
     <dependency>
@@ -51,6 +57,11 @@
       <groupId>org.codehaus.mojo</groupId>
       <artifactId>versions-maven-plugin</artifactId>
       <version>2.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-scm-plugin</artifactId>
+      <version>2.0.0-M1</version>
     </dependency>
   </dependencies>
 

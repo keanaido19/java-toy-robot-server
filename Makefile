@@ -1,17 +1,17 @@
 SERVER_JAR = $(wildcard target/SocketServer*.jar)
 REF_SERVER_JAR = $(wildcard libs/reference-server*.jar)
 
-VERSION = 0.0.0
+PATCH_VERSION := \$$$${parsedVersion.incrementalVersion}
+NEXT_PATCH_VERSION := \$$$${parsedVersion.nextIncrementalVersion}
+
+MINOR_VERSION := \$$$${parsedVersion.minorVersion}
+NEXT_MINOR_VERSION := \$$$${parsedVersion.nextMinorVersion}
+
+MAJOR_VERSION := \$$$${parsedVersion.majorVersion}
+NEXT_MAJOR_VERSION := \$$$${parsedVersion.nextMajorVersion}
+
+VERSION = $(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
 SNAPSHOT_VERSION = $(VERSION)-SNAPSHOT
-
-PATCH_VERSION := $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.incrementalVersion -q -DforceStdout)
-NEXT_PATCH_VERSION := $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.nextIncrementalVersion -q -DforceStdout)
-
-MINOR_VERSION := $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.minorVersion -q -DforceStdout)
-NEXT_MINOR_VERSION := $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.nextMinorVersion -q -DforceStdout)
-
-MAJOR_VERSION := $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.majorVersion -q -DforceStdout)
-NEXT_MAJOR_VERSION := $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.nextMajorVersion -q -DforceStdout)
 
 .PHONY: build clean
 
@@ -63,3 +63,10 @@ release_major: build
 	mvn release:clean
 
 build: maven_clean maven_compile test_reference_server test_server clean
+
+test_lol:
+	$(eval VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(NEXT_PATCH_VERSION))
+	$(eval SNAPSHOT_VERSION=$(VERSION)-SNAPSHOT)
+	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	mvn release:perform -DskipTests -Darguments=-DskipTests
+	mvn release:clean

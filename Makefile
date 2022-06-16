@@ -13,7 +13,11 @@ NEXT_MAJOR_VERSION := \$$$${parsedVersion.nextMajorVersion}
 VERSION = $(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
 SNAPSHOT_VERSION = $$(VERSION)-SNAPSHOT
 
+PORT_PID := $(shell lsof -t -i:5000))
+
 .PHONY: build clean
+
+build: maven_clean maven_compile test_reference_server test_server clean
 
 clean:
 	-@rm -rf test_reference_server.PID test_server.PID
@@ -31,12 +35,20 @@ maven_package:
 	mvn package -DskipTests
 
 test_reference_server:
-	java -jar $(REF_SERVER_JAR) & echo $$! > test_reference_server.PID
+ifneq ($(strip $(shell lsof -t -i:5000)),)
+	$(eval PORT_PID=$(shell lsof -t -i:5000))
+	$(shell kill -9 $(PORT_PID))
+endif
+	@java -jar $(REF_SERVER_JAR) & echo $$! > test_reference_server.PID
 	mvn test
 	@kill `cat test_reference_server.PID`
 
 test_server: maven_package
-	java -jar $(SERVER_JAR) & echo $$! > test_server.PID
+ifneq ($(strip $(shell lsof -t -i:5000)),)
+	$(eval PORT_PID=$(shell lsof -t -i:5000))
+	$(shell kill -9 $(PORT_PID))
+endif
+	@java -jar $(SERVER_JAR) & echo $$! > test_server.PID
 	mvn test
 	@kill `cat test_server.PID`
 
@@ -46,7 +58,6 @@ release_patch: build
 	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
-
 
 release_minor: build
 	$(eval VERSION=$(MAJOR_VERSION).$(NEXT_MINOR_VERSION).$(PATCH_VERSION))
@@ -61,5 +72,3 @@ release_major: build
 	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
-
-build: maven_clean maven_compile test_reference_server test_server clean

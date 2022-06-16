@@ -55,20 +55,20 @@ endif
 release_patch: build
 	$(eval VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(NEXT_PATCH_VERSION))
 	$(eval SNAPSHOT_VERSION=$$(VERSION)-SNAPSHOT)
-	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
 
 release_minor: build
 	$(eval VERSION=$(MAJOR_VERSION).$(NEXT_MINOR_VERSION).$(PATCH_VERSION))
 	$(eval SNAPSHOT_VERSION=$$(VERSION)-SNAPSHOT)
-	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
 
 release_major: build
 	$(eval VERSION=$(NEXT_MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION))
 	$(eval SNAPSHOT_VERSION=$$(VERSION)-SNAPSHOT)
-	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean

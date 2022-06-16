@@ -6,7 +6,7 @@
   <groupId>za.co.wethinkcode.robotworlds</groupId>
   <artifactId>RobotWorlds</artifactId>
   <packaging>pom</packaging>
-  <version>..-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <modules>
     <module>SocketClient</module>
     <module>SocketServer</module>

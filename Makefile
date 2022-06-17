@@ -17,7 +17,7 @@ PORT_PID := $(shell lsof -t -i:5000))
 
 .PHONY: build clean
 
-build: maven_clean maven_compile test_reference_server test_server clean
+build: maven_clean maven_verify maven_compile test_reference_server test_server clean
 
 clean:
 	-@rm -rf test_reference_server.PID test_server.PID
@@ -27,6 +27,9 @@ maven_clean:
 
 maven_compile:
 	mvn compile
+
+maven_verify:
+	mvn verify -DskipTests
 
 maven_test:
 	mvn test

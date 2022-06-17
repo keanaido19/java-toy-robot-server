@@ -1,6 +1,9 @@
 package za.co.wethinkcode.robotworlds;
 
 import com.google.gson.Gson;
+import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.Arguments.ObstacleArgument;
+import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.Arguments.ServerPortArgument;
+import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.CommandLineArgumentHandler;
 import za.co.wethinkcode.robotworlds.ServerCommands.ServerCommand;
 import za.co.wethinkcode.robotworlds.World.SquareObstacle;
 
@@ -181,8 +184,12 @@ public class RobotServer {
 
     public static void main(String[] args) throws IOException {
 
+        CommandLineArgumentHandler CLIHandler =
+                new CommandLineArgumentHandler(args);
+
+        int port = (int) CLIHandler.getArgumentValue(new ServerPortArgument());
+
         System.out.println("Welcome to Robot Worlds Server Cpt18 please take a moment to configure server settings.");
-        int port = 5000;
         myIp();
         fileConfig();
         ServerSocket serverSocket = new ServerSocket(port);

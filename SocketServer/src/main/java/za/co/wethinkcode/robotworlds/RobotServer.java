@@ -1,11 +1,10 @@
 package za.co.wethinkcode.robotworlds;
 
 import com.google.gson.Gson;
-import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.Arguments.ObstacleArgument;
 import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.Arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.CommandLineArgumentHandler;
-import za.co.wethinkcode.robotworlds.ServerCommands.ServerCommand;
 import za.co.wethinkcode.robotworlds.World.SquareObstacle;
+import za.co.wethinkcode.robotworlds.ServerConsole.ServerConsole;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,20 +12,19 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.Scanner;
 
 public class RobotServer {
 
-    private final ServerInput serverInput;
+    private final ServerConsole serverConsole;
     private final ServerSocket serverSocket;
 
     public RobotServer(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
-        this.serverInput = new ServerInput();
+        this.serverConsole = new ServerConsole();
     }
 
     public void startServer(){
-        serverInput.start();
+        serverConsole.start();
         try{
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
@@ -51,53 +49,38 @@ public class RobotServer {
         }
     }
 
-    public static int portChoice(){
-        Scanner scanner = new Scanner(System.in);
-        String portChosen;
-        System.out.println("What Port would you like to use(4 digit number)");
-        do {
-            portChosen = scanner.nextLine();
-        } while (!portCheck(portChosen));
-        return Integer.parseInt(portChosen);
-    }
+    public static String getServerIpAddress() {
 
-    public static void myIp() {
-        String ip;
+        String serverIpAddress;
+
         try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface iFace = interfaces.nextElement();
+            Enumeration<NetworkInterface> networkInterfaces =
+                    NetworkInterface.getNetworkInterfaces();
+
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface =
+                        networkInterfaces.nextElement();
+
                 // filters out 127.0.0.1 and inactive interfaces
-                if (iFace.isLoopback() || !iFace.isUp())
+                if (networkInterface.isLoopback() || !networkInterface.isUp())
                     continue;
-                System.out.println("Here are you ip addresses for users to connect to: ");
-                Enumeration<InetAddress> addresses = iFace.getInetAddresses();
-                while (addresses.hasMoreElements()) {
-                    InetAddress address = addresses.nextElement();
-                    ip = address.getHostAddress();
-                    System.out.println(iFace.getDisplayName() + " " + ip);
+
+                Enumeration<InetAddress> inetAddresses =
+                        networkInterface.getInetAddresses();
+
+                while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+                    serverIpAddress = inetAddress.getHostAddress();
+
+                    if (serverIpAddress.length() <= 15)
+                        return serverIpAddress;
                 }
             }
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
-    }
 
-    public static boolean portCheck(String portChoice){
-        try {
-            Integer.parseInt(portChoice);
-            if(portChoice.length() != 4){
-                System.out.println("4 Digits are required please choose a valid port");
-                return false;
-            }
-
-            return true;
-
-        } catch (NumberFormatException e) {
-            System.out.println("you need to input a 4 digit number.");
-        }
-
-        return false;
+        return "localhost";
     }
 
     public static void fileConfig(){
@@ -123,24 +106,6 @@ public class RobotServer {
 
     static ConfigFileJson.GridJson mapSizeChooser(){
         return new ConfigFileJson.GridJson(0,0);
-    }
-
-    static int integerChooser(String configTypeChoice){
-        String answer;
-        boolean passes = false;
-        int steps = 5;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Next what "+ configTypeChoice + " would you like?");
-        do{
-            answer = scanner.nextLine();
-            try{
-                steps = Integer.parseInt(answer);
-                passes = true;
-            }catch(Exception e){
-                System.out.println("Please input a digit.");
-            }
-        }while(!passes);
-        return steps;
     }
 
     static SquareObstacle[] obstacleChooser(ConfigFileJson.GridJson mapSize){
@@ -187,36 +152,18 @@ public class RobotServer {
         CommandLineArgumentHandler CLIHandler =
                 new CommandLineArgumentHandler(args);
 
-        int port = (int) CLIHandler.getArgumentValue(new ServerPortArgument());
+        int serverPortNumber =
+                (int) CLIHandler.getArgumentValue(new ServerPortArgument());
 
-        System.out.println("Welcome to Robot Worlds Server Cpt18 please take a moment to configure server settings.");
-        myIp();
-        fileConfig();
-        ServerSocket serverSocket = new ServerSocket(port);
+        System.out.println(
+                "Welcome to Robot Worlds Server!\n" +
+                "Server is listening on...\n" +
+                "\tIP Address :\t" + getServerIpAddress() +
+                "\n\tPort number:\t" + serverPortNumber
+        );
+
+        ServerSocket serverSocket = new ServerSocket(serverPortNumber);
         RobotServer server = new RobotServer(serverSocket);
-        System.out.println("Server configuration successful starting server :)");
         server.startServer();
-    }
-
-    private static class ServerInput extends Thread {
-        Scanner scanner;
-        ServerCommand command;
-        public ServerInput() {
-            this.scanner = new Scanner(System.in);
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            while (scanner.hasNextLine()) {
-                String serverCommand = scanner.nextLine();
-                try {
-                    command = ServerCommand.create(serverCommand);
-                    command.execute(ClientHandler.users, ClientHandler.robots, ClientHandler.world);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Command is unrecognised");
-                }
-            }
-        }
     }
 }

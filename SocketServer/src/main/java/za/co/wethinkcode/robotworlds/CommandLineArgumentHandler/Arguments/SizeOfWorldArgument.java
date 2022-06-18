@@ -15,7 +15,23 @@ public class SizeOfWorldArgument extends Argument {
     }
 
     @Override
-    public Object getArgumentValue(CommandLine cmd) {
-        return null;
+    public Object getArgumentValue(
+            CommandLine cmd
+    ) throws IllegalArgumentException {
+
+        String value = (String) super.getArgumentValue(cmd);
+
+        if (null == value) return 1;
+
+        try {
+            int sizeOfWorld = Integer.parseInt(value);
+            if (0 <= sizeOfWorld && sizeOfWorld <= 9999) return sizeOfWorld;
+            throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                    "Size of the world as one side of a square grid must " +
+                            "be an integer from 0-9999"
+            );
+        }
     }
 }

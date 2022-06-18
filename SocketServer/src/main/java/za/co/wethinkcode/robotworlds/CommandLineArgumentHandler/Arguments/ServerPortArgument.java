@@ -29,7 +29,7 @@ public class ServerPortArgument extends Argument {
             throw new NumberFormatException();
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
-                    " Port to listen for client connections must be an " +
+                    "Port to listen for client connections must be an " +
                             "integer from 0-9999"
             );
         }

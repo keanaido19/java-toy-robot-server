@@ -1,4 +1,4 @@
-package za.co.wethinkcode.robotworlds.ServerCommands;
+package za.co.wethinkcode.robotworlds.ServerConsole.ServerCommands;
 
 import za.co.wethinkcode.robotworlds.ClientHandler;
 import za.co.wethinkcode.robotworlds.Robot.Robot;

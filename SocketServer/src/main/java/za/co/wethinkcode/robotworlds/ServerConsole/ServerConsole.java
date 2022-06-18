@@ -6,23 +6,29 @@ import za.co.wethinkcode.robotworlds.ServerConsole.ServerCommands.ServerCommand;
 import java.util.Scanner;
 
 public class ServerConsole extends Thread {
-    Scanner scanner;
-    ServerCommand command;
+    private final Scanner scanner = new Scanner(System.in);
+    ServerCommand serverCommand;
 
-    public ServerConsole() {
-        this.scanner = new Scanner(System.in);
-    }
+    public ServerConsole() {}
 
     @Override
     public void run() {
-        super.run();
+
+        System.out.println("Console is ready for input:");
+
         while (scanner.hasNextLine()) {
-            String serverCommand = scanner.nextLine();
+            String userInput = scanner.nextLine();
             try {
-                command = ServerCommand.create(serverCommand);
-                command.execute(ClientHandler.users, ClientHandler.robots, ClientHandler.world);
+                serverCommand = ServerCommand.create(userInput);
+
+                serverCommand.execute(
+                        ClientHandler.users,
+                        ClientHandler.robots,
+                        ClientHandler.world
+                );
+
             } catch (IllegalArgumentException e) {
-                System.out.println("Command is unrecognised");
+                System.out.println("Invalid Command!");
             }
         }
     }

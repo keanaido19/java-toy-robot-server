@@ -1,15 +1,15 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.Position;
 import za.co.wethinkcode.robotworlds.robot.*;
 import za.co.wethinkcode.robotworlds.world.Obstacle;
 import za.co.wethinkcode.robotworlds.world.World;
 import java.util.Random;
 
-public class Launch extends ClientCommands {
+public class Launch extends ClientCommand {
 
     public Launch(String make, String name) {
         super("launch",make,name);

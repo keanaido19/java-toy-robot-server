@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.commands.Look;
+import za.co.wethinkcode.robotworlds.clienthandler.commands.Look;
 
 public class DataObject {
     int visibility;

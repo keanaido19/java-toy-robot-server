@@ -1,12 +1,12 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
-public class Turn extends ClientCommands{
+public class Turn extends ClientCommand {
     String turnDirection;
     public Turn(String robotName, String turnDirection){
         super("turn",robotName);

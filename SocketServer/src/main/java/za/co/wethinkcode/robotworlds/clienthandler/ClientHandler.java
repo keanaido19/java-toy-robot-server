@@ -1,7 +1,9 @@
-package za.co.wethinkcode.robotworlds;
+package za.co.wethinkcode.robotworlds.clienthandler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import za.co.wethinkcode.robotworlds.ConfigFileJson;
+import za.co.wethinkcode.robotworlds.clienthandler.commands.*;
 import za.co.wethinkcode.robotworlds.commands.*;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -30,7 +32,7 @@ public class ClientHandler implements Runnable{
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String clientUsername;
-    ClientCommands clientCommand;
+    ClientCommand clientCommand;
     LocalTime localTime;
     private final int shieldRepairTime = readShieldRepairTime();
     private final int reloadTime = readReloadTime();
@@ -79,7 +81,7 @@ public class ClientHandler implements Runnable{
                     continue;
                 }
                 try {
-                    clientCommand = ClientCommands.create(commandFromClient);
+                    clientCommand = ClientCommand.create(commandFromClient);
                     requestMessage = gson.fromJson(commandFromClient, RequestMessage.class);
                     String message =
                             clientCommand.execute(
@@ -104,7 +106,7 @@ public class ClientHandler implements Runnable{
                     }catch(IOException f) {
                         System.out.println("ioexception f");
                     }
-                } catch (ClientCommands.CommandNotFoundException e) {
+                } catch (ClientCommand.CommandNotFoundException e) {
                     Forward.DataJson dataJson = new Forward.DataJson("Unsupported command");
                     ErrorResponseJson errorResponseJson = new ErrorResponseJson("ERROR", dataJson);
                     bufferedWriter.write(gsonPretty.toJson(errorResponseJson));

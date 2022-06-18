@@ -1,4 +1,4 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 public class ErrorResponseJson {
 

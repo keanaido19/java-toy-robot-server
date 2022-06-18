@@ -1,8 +1,8 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.DataObject;
 import za.co.wethinkcode.robotworlds.Direction;
 import za.co.wethinkcode.robotworlds.Position;
@@ -12,7 +12,7 @@ import za.co.wethinkcode.robotworlds.world.World;
 
 import java.util.ArrayList;
 
-public class Look extends ClientCommands{
+public class Look extends ClientCommand {
     ArrayList<ObjectJson> objects = new ArrayList<>();
     Gson gson = new GsonBuilder().create();
 

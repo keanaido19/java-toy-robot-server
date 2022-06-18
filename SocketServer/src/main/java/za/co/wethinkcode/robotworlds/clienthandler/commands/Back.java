@@ -1,20 +1,19 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import za.co.wethinkcode.robotworlds.ClientHandler;
+
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
-
-public class Forward extends ClientCommands{
-
+public class Back extends ClientCommand {
     int steps;
 
-    public Forward( String robotName, int steps) {
-        super("forward", robotName);
-        this.steps = steps;
+    public Back( String robotName, int steps) {
+        super("back", robotName);
+        this.steps = -1* steps;
     }
 
     @Override
@@ -35,7 +34,6 @@ public class Forward extends ClientCommands{
 
                         MovementJson movementJson = new MovementJson("OK", dataJson, stateJson);
                         return gson.toJson(movementJson);
-
 
                     case FAILED_OUTSIDE_WORLD:
                         int[] coord = {robot.getCurrentPosition().getX(), robot.getCurrentPosition().getY()};
@@ -62,11 +60,10 @@ public class Forward extends ClientCommands{
                 }
             }
         }
-        return "Forward movement error";
+        return null;
     }
 
-
-    public class MovementJson{
+    public static class MovementJson{
         String result;
         DataJson data;
         StateJson state;
@@ -77,6 +74,7 @@ public class Forward extends ClientCommands{
             this.state = state;
         }
     }
+
     public static class DataJson{
         String message;
 

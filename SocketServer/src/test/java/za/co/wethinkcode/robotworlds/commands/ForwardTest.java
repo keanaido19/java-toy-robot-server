@@ -3,6 +3,7 @@ package za.co.wethinkcode.robotworlds.commands;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.Direction;
 import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.clienthandler.commands.Forward;
 import za.co.wethinkcode.robotworlds.robot.Normal;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.SquareObstacle;

@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds.console.commands;
 
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 import java.util.ArrayList;

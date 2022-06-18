@@ -31,7 +31,6 @@ public class World {
             ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
             return json.getObstacles();
         } catch (FileNotFoundException e) {
-//            System.out.println("No config file present");
         }
         return new SquareObstacle[]{new SquareObstacle(5, 5)};
     }
@@ -57,7 +56,6 @@ public class World {
             }
 
         } catch (FileNotFoundException e) {
-//            System.out.println("No config file present");
         }
         return 0;
     }

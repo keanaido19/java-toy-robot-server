@@ -1,12 +1,12 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.util.ConcurrentModificationException;
 
-public class Quit extends ClientCommands{
+public class Quit extends ClientCommand {
 
     public Quit(String name) {
         super("quit" ,name);

@@ -1,7 +1,8 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.commandlineargumenthandler.arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.commandlineargumenthandler.CommandLineArgumentHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
+import za.co.wethinkcode.robotworlds.CLIhandler.CommandLineArgumentHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
 
 import java.io.IOException;
@@ -93,7 +94,8 @@ public class RobotServer {
         );
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
-        RobotServer server = new RobotServer(serverSocket);
-        server.startServer();
+
+        RobotServer robotServer = new RobotServer(serverSocket);
+        robotServer.startServer();
     }
 }

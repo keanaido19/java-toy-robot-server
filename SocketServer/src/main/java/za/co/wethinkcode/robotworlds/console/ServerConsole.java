@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds.console;
 
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
 
 import java.util.Scanner;

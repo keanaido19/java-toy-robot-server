@@ -1,23 +1,23 @@
-package za.co.wethinkcode.robotworlds.commands;
+package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
-import za.co.wethinkcode.robotworlds.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.world.World;
 import com.google.gson.Gson;
 
-public abstract class ClientCommands implements CommandInterface {
+public abstract class ClientCommand implements CommandInterface {
 
     private String argument;
     private String argument2;
 
-    public ClientCommands(String name){
+    public ClientCommand(String name){
     }
 
-    public ClientCommands(String name, String argument){
+    public ClientCommand(String name, String argument){
         this(name);
         this.argument=argument.trim();
     }
 
-    public ClientCommands(String name, String argument, String argument2){
+    public ClientCommand(String name, String argument, String argument2){
         this(name);
         this.argument=argument.trim();
         this.argument2 = argument2.trim();
@@ -37,7 +37,7 @@ public abstract class ClientCommands implements CommandInterface {
             ClientHandler clientHandler
     );
 
-    public static ClientCommands create(String instruction) throws CommandNotFoundException {
+    public static ClientCommand create(String instruction) throws CommandNotFoundException {
         Gson gson = new Gson();
         RequestMessage requestMessage = gson.fromJson(instruction, RequestMessage.class);
 

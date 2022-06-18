@@ -2,11 +2,11 @@ package za.co.wethinkcode.robotworlds.ServerCommands;
 
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.ClientHandler;
-import za.co.wethinkcode.robotworlds.Robot.Normal;
-import za.co.wethinkcode.robotworlds.Robot.Robot;
-import za.co.wethinkcode.robotworlds.ServerConsole.ServerCommands.Dump;
-import za.co.wethinkcode.robotworlds.World.SquareObstacle;
-import za.co.wethinkcode.robotworlds.World.World;
+import za.co.wethinkcode.robotworlds.robot.Normal;
+import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.console.commands.Dump;
+import za.co.wethinkcode.robotworlds.world.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.*;
 import java.util.ArrayList;

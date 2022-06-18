@@ -2,9 +2,9 @@ package za.co.wethinkcode.robotworlds;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import za.co.wethinkcode.robotworlds.ClientCommands.*;
-import za.co.wethinkcode.robotworlds.Robot.Robot;
-import za.co.wethinkcode.robotworlds.World.World;
+import za.co.wethinkcode.robotworlds.commands.*;
+import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.*;
 import java.net.Socket;

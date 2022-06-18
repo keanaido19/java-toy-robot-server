@@ -1,17 +1,12 @@
 package za.co.wethinkcode.robotworlds;
 
-import com.google.gson.Gson;
-import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.Arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.CommandLineArgumentHandler.CommandLineArgumentHandler;
-import za.co.wethinkcode.robotworlds.World.SquareObstacle;
-import za.co.wethinkcode.robotworlds.ServerConsole.ServerConsole;
+import za.co.wethinkcode.robotworlds.commandlineargumenthandler.arguments.ServerPortArgument;
+import za.co.wethinkcode.robotworlds.commandlineargumenthandler.CommandLineArgumentHandler;
+import za.co.wethinkcode.robotworlds.console.ServerConsole;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Random;
 
 public class RobotServer {
 
@@ -30,8 +25,8 @@ public class RobotServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("A new user has connected to the server.");
                 ClientHandler clientHandler = new ClientHandler(socket);
-                Thread thread = new Thread(clientHandler);
-                thread.start();
+                Thread clientThread = new Thread(clientHandler);
+                clientThread.start();
             }
 
         }catch (IOException e) {

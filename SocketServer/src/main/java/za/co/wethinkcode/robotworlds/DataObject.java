@@ -1,9 +1,6 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.ClientCommands.Look;
-
-import java.util.HashMap;
-import java.util.List;
+import za.co.wethinkcode.robotworlds.commands.Look;
 
 public class DataObject {
     int visibility;

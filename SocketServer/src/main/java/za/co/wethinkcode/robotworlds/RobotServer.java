@@ -79,72 +79,7 @@ public class RobotServer {
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
-
         return "localhost";
-    }
-
-    public static void fileConfig(){
-        ConfigFileJson.GridJson gridJson;
-        Gson gson = new Gson();
-        gridJson = mapSizeChooser();
-        int visibility = 1;
-        SquareObstacle[] obstaclesList = obstacleChooser(gridJson);
-        int shieldRepairTime = 5;
-        int reloadTime = 5;
-        int maxShieldStrength = 5;
-        String json = gson.toJson(new ConfigFileJson(gridJson,visibility,obstaclesList,
-                shieldRepairTime,reloadTime,maxShieldStrength));
-        System.out.println("Thank you server configuration being set up.");
-        try (FileWriter file = new FileWriter("Config.json")) {
-            //We can write any JSONArray or JSONObject instance to the file
-            file.write(json);
-            file.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static ConfigFileJson.GridJson mapSizeChooser(){
-        return new ConfigFileJson.GridJson(0,0);
-    }
-
-    static SquareObstacle[] obstacleChooser(ConfigFileJson.GridJson mapSize){
-        return obstaclesMaker(0, mapSize.x,mapSize.y);
-    }
-
-    static SquareObstacle[] obstaclesMaker(int obstaclesAmount , int xSize, int ySize){
-        Random random = new Random();
-        boolean sharesPosition;
-        SquareObstacle[] obstacles = new SquareObstacle[obstaclesAmount];
-        ArrayList<SquareObstacle> obstaclesArrayList = new ArrayList<>();
-        while(obstaclesArrayList.size()!= obstaclesAmount){
-            sharesPosition = false;
-            SquareObstacle newObstacle = new SquareObstacle((random.nextInt(xSize - (-xSize)) + (-xSize)),
-                    random.nextInt(ySize - (-ySize)) + (-ySize));
-            for(SquareObstacle squareObstacle : obstaclesArrayList){
-               sharesPosition = sharesPosition(squareObstacle, newObstacle);
-            }
-            if(sharesPosition){
-                continue;
-            }
-            obstaclesArrayList.add(newObstacle);
-        }
-        obstaclesArrayList.toArray(obstacles);
-        return obstacles;
-    }
-
-    static boolean sharesPosition(SquareObstacle existingObstacle , SquareObstacle newObstacle){
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                if(newObstacle.getBottomLeftX() + i == existingObstacle.getBottomLeftX() + j) {
-                    return true;
-                }
-                else if(newObstacle.getBottomLeftY() + i == existingObstacle.getBottomLeftY() + j){
-                        return true;
-                }
-            }
-        }
-        return false;
     }
 
     public static void main(String[] args) throws IOException {

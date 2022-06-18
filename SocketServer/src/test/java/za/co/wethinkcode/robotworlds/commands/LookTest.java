@@ -1,8 +1,8 @@
 //package za.co.wethinkcode.robotworlds.ClientCommands;
 //
 //import org.junit.jupiter.api.Test;
-//import za.co.wethinkcode.robotworlds.Direction;
-//import za.co.wethinkcode.robotworlds.Position;
+//import za.co.wethinkcode.robotworlds.world.enums.Direction;
+//import za.co.wethinkcode.robotworlds.world.Position;
 //import za.co.wethinkcode.robotworlds.Robot.Normal;
 //import za.co.wethinkcode.robotworlds.Robot.Robot;
 //import za.co.wethinkcode.robotworlds.World.SquareObstacle;

@@ -5,6 +5,8 @@ import za.co.wethinkcode.robotworlds.robot.Normal;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
+import za.co.wethinkcode.robotworlds.world.Position;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

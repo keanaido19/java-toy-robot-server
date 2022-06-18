@@ -1,7 +1,7 @@
 package za.co.wethinkcode.robotworlds.robot;
 
 import org.junit.jupiter.api.Test;
-import za.co.wethinkcode.robotworlds.Direction;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.FileNotFoundException;

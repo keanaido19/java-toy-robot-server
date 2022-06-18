@@ -1,7 +1,7 @@
 package za.co.wethinkcode.robotworlds.commands;
 
 import org.junit.jupiter.api.Test;
-import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.Fire;
 import za.co.wethinkcode.robotworlds.robot.Normal;
 import za.co.wethinkcode.robotworlds.robot.Robot;

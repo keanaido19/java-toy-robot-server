@@ -2,7 +2,6 @@ package za.co.wethinkcode.robotworlds.world;
 
 import com.google.gson.Gson;
 import za.co.wethinkcode.robotworlds.ConfigFileJson;
-import za.co.wethinkcode.robotworlds.Position;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

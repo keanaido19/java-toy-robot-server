@@ -1,7 +1,7 @@
 package za.co.wethinkcode.robotworlds.robot;
 
-import za.co.wethinkcode.robotworlds.Direction;
-import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
+import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
 

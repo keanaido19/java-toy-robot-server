@@ -55,7 +55,7 @@ public class StateRobotTest {
         String request = "{" +
                 "  \"robot\": \"HAL\"," +
                 "  \"command\": \"state\"," +
-                "  \"arguments\": [\"\"]" +
+                "  \"arguments\": []" +
                 "}";
         JsonNode response = serverClient.sendRequest(request);
         // Then I should get an error response from the server
@@ -87,7 +87,7 @@ public class StateRobotTest {
         request = "{" +
                 "  \"robot\": \"HAL\"," +
                 "  \"command\": \"state\"," +
-                "  \"arguments\": [\"\"]" +
+                "  \"arguments\": []" +
                 "}";
         response = serverClient.sendRequest(request);
 

@@ -7,11 +7,11 @@ public interface Obstructable {
 
     boolean isObstructable();
 
-    boolean obstructsPosition(WorldObject worldObject);
+    void setObstructable(boolean isObstructable);
 
-    boolean obstructsPath(
-            WorldObject worldObject,
-            Position startPosition,
-            Position endPosition
-    );
+    boolean obstructsPosition(Position position);
+
+    boolean obstructsWorldObject(WorldObject worldObject);
+
+    boolean obstructsPath(WorldObject worldObject, Position endPosition);
 }

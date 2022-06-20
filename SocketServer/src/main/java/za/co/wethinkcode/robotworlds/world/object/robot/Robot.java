@@ -10,8 +10,9 @@ import za.co.wethinkcode.robotworlds.world.interfaces.health.Destroyable;
 import za.co.wethinkcode.robotworlds.world.interfaces.health.Healable;
 import za.co.wethinkcode.robotworlds.world.object.WorldObject;
 
-public class Robot extends WorldObject implements Orientable, Obstructable,
-        Destroyable, Healable {
+public class Robot extends WorldObject implements
+        Orientable, Obstructable, Destroyable, Healable
+{
     private final String name;
 
     private boolean isOrientable = true;
@@ -34,38 +35,56 @@ public class Robot extends WorldObject implements Orientable, Obstructable,
     }
 
     @Override
+    public void setOrientable(boolean isOrientable) {
+        this.isOrientable = isOrientable;
+    }
+
+    @Override
     public Direction getDirection() {
         return direction;
     }
 
     @Override
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    @Override
     public void turnLeft() {
-        direction = direction.getLeftDirection();
+        if (isOrientable()) direction = direction.getLeftDirection();
     }
 
     @Override
     public void turnRight() {
-        direction = direction.getRightDirection();
+        if (isOrientable()) direction = direction.getRightDirection();
     }
 
     @Override
     public boolean isObstructable() {
         return isObstructable;
     }
+    @Override
+    public void setObstructable(boolean isObstructable) {
+        this.isObstructable = isObstructable;
+    }
 
     @Override
-    public boolean obstructsPosition(WorldObject worldObject) {
-        if (worldObject instanceof Obstructable) {
-            Obstructable o = (Obstructable) worldObject;
-            if (o.isObstructable()) return o.obstructsPosition(this);
-        }
-        return false;
+    public boolean obstructsPosition(Position position) {
+        return getPosition().equals(position);
+    }
+
+    @Override
+    public boolean obstructsWorldObject(WorldObject worldObject) {
+        if (!(worldObject instanceof Obstructable)) return false;
+
+        Obstructable o = (Obstructable) worldObject;
+
+        return o.isObstructable() && o.obstructsPosition(this.getPosition());
     }
 
     @Override
     public boolean obstructsPath(
             WorldObject worldObject,
-            Position startPosition,
             Position endPosition
     ) {
         return false;
@@ -77,9 +96,15 @@ public class Robot extends WorldObject implements Orientable, Obstructable,
     }
 
     @Override
+    public void setDamageable(boolean isDamageable) {
+        this.isDamageable = isDamageable;
+    }
+
+    @Override
     public void damage(int damage) {
+        if (!isDamageable()) return;
         health -= damage;
-        if (health <= 0 && isDestroyable) destroy(null); // TODO
+        if (health <= 0) destroy(null); // TODO
     }
 
     @Override
@@ -88,7 +113,13 @@ public class Robot extends WorldObject implements Orientable, Obstructable,
     }
 
     @Override
+    public void setDestroyable(boolean isDestroyable) {
+        this.isDestroyable = isDestroyable;
+    }
+
+    @Override
     public void destroy(World world) {
+        if (!isDestroyable()) return;
 //        TODO
     }
 
@@ -98,12 +129,22 @@ public class Robot extends WorldObject implements Orientable, Obstructable,
     }
 
     @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    @Override
     public boolean isHealable() {
         return isHealable;
     }
 
     @Override
+    public void setHealable(boolean isHealable) {
+        this.isHealable = isHealable;
+    }
+
+    @Override
     public void heal(int health) {
-        this.health += health;
+        if (isHealable()) this.health += health;
     }
 }

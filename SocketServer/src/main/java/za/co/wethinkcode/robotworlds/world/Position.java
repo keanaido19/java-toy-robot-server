@@ -1,5 +1,7 @@
 package za.co.wethinkcode.robotworlds.world;
 
+import java.util.List;
+
 public class Position {
     private final int x;
     private final int y;
@@ -15,6 +17,10 @@ public class Position {
 
     public int getY() {
         return y;
+    }
+
+    public List<Integer> getPositionAsList() {
+        return List.of(x, y);
     }
 
     @Override

@@ -3,7 +3,8 @@ package za.co.wethinkcode.robotworlds.clienthandler.commands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
-import za.co.wethinkcode.robotworlds.world.Position;
+import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.robot.*;
 import za.co.wethinkcode.robotworlds.world.Obstacle;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -16,7 +17,7 @@ public class Launch extends ClientCommand {
     }
 
     @Override
-    public String execute(
+    public ServerResponse execute(
             World world,
             String[] arguments,
             ClientHandler clientHandler
@@ -88,7 +89,7 @@ public class Launch extends ClientCommand {
 //                    (world.getTOP_LEFT().getX())) + (world.getTOP_LEFT().getX())),
 //                    (random.nextInt(world.getTOP_LEFT().getY() -(world.getBOTTOM_RIGHT().getY()))) + (world.getBOTTOM_RIGHT().getY()));
             Position freePosition = new Position(0, 0);
-            for(Obstacle obstacles: world.getOBSTACLES()){
+            for(Obstacle obstacles: world.getObstacles()){
                 if(obstacles.blocksPosition(freePosition)){
                     free = false;
                     break;

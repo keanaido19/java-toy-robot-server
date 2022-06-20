@@ -25,12 +25,12 @@ public class SizeOfWorldArgument extends Argument {
 
         try {
             int sizeOfWorld = Integer.parseInt(value);
-            if (0 <= sizeOfWorld && sizeOfWorld <= 9999) return sizeOfWorld;
+            if (1 <= sizeOfWorld && sizeOfWorld <= 9999) return sizeOfWorld;
             throw new NumberFormatException();
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
                     "Size of the world as one side of a square grid must " +
-                            "be an integer from 0-9999"
+                            "be an integer from 1-9999"
             );
         }
     }

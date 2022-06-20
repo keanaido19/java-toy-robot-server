@@ -43,8 +43,8 @@ class DumpTest {
             String simulatedUserInput = "";
             String expectedOutput =
                     "There are some obstacles\n" +
-                            "- At position 0,3 (to 3,6)\n" +
-                            "- At position 2,1 (to 5,4)\n" +
+                            "- At position 0,3 (to 4,7)\n" +
+                            "- At position 2,1 (to 6,5)\n" +
                             "ROBOTS:\n" +
                             "Robot : Bob\n" +
                             "Position [0,0] \n" +

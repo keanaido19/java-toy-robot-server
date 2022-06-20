@@ -36,8 +36,8 @@ class RobotTest {
         Robot test = new Normal(worldTest, "Bob", "normal");
         SquareObstacle[] obstacles = {new SquareObstacle(0,2)};
         worldTest.setObstacles(obstacles);
-        worldTest.setTOP_LEFT(new Position(-10, 10));
-        worldTest.setBOTTOM_RIGHT(new Position(10, -10));
+        worldTest.setTopLeft(new Position(-10, 10));
+        worldTest.setBottomRight(new Position(10, -10));
         assertEquals(Robot.UpdateResponse.FAILED_OBSTRUCTED, test.updatePosition(5));
         assertEquals(Robot.UpdateResponse.SUCCESS, test.updatePosition(1));
         test.setCurrentDirection(Direction.SOUTH);

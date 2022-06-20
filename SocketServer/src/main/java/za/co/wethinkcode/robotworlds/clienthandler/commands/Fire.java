@@ -3,7 +3,8 @@ package za.co.wethinkcode.robotworlds.clienthandler.commands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
-import za.co.wethinkcode.robotworlds.world.Position;
+import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.Obstacle;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -18,7 +19,7 @@ public class Fire extends ClientCommand {
     }
 
     @Override
-    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
+    public ServerResponse execute(World world, String[] arguments, ClientHandler clientHandler) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -83,7 +84,7 @@ public class Fire extends ClientCommand {
                 break;
         }
         Position newPosition = new Position(newX, newY);
-        for(Obstacle obstacle : world.getOBSTACLES()){
+        for(Obstacle obstacle : world.getObstacles()){
             this.obstacleBlocksPath(myRobot.getCurrentPosition(), newPosition, obstacle);
         }
         if (robotBlocksPath(myRobot.getCurrentPosition(), newPosition, enemyRobot)) {

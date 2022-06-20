@@ -13,7 +13,7 @@ NEXT_MAJOR_VERSION := \$$$${parsedVersion.nextMajorVersion}
 VERSION = $(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
 SNAPSHOT_VERSION = $$(VERSION)-SNAPSHOT
 
-PORT_PID := $(shell lsof -t -i:5000))
+PORT_PID := $(shell lsof -t -i:5000)
 
 .PHONY: build clean
 
@@ -40,20 +40,22 @@ maven_package:
 test_reference_server:
 ifneq ($(strip $(shell lsof -t -i:5000)),)
 	$(eval PORT_PID=$(shell lsof -t -i:5000))
-	$(shell kill -9 $(PORT_PID))
+	kill -9 $(PORT_PID)
 endif
 	@java -jar $(REF_SERVER_JAR) & echo $$! > test_reference_server.PID
 	mvn test
 	@kill `cat test_reference_server.PID`
+	-@rm -rf test_reference_server.PID
 
 test_server: maven_package
 ifneq ($(strip $(shell lsof -t -i:5000)),)
 	$(eval PORT_PID=$(shell lsof -t -i:5000))
-	$(shell kill -9 $(PORT_PID))
+	kill -9 $(PORT_PID)
 endif
 	@java -jar $(SERVER_JAR) & echo $$! > test_server.PID
 	mvn test
 	@kill `cat test_server.PID`
+	-@rm -rf test_server.PID
 
 release_patch: build
 	$(eval VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(NEXT_PATCH_VERSION))
@@ -87,12 +89,12 @@ get_patch_version = $(shell mvn build-helper:parse-version  help:evaluate -Dexpr
 
 get_project_version = v$(get_major_version).$(get_minor_version).$(get_patch_version)
 
-docker_release:
+docker_release: maven_package
 	docker build -t robot-worlds-server:$(get_project_version) .
 	$(MAKE) kill_docker_containers
 ifneq ($(strip $(shell lsof -t -i:5000)),)
 	$(eval PORT_PID=$(shell lsof -t -i:5000))
-	$(shell kill -9 $(PORT_PID))
+	kill -9 $(PORT_PID)
 endif
 	docker run -p 5000:5050 robot-worlds-server:$(get_project_version) & echo "Running docker image..."
 	mvn test

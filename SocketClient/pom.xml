@@ -4,7 +4,7 @@
     <parent>
         <artifactId>RobotWorlds</artifactId>
         <groupId>za.co.wethinkcode.robotworlds</groupId>
-        <version>0.1.4-SNAPSHOT</version>
+        <version>v0.1.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

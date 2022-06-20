@@ -3,7 +3,6 @@ package za.co.wethinkcode.robotworlds.robot;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.World;
-import za.co.wethinkcode.robotworlds.world.objects.robots.MachineGun;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.io.FileNotFoundException;

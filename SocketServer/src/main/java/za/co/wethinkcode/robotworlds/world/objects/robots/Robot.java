@@ -1,295 +1,230 @@
 package za.co.wethinkcode.robotworlds.world.objects.robots;
 
-import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.Position;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
+import za.co.wethinkcode.robotworlds.world.data.RobotData;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
+import za.co.wethinkcode.robotworlds.world.enums.ObjectType;
+import za.co.wethinkcode.robotworlds.world.enums.Status;
 
-public abstract class Robot  {
+import java.util.Objects;
 
-    public static final Direction STARTDIRECTION = Direction.NORTH;
-    private Direction currentDirection;
-    private final String robotName;
-    private final String robotType;
-    private final World world;
-    private Position currentPosition;
-    protected int shields;
-    protected int shots;
-    protected int shotDistance;
-    protected int maxShields;
-    protected int maxShots;
-    private String status;
+public class Robot{
 
-    public Robot(World world, String robotName, String robotType){
-        this.currentPosition= new Position(0,0);
-        this.currentDirection = STARTDIRECTION;
-        this.robotName = robotName;
-        this.robotType = robotType;
-        this.world = world;
-        this.status = "normal";
-    }
-    public void setRobotPosition(int x , int y){
-        currentPosition = new Position(x , y);
-    }
+    private final String name;
+    private final int maximumShields;
+    private final int maximumShots;
+    private final int range;
 
-    public enum UpdateResponse {
-        SUCCESS,
-        FAILED_OUTSIDE_WORLD,
-        FAILED_OBSTRUCTED
-    }
+    private final ObjectType objectType = ObjectType.ROBOT;
 
-    public String getRobotName(){
-        return robotName;
-    }
+    private Direction direction = Direction.NORTH;
+    private Status currentStatus = Status.NORMAL;
 
-    public Direction getCurrentDirection(){
-        return currentDirection;
+    private int currentShields;
+    private Position position;
+    private int currentShots;
+    private World world;
+
+    public Robot(
+            String name,
+            Position position,
+            int maximumShields,
+            int maximumShots,
+            int range
+    ) {
+        this.name = name;
+        this.position = position;
+        this.maximumShields = maximumShields;
+        this.currentShields = maximumShields;
+        this.maximumShots = maximumShots;
+        this.currentShots = maximumShots;
+        this.range = range;
     }
 
-    public String getRobotState(){
-        return "Position [" + currentPosition.getX() + "," + currentPosition.getY() + "] \n" +
-                "Direction [" + currentDirection + "]";
+    public String getName() {
+        return name;
+    }
+
+    public Position getPosition() {return position;}
+
+    public ObjectType getObjectType() {
+        return objectType;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public int getMaximumShields() {
+        return maximumShields;
+    }
+
+    public int getMaximumShots() {
+        return maximumShots;
+    }
+
+    public int getRange() {
+        return range;
     }
 
     public int getShields() {
-        return shields;
+        return currentShields;
     }
 
     public int getShots() {
-        return shots;
+        return currentShots;
     }
 
-    public String getStatus() {
-        return status;
+    public Status getRobotStatus() {
+        return currentStatus;
     }
 
-    public int getShotDistance(){
-        return shotDistance;
+    public RobotData getRobotData() {
+        return new RobotData(
+                position.getPositionAsList(),
+                getDirection(),
+                currentShields,
+                currentShots,
+                currentStatus
+        );
     }
 
-    public Position getCurrentPosition() {
-        return currentPosition;
+    public void turnLeft() {
+        direction = direction.getLeftDirection();
     }
 
-    public UpdateResponse updatePosition(int steps) {
+    public void turnRight() {
+        direction = direction.getRightDirection();
+    }
 
-        int newX = this.currentPosition.getX();
-        int newY = this.currentPosition.getY();
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 
-        switch (currentDirection) {
-            case NORTH:
-                if(blockCheckNorth(steps)){
-                    return UpdateResponse.FAILED_OBSTRUCTED;
-                }
-                newY = newY + steps;
-                break;
-            case SOUTH:
-                steps *= -1;
-                if(blockCheckSouth(steps)){
-                    return UpdateResponse.FAILED_OBSTRUCTED;
-                }
-                newY = newY - steps;
-                break;
-            case EAST:
-                if(blockCheckEast(steps)){
-                    return UpdateResponse.FAILED_OBSTRUCTED;
-                }
-                newX = newX + steps;
-                break;
-            case WEST:
-                steps *= -1;
-                if(blockCheckWest(steps)){
-                    return UpdateResponse.FAILED_OBSTRUCTED;
-                }
-                newX = newX - steps;
-                break;
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setRobotStatus(Status status) {
+        this.currentStatus = status;
+    }
+
+    public void joinWorld(World world) {
+        this.world = world;
+    }
+
+    public void repair() {
+        currentShields = maximumShields;
+    }
+
+    public void reload() {
+        currentShots = maximumShots;
+    }
+
+    public void fire() {
+        if (currentShots > 0) {
+            currentShots --;
         }
-        Position newPosition = new Position(newX, newY);
-
-        if (isNewPositionAllowed(newPosition)) {
-            this.currentPosition = newPosition;
-            return UpdateResponse.SUCCESS;
-        }
-        return UpdateResponse.FAILED_OUTSIDE_WORLD;
     }
 
-    public void updateDirection(boolean right){
-        if(right){
-            switch (currentDirection){
-                case NORTH:
-                    currentDirection = Direction.EAST;
-                    break;
-                case EAST:
-                    currentDirection = Direction.SOUTH;
-                    break;
-                case SOUTH:
-                    currentDirection = Direction.WEST;
-                    break;
-                case WEST:
-                    currentDirection = Direction.NORTH;
-                    break;
-            }
-        }else {
-            switch (currentDirection){
-                case NORTH:
-                    currentDirection = Direction.WEST;
-                    break;
-                case WEST:
-                    currentDirection = Direction.SOUTH;
-                    break;
-                case SOUTH:
-                    currentDirection = Direction.EAST;
-                    break;
-                case EAST:
-                    currentDirection = Direction.NORTH;
-                    break;
+    public void damageRobot() {
+        if (world != null) {
+            if (currentShields <= 0) {
+                currentStatus = Status.DEAD;
+                world.getRobots().remove(this);
+                world = null;
+            } else {
+                currentShields --;
             }
         }
     }
 
-    public boolean blockCheckNorth(int steps){
-        Position position;
-        for(int i = 1 ; i < Math.abs(steps) + 1 ; i++){
-            if(steps > 0){
-                position = new Position(this.currentPosition.getX(), this.currentPosition.getY()+ i);
-            }
-            else{
-                position = new Position(this.currentPosition.getX(), this.currentPosition.getY()+ (-1*i));
-            }
-            for (SquareObstacle obstacle : world.getObstacles()) {
-                if (obstacle.blocksPosition(position)) {
-                    return true;
-                }
-            }
-            for(Robot robot : world.getRobots()){
-                if(!robot.getRobotName().equals(this.robotName)){
-                    if(robot.robotBlocksPosition(position, robot)){
-                        return true;
-                    }
-                }
-            }
+    private static synchronized void statusTimer(
+            Robot robot,
+            Status status,
+            int milliSeconds
+    ) {
+        Status dead = Status.DEAD;
+
+        if (dead.equals(robot.getRobotStatus())) return;
+
+        robot.setRobotStatus(status);
+
+        try {
+            Thread.sleep(milliSeconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return false;
+
+        if (dead.equals(robot.getRobotStatus())) return;
+        if (status.equals(Status.RELOAD)) robot.reload();
+        if (status.equals(Status.REPAIR)) robot.repair();
+        if (status.equals(robot.getRobotStatus()))
+            robot.setRobotStatus(Status.NORMAL);
     }
 
-    public boolean blockCheckWest(int steps){
-        Position position;
-        for(int i = 1 ; i < Math.abs(steps) + 1 ; i++){
-            if(steps > 0){
-                position = new Position(this.currentPosition.getX()+ i, this.currentPosition.getY());
-            }
-            else{
-                position = new Position(this.currentPosition.getX()+ (-1*i), this.currentPosition.getY());
-            }
-            for (SquareObstacle obstacle : world.getObstacles()) {
-                if (obstacle.blocksPosition(position)) {
-                    return true;
-                }
-            }
-            for(Robot robot : world.getRobots()){
-                if(!robot.getRobotName().equals(this.robotName)){
-                    if(robot.robotBlocksPosition(position, robot)){
-                        return true;
-                    }
-                }
-            }
+    private static class StatusTimer implements Runnable {
+        private final Robot robot;
+        private final Status status;
+        private final int milliSeconds;
+
+        public StatusTimer(Robot robot, Status status, int milliSeconds) {
+            this.robot = robot;
+            this.status = status;
+            this.milliSeconds = milliSeconds;
         }
-        return false;
-    }
 
-    public boolean blockCheckEast(int steps){
-        Position position;
-        for(int i = 1 ; i < Math.abs(steps) + 1 ; i++){
-            if(steps > 0){
-                position = new Position(this.currentPosition.getX()+ i, this.currentPosition.getY());
-            }
-            else{
-                position = new Position(this.currentPosition.getX()+ (-1*i), this.currentPosition.getY());
-            }
-            for (SquareObstacle obstacle : world.getObstacles()) {
-                if (obstacle.blocksPosition(position)) {
-                    return true;
-                }
-            }
-            for(Robot robot : world.getRobots()){
-                if(!robot.getRobotName().equals(this.robotName)){
-                    if(robot.robotBlocksPosition(position, robot)){
-                        return true;
-                    }
-                }
-            }
+        @Override
+        public void run() {
+            Robot.statusTimer(robot, status, milliSeconds);
         }
-        return false;
     }
 
-    public boolean blockCheckSouth(int steps){
-        Position position;
-        for(int i = 1 ; i < Math.abs(steps) + 1 ; i++){
-            if(steps > 0){
-                position = new Position(this.currentPosition.getX(), this.currentPosition.getY()+ i);
-            }
-            else{
-                position = new Position(this.currentPosition.getX(), this.currentPosition.getY()+ (-1*i));
-            }
-            for (SquareObstacle obstacle : world.getObstacles()) {
-                if (obstacle.blocksPosition(position)) {
-                    return true;
-                }
-            }
-            for(Robot robot : world.getRobots()){
-                if(!robot.getRobotName().equals(this.robotName)){
-                    if(robot.robotBlocksPosition(position, robot)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+    public void timer(Status status, int milliSeconds) {
+        new Thread(new StatusTimer(this, status, milliSeconds)).start();
     }
 
-    public boolean robotBlocksPosition(Position position, Robot robot) {
-        if(robot.getCurrentPosition().getX() == position.getX() && robot.getCurrentPosition().getY() == position.getY()){
-                return true;
-        }
-        return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Robot)) return false;
+        Robot robot = (Robot) o;
+        return
+                maximumShields == robot.maximumShields
+                        && maximumShots == robot.maximumShots
+                        && range == robot.range
+                        && currentShields == robot.currentShields
+                        && currentShots == robot.currentShots
+                        && name.equals(robot.name)
+                        && objectType == robot.objectType
+                        && direction == robot.direction
+                        && currentStatus == robot.currentStatus
+                        && position.equals(robot.position)
+                        && world.equals(robot.world);
     }
 
-    public boolean isNewPositionAllowed(Position position) {
-        if (position.isIn(world.getTopLeft(), world.getBottomRight())) {
-            return true;
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                name,
+                maximumShields,
+                maximumShots,
+                range, objectType,
+                direction,
+                currentStatus,
+                currentShields,
+                position,
+                currentShots,
+                world
+        );
     }
 
-    public void setCurrentDirection(Direction currentDirection) {
-        this.currentDirection = currentDirection;
-    }
-
-    public void setCurrentPosition(Position currentPosition) {
-        this.currentPosition = currentPosition;
-    }
-
-    public void loseShield(){
-        this.shields -= 1;
-    }
-
-    public void loseShot(){
-        this.shots -= 1;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void reloadShots(){
-        this.shots = maxShots;
-    }
-
-    public void repairShields(){
-        this.shields = maxShields;
-    }
-
-    public void setShotDistance(int shotDistance) {
-        this.shotDistance = shotDistance;
+    @Override
+    public String toString() {
+        return " * " + name + " At " + position + ", Facing " +
+                getDirection() + ", Current Status is " + currentStatus +
+                ", (Shields=" + currentShields + ", Shots=" + currentShots +
+                ") * ";
     }
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.Forward;
-import za.co.wethinkcode.robotworlds.world.objects.robots.Normal;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;

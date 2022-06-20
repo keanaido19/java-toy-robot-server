@@ -63,13 +63,12 @@ public class LaunchCommand extends Command{
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
         World world = clientHandler.getWorld();
-        WorldData worldData = world.getWorldData();
-        Position position = world.getUnoccupiedPosition(4);
+        Position position = world.getUnoccupiedPosition();
 
         if (position == null) return ServerResponse.spaceErrorResponse();
 
-        maximumShields = worldData.getShields();
-        maximumShots = worldData.getShots();
+        maximumShields = world.getShields();
+        maximumShots = world.getShots();
 
         processCommandArguments();
 

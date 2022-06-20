@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
-import za.co.wethinkcode.robotworlds.world.objects.robots.Sniper;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

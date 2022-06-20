@@ -140,6 +140,25 @@ public class Robot{
         }
     }
 
+    public boolean blocksPath(Position a, Position b){
+        int startX = a.getX();
+        int startY = a.getY();
+
+        int endX = b.getX();
+        int endY = b.getY();
+
+        for(int x = Math.min(startX, endX); x <= Math.max(startX, endX); x++) {
+            for (
+                    int y = Math.min(startY, endY);
+                    y <= Math.max(startY, endY);
+                    y++
+            ) {
+                if (position.equals(new Position(x, y))) return true;
+            }
+        }
+        return false;
+    }
+
     private static synchronized void statusTimer(
             Robot robot,
             Status status,

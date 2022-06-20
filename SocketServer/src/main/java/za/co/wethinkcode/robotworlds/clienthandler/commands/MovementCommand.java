@@ -4,7 +4,6 @@ import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.World;
-import za.co.wethinkcode.robotworlds.world.enums.Status;
 import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
@@ -28,8 +27,8 @@ public class MovementCommand extends Command{
         int nrSteps =
                 "back".equals(command) ? -1 * commandArgument: commandArgument;
 
-        int newX = clientRobot.getCenterXCoordinate();
-        int newY = clientRobot.getCenterYCoordinate();
+        int newX = clientRobot.getPosition().getX();
+        int newY = clientRobot.getPosition().getY();
 
         switch (clientRobot.getDirection()) {
             case NORTH:
@@ -47,10 +46,7 @@ public class MovementCommand extends Command{
 
         Position newPosition = new Position(newX, newY);
         UpdateResponse updateResponse =
-                world.moveWorldObject(clientRobot, newPosition);
-
-        clientRobot.setRobotStatus(Status.MOVING);
-        clientRobot.timer(Status.MOVING, 66);
+                world.moveRobot(clientRobot, newPosition);
 
         return ServerResponse.getSuccessResponse(
                 "message",

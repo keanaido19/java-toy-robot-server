@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.world;
 
 import za.co.wethinkcode.robotworlds.world.data.WorldData;
+import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
 import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
@@ -8,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.*;
+
 public class World {
     private final List<Robot> robots = new ArrayList<>();
+    private List<Obstacle> obstacles = new ArrayList<>();
     private final Random random = new Random();
     private final WorldData worldData;
-
-    private List<Obstacle> obstacles;
 
     private Position bottomRight;
     private Position topLeft;
@@ -95,7 +97,7 @@ public class World {
         }
 
         for (Robot robot : robots) {
-            if (robot.getCurrentPosition().equals(p)) return false;
+            if (robot.getPosition().equals(p)) return false;
         }
 
         return true;
@@ -110,6 +112,29 @@ public class World {
             if (isSpaceAvailableForPosition(p)) return p;
             counter++;
         }
+    }
+
+    public UpdateResponse moveRobot(Robot robot, Position newPosition) {
+        if (!isPositionInsideWorld(newPosition)) return FAILED_NOT_IN_WORLD;
+
+        Position robotPosition = robot.getPosition();
+
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPath(robotPosition, newPosition))
+                return FAILED_OBSTRUCTED;
+        }
+
+        for (Robot worldRobot : robots) {
+            if (
+                    !robot.equals(worldRobot)
+                    && worldRobot.blocksPath(
+                            robotPosition,
+                            newPosition
+                    )
+            ) return FAILED_OBSTRUCTED;
+        }
+
+        return SUCCESS;
     }
 
     public void addRobotToWorld(Robot robot) {robots.add(robot);}

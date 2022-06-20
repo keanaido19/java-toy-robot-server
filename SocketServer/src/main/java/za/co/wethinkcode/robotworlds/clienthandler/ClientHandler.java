@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.ConfigFileJson;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.*;
-import za.co.wethinkcode.robotworlds.commands.*;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 

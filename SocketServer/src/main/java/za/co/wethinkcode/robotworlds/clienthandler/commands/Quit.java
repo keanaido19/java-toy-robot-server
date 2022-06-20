@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
@@ -13,7 +14,7 @@ public class Quit extends ClientCommand {
     }
 
     @Override
-    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
+    public ServerResponse execute(World world, String[] arguments, ClientHandler clientHandler) {
 
         try {
             for (Robot robot : world.getRobots()) {

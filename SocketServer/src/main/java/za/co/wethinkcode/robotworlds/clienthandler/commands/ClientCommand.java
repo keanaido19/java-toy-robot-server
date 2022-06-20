@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.World;
 import com.google.gson.Gson;
 
@@ -31,7 +32,7 @@ public abstract class ClientCommand implements CommandInterface {
         return argument2;
     }
 
-    public abstract String execute(
+    public abstract ServerResponse execute(
             World world,
             String[] arguments,
             ClientHandler clientHandler

@@ -6,13 +6,11 @@ import za.co.wethinkcode.robotworlds.robot.Robot;
 import java.util.ArrayList;
 
 public class World {
+    private final ArrayList<Robot> robots;
 
     private Position topLeft;
     private Position bottomRight;
-
     private SquareObstacle[] obstacles;
-
-    public ArrayList<Robot> robots;
     public int visibility = 5;
 
     public World(
@@ -79,8 +77,8 @@ public class World {
         return robots;
     }
 
-    public void setRobots(ArrayList<Robot> robots) {
-        this.robots = robots;
+    public void addRobot(Robot robot) {
+        robots.add(robot);
     }
 
     public void setObstacles(SquareObstacle[] listOfObstacles) {

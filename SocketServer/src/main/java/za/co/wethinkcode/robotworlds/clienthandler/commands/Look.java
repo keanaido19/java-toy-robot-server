@@ -6,6 +6,7 @@ import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.DataObject;
 import za.co.wethinkcode.robotworlds.Direction;
 import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -21,7 +22,7 @@ public class Look extends ClientCommand {
     }
 
     @Override
-    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
+    public ServerResponse execute(World world, String[] arguments, ClientHandler clientHandler) {
         StateResponseJSon state;
         for(Robot robot : world.getRobots()){
             if(robot.getRobotName().equals(getArgument())){

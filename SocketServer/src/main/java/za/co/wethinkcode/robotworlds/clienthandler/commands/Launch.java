@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.Position;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.robot.*;
 import za.co.wethinkcode.robotworlds.world.Obstacle;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -16,7 +17,7 @@ public class Launch extends ClientCommand {
     }
 
     @Override
-    public String execute(
+    public ServerResponse execute(
             World world,
             String[] arguments,
             ClientHandler clientHandler

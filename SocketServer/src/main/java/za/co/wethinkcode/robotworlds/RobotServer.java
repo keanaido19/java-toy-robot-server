@@ -25,6 +25,10 @@ public class RobotServer {
         this.world = world;
     }
 
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
     public World getWorld() {
         return world;
     }
@@ -33,7 +37,7 @@ public class RobotServer {
         serverConsole.start();
         try{
             while(!serverSocket.isClosed()){
-                ClientHandler clientHandler = new ClientHandler(serverSocket);
+                ClientHandler clientHandler = new ClientHandler(this);
                 Thread clientThread = new Thread(clientHandler);
                 clientThread.start();
             }

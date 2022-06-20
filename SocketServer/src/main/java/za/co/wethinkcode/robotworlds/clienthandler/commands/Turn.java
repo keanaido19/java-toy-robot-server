@@ -3,6 +3,7 @@ package za.co.wethinkcode.robotworlds.clienthandler.commands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
@@ -14,7 +15,7 @@ public class Turn extends ClientCommand {
     }
 
     @Override
-    public String execute(World world, String[] arguments, ClientHandler clientHandler) {
+    public ServerResponse execute(World world, String[] arguments, ClientHandler clientHandler) {
         StateResponseJson stateResponseJson = null;
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()

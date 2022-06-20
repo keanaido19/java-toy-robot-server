@@ -61,6 +61,7 @@ release_patch: build
 	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
+	$(MAKE) docker_release
 
 release_minor: build
 	$(eval VERSION=$(MAJOR_VERSION).$(NEXT_MINOR_VERSION).0)
@@ -68,6 +69,7 @@ release_minor: build
 	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
+	$(MAKE) docker_release
 
 release_major: build
 	$(eval VERSION=$(NEXT_MAJOR_VERSION).0.0)
@@ -75,3 +77,26 @@ release_major: build
 	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
+	$(MAKE) docker_release
+
+get_major_version = $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.majorVersion -q -DforceStdout)
+
+get_minor_version = $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.minorVersion -q -DforceStdout)
+
+get_patch_version = $(shell mvn build-helper:parse-version  help:evaluate -Dexpression=parsedVersion.incrementalVersion -q -DforceStdout)
+
+get_project_version = v$(get_major_version).$(get_minor_version).$(get_patch_version)
+
+docker_release:
+	docker build -t robot-worlds-server:$(get_project_version) .
+	$(MAKE) kill_docker_containers
+ifneq ($(strip $(shell lsof -t -i:5000)),)
+	$(eval PORT_PID=$(shell lsof -t -i:5000))
+	$(shell kill -9 $(PORT_PID))
+endif
+	docker run -p 5000:5050 robot-worlds-server:$(get_project_version) & echo "Running docker image..."
+	mvn test
+	$(MAKE) kill_docker_containers
+	docker login gitlab.wethinkco.de:5050
+	docker tag robot-worlds-server:$(get_project_version) gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:$(get_project_version)
+	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:$(get_project_version)

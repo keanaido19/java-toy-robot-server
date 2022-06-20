@@ -85,6 +85,28 @@ public class World {
                         + bottomRight.getY();
     }
 
+    public boolean isPositionAtWorldEdge(Position p) {
+        int x = p.getX();
+        int y = p.getY();
+
+        int minWorldX = topLeft.getX();
+        int maxWorldX = bottomRight.getX();
+        int minWorldY = bottomRight.getY();
+        int maxWorldY = topLeft.getY();
+
+        boolean inXRange =
+                x >= minWorldX && x <= maxWorldX;
+        boolean inYRange =
+                y >= minWorldY && y <= maxWorldY;
+
+        boolean atTopEdge = y == maxWorldY && inXRange;
+        boolean atBottomEdge = y == minWorldY && inXRange;
+        boolean atLeftEdge = x == minWorldX && inYRange;
+        boolean atRightEdge = x == maxWorldX && inYRange;
+
+        return atTopEdge || atBottomEdge || atLeftEdge || atRightEdge;
+    }
+
     private boolean isPositionInsideWorld(Position p) {
         return p.isIn(topLeft, bottomRight);
     }
@@ -108,7 +130,7 @@ public class World {
         int counter = 0;
         while (true) {
             if (counter == 10000) return null;
-            p = new Position(getRandomXCoordinate(), getRandomYCoordinate());;
+            p = new Position(getRandomXCoordinate(), getRandomYCoordinate());
             if (isSpaceAvailableForPosition(p)) return p;
             counter++;
         }

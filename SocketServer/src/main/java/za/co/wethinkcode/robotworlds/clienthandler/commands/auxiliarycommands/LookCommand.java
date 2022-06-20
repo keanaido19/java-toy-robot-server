@@ -7,20 +7,23 @@ import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.data.LookData;
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.enums.ObjectType;
-import za.co.wethinkcode.robotworlds.world.objects.WorldObject;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.Boundary;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
+import static za.co.wethinkcode.robotworlds.world.enums.ObjectType.*;
+
 public class LookCommand extends AuxiliaryCommand {
     private final List<LookData> objects = new ArrayList<>();
-    private final List<WorldObject> worldObjects  = new ArrayList<>();
-    private final List<WorldObject> observedObjects = new ArrayList<>();
+    private final List<Object> observedObjects = new ArrayList<>();
 
-    private Boundary worldBoundary;
     private Robot clientRobot;
+    private World world;
+    private int robotX;
+    private int robotY;
     private int visibility;
 
     public LookCommand(String robotName) {
@@ -35,13 +38,50 @@ public class LookCommand extends AuxiliaryCommand {
         objects.add(new LookData(direction, objectType, distance));
     }
 
-    private ObjectType lookAtPosition(Position p) {
-        for (WorldObject o : worldObjects) {
-            if (!observedObjects.contains(o) && o.containsPosition(p)) {
-                observedObjects.add(o);
-                return o.getObjectType();
-            }
+    private ObjectType lookForEdges(Position p) {
+        if (world.isPositionAtWorldEdge(p)) return EDGE;
+        return null;
+    }
+
+    private Obstacle lookForObstacles(Position p) {
+        for (Obstacle obstacle : world.getObstacles()) {
+            if (obstacle.blocksPosition(p)) return obstacle;
         }
+        return null;
+    }
+
+    private Robot lookForRobots(Position p) {
+        for (Robot robot : world.getRobots()) {
+            if (
+                    !robot.equals(clientRobot)
+                    && robot.getPosition().equals(clientRobot.getPosition())
+            ) return robot;
+        }
+        return null;
+    }
+
+    private boolean hasObjectBeenObserved(Object o) {
+        if (o != null && !observedObjects.contains(o)) {
+            observedObjects.add(o);
+            return false;
+        }
+        return true;
+    }
+
+    private ObjectType lookAtPosition(Position p) {
+        ObjectType edge = lookForEdges(p);
+        if (edge != null) return EDGE;
+
+        Obstacle obstacle = lookForObstacles(p);
+        if (!hasObjectBeenObserved(obstacle)) {
+            return OBSTACLE;
+        }
+
+        Robot robot = lookForRobots(p);
+        if (!hasObjectBeenObserved(robot)) {
+            return ROBOT;
+        }
+
         return null;
     }
 
@@ -50,72 +90,36 @@ public class LookCommand extends AuxiliaryCommand {
         if (objectType != null) updateObjects(direction, objectType, distance);
     }
 
-    private void lookEast(int distance) {
-        Direction direction = Direction.EAST;
-        int yStart = clientRobot.getMinimumYCoordinate();
-        int yEnd = clientRobot.getMaximumYCoordinate();
+    private void lookXAxis(int distance, Direction direction) {
+        int x = EAST.equals(direction) ? robotX + distance: robotX - distance;
+        Position position = new Position(x, robotY);
+        look(distance, direction, position);
+    }
 
-        for (int i = yStart; i <= yEnd ; i++) {
-            Position position =
-                    new Position(
-                            clientRobot.getMaximumXCoordinate() + distance,
-                            i
-                    );
-            look(distance, direction, position);
-        }
-        observedObjects.remove(worldBoundary);
+    private void lookYAxis(int distance, Direction direction) {
+        int y = NORTH.equals(direction) ? robotY + distance: robotY - distance;
+        Position position = new Position(robotX, y);
+        look(distance, direction, position);
+    }
+
+    private void lookEast(int distance) {
+        lookXAxis(distance, EAST);
     }
 
     private void lookWest(int distance) {
-        Direction direction = Direction.WEST;
-        int yStart = clientRobot.getMinimumYCoordinate();
-        int yEnd = clientRobot.getMaximumYCoordinate();
-
-        for (int i = yStart; i <= yEnd ; i++) {
-            Position position =
-                    new Position(
-                            clientRobot.getMinimumXCoordinate() - distance,
-                            i
-                    );
-            look(distance, direction, position);
-        }
-        observedObjects.remove(worldBoundary);
+        lookXAxis(distance, WEST);
     }
 
     private void lookNorth(int distance) {
-        Direction direction = Direction.NORTH;
-        int xStart = clientRobot.getMinimumXCoordinate();
-        int xEnd = clientRobot.getMaximumXCoordinate();
-
-        for (int i = xStart; i <= xEnd ; i++) {
-            Position position =
-                    new Position(
-                            i,
-                            clientRobot.getMaximumYCoordinate() + distance
-                    );
-            look(distance, direction, position);
-        }
-        observedObjects.remove(worldBoundary);
+        lookYAxis(distance, NORTH);
     }
 
     private void lookSouth(int distance) {
-        Direction direction = Direction.SOUTH;
-        int xStart = clientRobot.getMinimumXCoordinate();
-        int xEnd = clientRobot.getMaximumXCoordinate();
-
-        for (int i = xStart; i <= xEnd ; i++) {
-            Position position =
-                    new Position(
-                            i,
-                            clientRobot.getMinimumYCoordinate() - distance
-                    );
-            look(distance, direction, position);
-        }
-        observedObjects.remove(worldBoundary);
+        lookYAxis(distance, SOUTH);
     }
 
-    private void lookForObjects() {
-        for (int i = 1; i <= visibility; i++) {
+    private void lookAtSurroundings() {
+        for (int i = 0; i <= visibility; i++) {
             lookNorth(i);
             lookEast(i);
             lookSouth(i);
@@ -126,15 +130,14 @@ public class LookCommand extends AuxiliaryCommand {
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
         clientRobot = clientHandler.getRobot();
-        World world = clientHandler.getWorld();
+        robotX = clientRobot.getPosition().getX();
+        robotY = clientRobot.getPosition().getY();
 
-        worldBoundary = world.getWorldBoundary();
-        worldObjects.add(worldBoundary);
-        worldObjects.addAll(world.getWorldObjects());
+        world = clientHandler.getWorld();
 
-        visibility = world.getWorldData().getVisibility();
+        visibility = world.getVisibility();
 
-        lookForObjects();
+        lookAtSurroundings();
 
         if (objects.isEmpty())
             return ServerResponse.getSuccessResponse(

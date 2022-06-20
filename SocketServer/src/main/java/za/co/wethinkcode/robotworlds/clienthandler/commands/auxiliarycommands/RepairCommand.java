@@ -29,8 +29,7 @@ public class RepairCommand extends AuxiliaryCommand {
 
         if (clientRobot.getShields() != maximumShields) {
             milliSeconds =
-                    clientHandler.getWorld().getWorldData()
-                            .getReloadTime() * 1000;
+                    clientHandler.getWorld().getReload() * 1000;
             clientRobot.setRobotStatus(Status.REPAIR);
             clientRobot.timer(Status.REPAIR, milliSeconds);
             return new StateCommand(robotName).execute(clientHandler);

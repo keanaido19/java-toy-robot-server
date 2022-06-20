@@ -83,7 +83,7 @@ public class Fire extends ClientCommand {
                 break;
         }
         Position newPosition = new Position(newX, newY);
-        for(Obstacle obstacle : world.getOBSTACLES()){
+        for(Obstacle obstacle : world.getObstacles()){
             this.obstacleBlocksPath(myRobot.getCurrentPosition(), newPosition, obstacle);
         }
         if (robotBlocksPath(myRobot.getCurrentPosition(), newPosition, enemyRobot)) {

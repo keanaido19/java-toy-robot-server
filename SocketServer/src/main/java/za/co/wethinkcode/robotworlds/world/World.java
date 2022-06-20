@@ -4,103 +4,87 @@ import com.google.gson.Gson;
 import za.co.wethinkcode.robotworlds.ConfigFileJson;
 import za.co.wethinkcode.robotworlds.Position;
 import za.co.wethinkcode.robotworlds.robot.Robot;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class World {
 
-    public Position TOP_LEFT = new Position(-(getEdge(true)), getEdge(false));
-    public Position BOTTOM_RIGHT = new Position(getEdge(true), -(getEdge(false)));
-    public int VISIBILITY;
-    protected SquareObstacle[] OBSTACLES;
+    private Position topLeft;
+    private Position bottomRight;
+
+    private SquareObstacle[] obstacles;
+
     public ArrayList<Robot> robots;
+    public int visibility = 5;
 
-
-    public World(ArrayList<Robot> robotArrayList) throws FileNotFoundException {
-        this.OBSTACLES = readObstacles();
-        this.robots = robotArrayList;
-        this.VISIBILITY = getVISIBILITY();
+    public World(
+            int width,
+            int height,
+            ArrayList<Robot> listOfRobots,
+            SquareObstacle[] listOfObstacles
+    ) {
+        this.setBounds(width, height);
+        this.robots = listOfRobots;
+        this.obstacles = listOfObstacles;
     }
 
-    public SquareObstacle[] readObstacles(){
-        Gson gson = new Gson();
-        try {
-            FileReader fileReader = new FileReader("Config.json");
-            ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
-            return json.getObstacles();
-        } catch (FileNotFoundException e) {
-        }
-        return new SquareObstacle[]{new SquareObstacle(5, 5)};
+    public World(ArrayList<Robot> listOfRobots) {
+        this.obstacles = new SquareObstacle[]{};
+        this.robots = listOfRobots;
     }
 
     public void showObstacles() {
         System.out.println("There are some obstacles");
-        for (int i = 0; i <= OBSTACLES.length - 1; i++) {
-            System.out.println("- At position "+ Arrays.asList(OBSTACLES).get(i).getBottomLeftX()+","+Arrays.asList(OBSTACLES).get(i).getBottomLeftY()+"" +
-                    " (to "+(Arrays.asList(OBSTACLES).get(i).getBottomLeftX()+ 3)+","+(Arrays.asList(OBSTACLES).get(i).getBottomLeftY()+ 3)+")");
+        for (Obstacle obstacle : obstacles) {
+            System.out.println(
+                    "- At position " + obstacle.getBottomLeftX() + "," +
+                            obstacle.getBottomLeftY() + " (to " +
+                            (obstacle.getBottomLeftX() +
+                                    obstacle.getSize() - 1) + "," +
+                            (obstacle.getBottomLeftY() +
+                                    obstacle.getSize() - 1) + ")");
         }
     }
 
-    public int getEdge(boolean xCheck){
-        Gson gson = new Gson();
-        try {
-            FileReader fileReader = new FileReader("Config.json");
-            ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
-            ConfigFileJson.GridJson grid = json.getGridSize();
-            if (xCheck){
-                return grid.getX();
-            }else{
-                return grid.getY();
-            }
+    private void setBounds(int width, int height) {
+        int absWidth = Math.abs(width);
+        int absHeight = Math.abs(height);
 
-        } catch (FileNotFoundException e) {
-        }
-        return 0;
+        topLeft = new Position(-absWidth/2, absHeight/2);
+        bottomRight = new Position(absWidth/2, -absHeight/2);
     }
 
-    public int getVISIBILITY() {
-        Gson gson = new Gson();
-        try {
-            FileReader fileReader = new FileReader("Config.json");
-            ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
-            return json.getVisibility();
-        } catch (FileNotFoundException e) {
-//            System.out.println("No config file present");
-        }
-        return 5;
+    public SquareObstacle[] getObstacles() {
+        return obstacles;
     }
 
-    public SquareObstacle[] getOBSTACLES(){
-        return OBSTACLES;
+    public Position getTopLeft() {
+        return topLeft;
     }
 
-    public Position getTOP_LEFT() {
-        return TOP_LEFT;
+    public Position getBottomRight() {
+        return bottomRight;
     }
 
-    public Position getBOTTOM_RIGHT() {
-        return BOTTOM_RIGHT;
+    public void setTopLeft(Position topLeftPosition) {
+        this.topLeft = topLeftPosition;
     }
 
-    public void setTOP_LEFT(Position TOP_LEFT) {
-        this.TOP_LEFT = TOP_LEFT;
-    }
-
-    public void setBOTTOM_RIGHT(Position BOTTOM_RIGHT) {
-        this.BOTTOM_RIGHT = BOTTOM_RIGHT;
+    public void setBottomRight(Position bottomRightPosition) {
+        this.bottomRight = bottomRightPosition;
     }
 
     public ArrayList<Robot> getRobots() {
         return robots;
     }
 
-    public void setObstacles(SquareObstacle[] listNow){
-        this.OBSTACLES = listNow;
+    public void setObstacles(SquareObstacle[] listOfObstacles) {
+        this.obstacles = listOfObstacles;
     }
 
-    public void setVISIBILITY(int VISIBILITY) {
-        this.VISIBILITY = VISIBILITY;
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
     }
 }

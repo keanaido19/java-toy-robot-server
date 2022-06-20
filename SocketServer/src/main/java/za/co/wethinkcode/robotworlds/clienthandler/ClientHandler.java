@@ -17,13 +17,7 @@ public class ClientHandler implements Runnable{
     public static ArrayList<Robot> robots = new ArrayList<>();
     public static World world;
     public Gson gsonPretty = new GsonBuilder().create();
-    static {
-        try {
-            world = new World(robots);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    static {world = new World(robots);}
     public Robot robot;
     Gson gson = new Gson();
     RequestMessage requestMessage;

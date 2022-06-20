@@ -88,7 +88,7 @@ public class Launch extends ClientCommand {
 //                    (world.getTOP_LEFT().getX())) + (world.getTOP_LEFT().getX())),
 //                    (random.nextInt(world.getTOP_LEFT().getY() -(world.getBOTTOM_RIGHT().getY()))) + (world.getBOTTOM_RIGHT().getY()));
             Position freePosition = new Position(0, 0);
-            for(Obstacle obstacles: world.getOBSTACLES()){
+            for(Obstacle obstacles: world.getObstacles()){
                 if(obstacles.blocksPosition(freePosition)){
                     free = false;
                     break;

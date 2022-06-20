@@ -23,7 +23,7 @@ class WorldTest {
         ArrayList<Robot> robots = new ArrayList<>();
         World worldTest = new World(robots);
         worldTest.setObstacles(obstacles);
-        assertEquals(1, worldTest.getOBSTACLES().length);
+        assertEquals(1, worldTest.getObstacles().length);
     }
 
 }

@@ -28,7 +28,7 @@ public class State extends ClientCommand {
 
                 DataObject data =
                         new DataObject(
-                                world.VISIBILITY,
+                                world.visibility,
                                 position,
                                 new ArrayList<Look.ObjectJson>()
                                         .toArray(new Look.ObjectJson[0])

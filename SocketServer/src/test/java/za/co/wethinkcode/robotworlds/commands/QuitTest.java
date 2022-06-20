@@ -20,7 +20,7 @@ class QuitTest {
     void QuitTest() throws FileNotFoundException {
         ArrayList<Robot> robots = new ArrayList<>();
         World worldTest = new World(robots);
-        worldTest.setVISIBILITY(7);
+        worldTest.setVisibility(7);
         SquareObstacle[] obstacles = {new SquareObstacle(1,3), new SquareObstacle(2,1)};
         worldTest.setObstacles(obstacles);
         Robot test = new Normal(worldTest, "Bob", "normal");

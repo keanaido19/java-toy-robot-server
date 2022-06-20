@@ -30,21 +30,21 @@ public class Look extends ClientCommand {
                         robot.getShields(),robot.getShots(), "normal");
                 switch (robot.getCurrentDirection()){
                     case NORTH:
-                        startNorth(world.VISIBILITY, robot, world);
+                        startNorth(world.visibility, robot, world);
                         break;
                     case EAST:
-                        startEast(world.VISIBILITY, robot, world);
+                        startEast(world.visibility, robot, world);
                         break;
                     case SOUTH:
-                        startSouth(world.VISIBILITY, robot, world);
+                        startSouth(world.visibility, robot, world);
                         break;
                     case WEST:
-                        startWest(world.VISIBILITY, robot, world);
+                        startWest(world.visibility, robot, world);
                         break;
                 }
                 DataObject data =
                         new DataObject(
-                                world.VISIBILITY,
+                                world.visibility,
                                 position,
                                 objects.toArray(new ObjectJson[0])
                         );
@@ -98,7 +98,7 @@ public class Look extends ClientCommand {
     }
 
     public boolean isNewPositionAllowed(Position position , World world) {
-        if (position.isIn(world.getTOP_LEFT(), world.getBOTTOM_RIGHT())) {
+        if (position.isIn(world.getTopLeft(), world.getBottomRight())) {
             return true;
         }
         return false;
@@ -184,7 +184,7 @@ public class Look extends ClientCommand {
         Position position;
         for(int i = 1 ; i < Math.abs(visibility) + 1 ; i++){
             position = new Position(myRobot.getCurrentPosition().getX(), myRobot.getCurrentPosition().getY()+ i);
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     ObjectJson object = new ObjectJson(directionCheck(direction), "OBSTACLE", i);
                     objects.add(object);
@@ -208,7 +208,7 @@ public class Look extends ClientCommand {
         Position position;
         for(int i = 1 ; i < Math.abs(visibility) + 1 ; i++){
             position = new Position(myRobot.getCurrentPosition().getX()- i, myRobot.getCurrentPosition().getY());
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     ObjectJson object = new ObjectJson(directionCheck(direction), "OBSTACLE", i);
                     objects.add(object);
@@ -232,7 +232,7 @@ public class Look extends ClientCommand {
         Position position;
         for(int i = 1 ; i < Math.abs(visibility) + 1 ; i++){
             position = new Position(myRobot.getCurrentPosition().getX()+ i,myRobot.getCurrentPosition().getY());
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     ObjectJson object = new ObjectJson(directionCheck(direction), "OBSTACLE", i);
                     objects.add(object);
@@ -256,7 +256,7 @@ public class Look extends ClientCommand {
         Position position;
         for(int i = 1 ; i < Math.abs(visibility) + 1 ; i++){
             position = new Position(myRobot.getCurrentPosition().getX(), myRobot.getCurrentPosition().getY()- i);
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     ObjectJson object = new ObjectJson(directionCheck(direction), "OBSTACLE", i);
                     objects.add(object);
@@ -281,60 +281,60 @@ public class Look extends ClientCommand {
         switch(direction){
             case 1:
                 if(myRobot.getCurrentPosition().getY() >= 0) {
-                    if ((world.getTOP_LEFT().getY() - myRobot.getCurrentPosition().getY() <= world.VISIBILITY)) {
+                    if ((world.getTopLeft().getY() - myRobot.getCurrentPosition().getY() <= world.visibility)) {
                         objectJson = new ObjectJson(directionCheck(1), "EDGE",
-                                world.getTOP_LEFT().getY() - myRobot.getCurrentPosition().getY() + 1);
+                                world.getTopLeft().getY() - myRobot.getCurrentPosition().getY() + 1);
                         objects.add(objectJson);
                     }
                 }else if(myRobot.getCurrentPosition().getY() < 0){
-                    if ((world.getTOP_LEFT().getY() + (-myRobot.getCurrentPosition().getY()) <= world.VISIBILITY)){
+                    if ((world.getTopLeft().getY() + (-myRobot.getCurrentPosition().getY()) <= world.visibility)){
                         objectJson = new ObjectJson(directionCheck(1), "EDGE",
-                                world.getTOP_LEFT().getY() + (-myRobot.getCurrentPosition().getY()) + 1);
+                                world.getTopLeft().getY() + (-myRobot.getCurrentPosition().getY()) + 1);
                         objects.add(objectJson);
                     }
                 }
                 break;
             case 2:
                 if(myRobot.getCurrentPosition().getX() >= 0) {
-                    if ((world.getBOTTOM_RIGHT().getX() - myRobot.getCurrentPosition().getX()) <= world.VISIBILITY) {
+                    if ((world.getBottomRight().getX() - myRobot.getCurrentPosition().getX()) <= world.visibility) {
                         objectJson = new ObjectJson(directionCheck(2), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX() - (myRobot.getCurrentPosition().getX()) + 1));
+                                (world.getBottomRight().getX() - (myRobot.getCurrentPosition().getX()) + 1));
                         objects.add(objectJson);
                     }
                 }else if(myRobot.getCurrentPosition().getX() < 0) {
-                    if ((world.getBOTTOM_RIGHT().getX() + (-myRobot.getCurrentPosition().getX())) <= world.VISIBILITY){
+                    if ((world.getBottomRight().getX() + (-myRobot.getCurrentPosition().getX())) <= world.visibility){
                         objectJson = new ObjectJson(directionCheck(2), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX()) + (-myRobot.getCurrentPosition().getX()) + 1);
+                                (world.getBottomRight().getX()) + (-myRobot.getCurrentPosition().getX()) + 1);
                         objects.add(objectJson);
                     }
                 }
                 break;
             case 3:
                 if(myRobot.getCurrentPosition().getY() >= 0){
-                    if((world.getTOP_LEFT().getY() + myRobot.getCurrentPosition().getY() <= world.VISIBILITY)){
+                    if((world.getTopLeft().getY() + myRobot.getCurrentPosition().getY() <= world.visibility)){
                         objectJson = new ObjectJson(directionCheck(3), "EDGE",
-                                world.getTOP_LEFT().getY() + myRobot.getCurrentPosition().getY() + 1);
+                                world.getTopLeft().getY() + myRobot.getCurrentPosition().getY() + 1);
                         objects.add(objectJson);
                     }
                 }else if(myRobot.getCurrentPosition().getY() < 0){
-                    if((world.getTOP_LEFT().getY() - (-myRobot.getCurrentPosition().getY()) <= world.VISIBILITY)){
+                    if((world.getTopLeft().getY() - (-myRobot.getCurrentPosition().getY()) <= world.visibility)){
                         objectJson = new ObjectJson(directionCheck(3), "EDGE",
-                                world.getTOP_LEFT().getY() - (-myRobot.getCurrentPosition().getY()) + 1);
+                                world.getTopLeft().getY() - (-myRobot.getCurrentPosition().getY()) + 1);
                         objects.add(objectJson);
                     }
                 }
                 break;
             case 4:
                 if(myRobot.getCurrentPosition().getX() >= 0){
-                    if(((world.getBOTTOM_RIGHT().getX()) + (myRobot.getCurrentPosition().getX()))<= world.VISIBILITY){
+                    if(((world.getBottomRight().getX()) + (myRobot.getCurrentPosition().getX()))<= world.visibility){
                         objectJson = new ObjectJson(directionCheck(4), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX()) + myRobot.getCurrentPosition().getX() + 1);
+                                (world.getBottomRight().getX()) + myRobot.getCurrentPosition().getX() + 1);
                         objects.add(objectJson);
                     }
                 }else if (myRobot.getCurrentPosition().getX() < 0){
-                    if(((world.getBOTTOM_RIGHT().getX()) - (-myRobot.getCurrentPosition().getX()))<= world.VISIBILITY){
+                    if(((world.getBottomRight().getX()) - (-myRobot.getCurrentPosition().getX()))<= world.visibility){
                         objectJson = new ObjectJson(directionCheck(4), "EDGE",
-                                (world.getBOTTOM_RIGHT().getX()  - (-myRobot.getCurrentPosition().getX()) + 1));
+                                (world.getBottomRight().getX()  - (-myRobot.getCurrentPosition().getX()) + 1));
                         objects.add(objectJson);
                     }
                 }

@@ -156,7 +156,7 @@ public abstract class Robot  {
             else{
                 position = new Position(this.currentPosition.getX(), this.currentPosition.getY()+ (-1*i));
             }
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     return true;
                 }
@@ -181,7 +181,7 @@ public abstract class Robot  {
             else{
                 position = new Position(this.currentPosition.getX()+ (-1*i), this.currentPosition.getY());
             }
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     return true;
                 }
@@ -206,7 +206,7 @@ public abstract class Robot  {
             else{
                 position = new Position(this.currentPosition.getX()+ (-1*i), this.currentPosition.getY());
             }
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     return true;
                 }
@@ -231,7 +231,7 @@ public abstract class Robot  {
             else{
                 position = new Position(this.currentPosition.getX(), this.currentPosition.getY()+ (-1*i));
             }
-            for (SquareObstacle obstacle : world.getOBSTACLES()) {
+            for (SquareObstacle obstacle : world.getObstacles()) {
                 if (obstacle.blocksPosition(position)) {
                     return true;
                 }
@@ -255,7 +255,7 @@ public abstract class Robot  {
     }
 
     public boolean isNewPositionAllowed(Position position) {
-        if (position.isIn(world.getTOP_LEFT(), world.getBOTTOM_RIGHT())) {
+        if (position.isIn(world.getTopLeft(), world.getBottomRight())) {
             return true;
         }
         return false;

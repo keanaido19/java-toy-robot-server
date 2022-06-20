@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.commands.auxiliarycommands.StateCommand;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -45,16 +46,6 @@ public class LaunchCommand extends Command{
         }
     }
 
-    private ServerResponse createServerResponse(Robot robot, World world) {
-        Map<String, Object> data = new LinkedHashMap<>();
-
-        data.put("visibility", world.getVisibility());
-        data.put("position", robot.getPosition().getPositionAsList());
-        data.put("objects", new ArrayList<>());
-
-        return new ServerResponse(CommandResult.OK, data, robot.getRobotData());
-    }
-
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
         World world = clientHandler.getWorld();
@@ -93,6 +84,6 @@ public class LaunchCommand extends Command{
         world.addRobotToWorld(robot);
         robot.joinWorld(world);
 
-        return createServerResponse(robot, world);
+        return new StateCommand(robotName).execute(clientHandler);
     }
 }

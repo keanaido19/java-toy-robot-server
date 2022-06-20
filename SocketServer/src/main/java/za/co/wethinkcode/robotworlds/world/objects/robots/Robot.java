@@ -1,8 +1,8 @@
-package za.co.wethinkcode.robotworlds.world.objects.robots.robot;
+package za.co.wethinkcode.robotworlds.world.objects.robots;
 
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.Position;
-import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
 
 public abstract class Robot  {

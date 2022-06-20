@@ -1,9 +1,9 @@
 package za.co.wethinkcode.robotworlds.world;
 
 import za.co.wethinkcode.robotworlds.Position;
-import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.Obstacle;
-import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.SquareObstacle;
-import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.util.ArrayList;
 

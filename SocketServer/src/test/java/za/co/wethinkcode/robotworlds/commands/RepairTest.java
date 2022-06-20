@@ -2,8 +2,8 @@ package za.co.wethinkcode.robotworlds.commands;
 
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.Repair;
-import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Normal;
-import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.objects.robots.Normal;
+import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.IOException;

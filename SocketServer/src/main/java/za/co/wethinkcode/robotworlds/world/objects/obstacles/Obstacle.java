@@ -1,4 +1,4 @@
-package za.co.wethinkcode.robotworlds.world.objects.robots.obstacles;
+package za.co.wethinkcode.robotworlds.world.objects.obstacles;
 
 import za.co.wethinkcode.robotworlds.world.Position;
 

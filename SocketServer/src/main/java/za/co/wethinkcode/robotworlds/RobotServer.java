@@ -6,7 +6,7 @@ import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.CLIhandler.arguments.SizeOfWorldArgument;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
-import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.IOException;

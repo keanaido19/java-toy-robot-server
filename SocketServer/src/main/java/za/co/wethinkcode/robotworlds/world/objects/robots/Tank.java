@@ -1,4 +1,4 @@
-package za.co.wethinkcode.robotworlds.world.objects.robots.robot;
+package za.co.wethinkcode.robotworlds.world.objects.robots;
 
 import za.co.wethinkcode.robotworlds.world.World;
 

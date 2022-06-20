@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 
 public class ConfigFileJson {
 

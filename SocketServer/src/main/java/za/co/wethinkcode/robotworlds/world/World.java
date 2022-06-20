@@ -1,12 +1,8 @@
 package za.co.wethinkcode.robotworlds.world;
 
-import com.google.gson.Gson;
-import za.co.wethinkcode.robotworlds.ConfigFileJson;
 import za.co.wethinkcode.robotworlds.Position;
 import za.co.wethinkcode.robotworlds.robot.Robot;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 public class World {
@@ -30,9 +26,12 @@ public class World {
         this.obstacles = listOfObstacles;
     }
 
+    public World(int size, SquareObstacle[] obstacles) {
+        this(size, size, new ArrayList<>(), obstacles);
+    }
+
     public World(ArrayList<Robot> listOfRobots) {
-        this.obstacles = new SquareObstacle[]{};
-        this.robots = listOfRobots;
+        this(0, 0, listOfRobots, new SquareObstacle[]{});
     }
 
     public void showObstacles() {
@@ -78,6 +77,10 @@ public class World {
 
     public ArrayList<Robot> getRobots() {
         return robots;
+    }
+
+    public void setRobots(ArrayList<Robot> robots) {
+        this.robots = robots;
     }
 
     public void setObstacles(SquareObstacle[] listOfObstacles) {

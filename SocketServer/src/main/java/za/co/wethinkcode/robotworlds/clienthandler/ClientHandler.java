@@ -8,6 +8,7 @@ import za.co.wethinkcode.robotworlds.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -32,10 +33,10 @@ public class ClientHandler implements Runnable{
     private boolean shieldRepairCheck;
     private boolean reloadCheck;
 
-    public ClientHandler(Socket socket) throws FileNotFoundException {
+    public ClientHandler(ServerSocket serverSocket) throws FileNotFoundException {
 
         try {
-            this.socket = socket;
+            this.socket = serverSocket.accept();
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.shieldRepairCheck = false;
@@ -46,7 +47,11 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+    public void closeEverything(
+            Socket socket,
+            BufferedReader bufferedReader,
+            BufferedWriter bufferedWriter
+    ) {
         robots.remove(robot);
         world.robots.remove(robot);
         try {
@@ -125,26 +130,10 @@ public class ClientHandler implements Runnable{
     }
 
     public int readReloadTime(){
-        Gson gson = new Gson();
-        try {
-            FileReader fileReader = new FileReader("Config.json");
-            ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
-            return json.getReloadTime();
-        } catch (FileNotFoundException e) {
-//            System.out.println("No config file present");
-        }
         return 5;
     }
 
     public int readShieldRepairTime(){
-        Gson gson = new Gson();
-        try {
-            FileReader fileReader = new FileReader("Config.json");
-            ConfigFileJson json = gson.fromJson(fileReader, ConfigFileJson.class);
-            return json.getShieldRepairTime();
-        } catch (FileNotFoundException e) {
-//            System.out.println("No config file present");
-        }
         return 5;
     }
 

@@ -1,9 +1,13 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.CLIhandler.CommandLineArgumentHandler;
+import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ObstacleArgument;
+import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
+import za.co.wethinkcode.robotworlds.CLIhandler.arguments.SizeOfWorldArgument;
+import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
+import za.co.wethinkcode.robotworlds.world.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.IOException;
 import java.net.*;
@@ -13,19 +17,23 @@ public class RobotServer {
 
     private final ServerConsole serverConsole;
     private final ServerSocket serverSocket;
+    private final World world;
 
-    public RobotServer(ServerSocket serverSocket){
+    public RobotServer(ServerSocket serverSocket, World world){
         this.serverSocket = serverSocket;
         this.serverConsole = new ServerConsole();
+        this.world = world;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public void startServer(){
         serverConsole.start();
         try{
             while(!serverSocket.isClosed()){
-                Socket socket = serverSocket.accept();
-                System.out.println("A new user has connected to the server.");
-                ClientHandler clientHandler = new ClientHandler(socket);
+                ClientHandler clientHandler = new ClientHandler(serverSocket);
                 Thread clientThread = new Thread(clientHandler);
                 clientThread.start();
             }
@@ -85,17 +93,25 @@ public class RobotServer {
 
         int serverPortNumber =
                 (int) CLIHandler.getArgumentValue(new ServerPortArgument());
+        int worldSize =
+                (int) CLIHandler.getArgumentValue(new SizeOfWorldArgument());
+        SquareObstacle[] obstacles =
+                (SquareObstacle[]) CLIHandler
+                        .getArgumentValue(new ObstacleArgument());
 
-        System.out.println(
-                "Welcome to Robot Worlds Server!\n" +
-                "Server is listening on...\n" +
-                "\tIP Address :\t" + getServerIpAddress() +
-                "\n\tPort number:\t" + serverPortNumber
-        );
+        World world = new World(worldSize, obstacles);
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
 
-        RobotServer robotServer = new RobotServer(serverSocket);
+        RobotServer robotServer = new RobotServer(serverSocket, world);
+
+        System.out.println(
+                "Welcome to Robot Worlds Server!\n" +
+                        "Server is listening on...\n" +
+                        "\tIP Address :\t" + getServerIpAddress() +
+                        "\n\tPort number:\t" + serverPortNumber
+        );
+
         robotServer.startServer();
     }
 }

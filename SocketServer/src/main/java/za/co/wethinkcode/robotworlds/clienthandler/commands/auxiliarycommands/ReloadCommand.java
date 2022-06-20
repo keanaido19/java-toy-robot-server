@@ -29,8 +29,7 @@ public class ReloadCommand extends AuxiliaryCommand {
 
         if (clientRobot.getShots() != maximumShots) {
             milliSeconds =
-                    clientHandler.getWorld().getWorldData()
-                            .getReloadTime() * 1000;
+                    clientHandler.getWorld().getReload() * 1000;
             clientRobot.setRobotStatus(Status.RELOAD);
             clientRobot.timer(Status.RELOAD, milliSeconds);
             return new StateCommand(robotName).execute(clientHandler);

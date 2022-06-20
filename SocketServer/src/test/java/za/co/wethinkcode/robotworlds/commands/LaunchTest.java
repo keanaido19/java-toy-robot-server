@@ -2,12 +2,11 @@ package za.co.wethinkcode.robotworlds.commands;
 
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.Launch;
-import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LaunchTest {
 

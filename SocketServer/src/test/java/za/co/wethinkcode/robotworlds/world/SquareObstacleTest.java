@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.world;
 
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.SquareObstacle;
 
 import static org.junit.jupiter.api.Assertions.*;
 

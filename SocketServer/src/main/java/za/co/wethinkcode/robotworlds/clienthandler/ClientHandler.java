@@ -1,18 +1,15 @@
 package za.co.wethinkcode.robotworlds.clienthandler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import za.co.wethinkcode.robotworlds.RobotServer;
-import za.co.wethinkcode.robotworlds.clienthandler.commands.*;
 import za.co.wethinkcode.robotworlds.response.ErrorResponse;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
-import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ClientHandler implements Runnable{

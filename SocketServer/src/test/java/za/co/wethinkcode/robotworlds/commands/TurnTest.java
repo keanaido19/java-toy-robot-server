@@ -2,14 +2,12 @@ package za.co.wethinkcode.robotworlds.commands;
 
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.Turn;
-import za.co.wethinkcode.robotworlds.robot.Normal;
-import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Normal;
+import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Robot;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TurnTest {
 

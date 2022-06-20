@@ -1,7 +1,8 @@
 package za.co.wethinkcode.robotworlds.world;
 
 import org.junit.jupiter.api.Test;
-import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.objects.robots.obstacles.SquareObstacle;
+import za.co.wethinkcode.robotworlds.world.objects.robots.robot.Robot;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

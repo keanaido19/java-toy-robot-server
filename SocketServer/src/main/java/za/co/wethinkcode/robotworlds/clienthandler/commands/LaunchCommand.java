@@ -1,13 +1,13 @@
 package za.co.wethinkcode.robotworlds.clienthandler.commands;
 
-import za.co.wethinkcode.robotworlds.world.Position;
-import za.co.wethinkcode.robotworlds.world.data.WorldData;
-import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
-import za.co.wethinkcode.robotworlds.world.builders.robotbuilder.RobotBuilder;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
+import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.World;
+import za.co.wethinkcode.robotworlds.world.builders.robotbuilder.RobotBuilder;
+import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,17 +45,12 @@ public class LaunchCommand extends Command{
         }
     }
 
-    private ServerResponse createServerResponse(
-            Robot robot,
-            WorldData worldData
-    ) {
+    private ServerResponse createServerResponse(Robot robot, World world) {
         Map<String, Object> data = new LinkedHashMap<>();
 
-        data.put("position", robot.getCenterPosition().getPositionAsList());
-        data.put("visibility", worldData.getVisibility());
-        data.put("reload", worldData.getReloadTime());
-        data.put("repair", worldData.getRepairTime());
-        data.put("shields", worldData.getShields());
+        data.put("visibility", world.getVisibility());
+        data.put("position", robot.getPosition().getPositionAsList());
+        data.put("objects", new ArrayList<>());
 
         return new ServerResponse(CommandResult.OK, data, robot.getRobotData());
     }
@@ -86,18 +81,18 @@ public class LaunchCommand extends Command{
         if (null == robot)
             return ServerResponse.argumentErrorResponse();
 
-        if (world.isObjectInWorld(robot))
-            return ServerResponse.nameErrorResponse();
-
-        if (null != clientHandler.getRobot()) {
-            Robot clientRobot = clientHandler.getRobot();
-            world.removeObjectFromWorld(clientRobot);
+        for (Robot worldRobot : world.getRobots()) {
+            if (worldRobot.getName().equals(robot.getName()))
+                return ServerResponse.nameErrorResponse();
         }
 
+        if (null != clientHandler.getRobot())
+            world.getRobots().remove(clientHandler.getRobot());
+
         clientHandler.setRobot(robot);
-        world.addObjectToWorld(robot);
+        world.addRobotToWorld(robot);
         robot.joinWorld(world);
 
-        return createServerResponse(robot, worldData);
+        return createServerResponse(robot, world);
     }
 }

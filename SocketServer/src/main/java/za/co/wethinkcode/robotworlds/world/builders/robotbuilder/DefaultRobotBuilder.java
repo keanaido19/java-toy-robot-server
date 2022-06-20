@@ -26,7 +26,7 @@ public class DefaultRobotBuilder extends RobotBuilderStrategy {
                 position,
                 robotShields,
                 robotShots,
-                25
+                5
         );
     }
 }

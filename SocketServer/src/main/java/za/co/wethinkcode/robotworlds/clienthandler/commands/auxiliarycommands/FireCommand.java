@@ -16,7 +16,7 @@ import java.util.Map;
 public class FireCommand extends AuxiliaryCommand {
     private List<WorldObject> worldObjects;
 
-    private WorldObject target;
+    private Robot target;
     private Boundary worldBoundary;
     private Robot clientRobot;
     private int distance;
@@ -136,20 +136,14 @@ public class FireCommand extends AuxiliaryCommand {
 
         shoot(clientRobot.getRange());
 
-        clientRobot.setRobotStatus(Status.FIRE);
-        clientRobot.timer(Status.FIRE, 66);
-
-        if (!(target instanceof Robot))
+        if (null == target)
             return ServerResponse.getSuccessResponse(
                     "message",
                     "Miss",
                     clientRobot.getRobotData()
             );
 
-        Robot target = (Robot) this.target;
         target.damageRobot();
-
-        target.timer(Status.DAMAGED, 66);
 
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("message", "Hit");

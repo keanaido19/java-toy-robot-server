@@ -26,9 +26,6 @@ public class TurnCommand extends Command {
         else
             clientRobot.turnLeft();
 
-        clientRobot.setRobotStatus(Status.MOVING);
-        clientRobot.timer(Status.MOVING, 66);
-
         return new StateCommand(robotName).execute(clientHandler);
     }
 }

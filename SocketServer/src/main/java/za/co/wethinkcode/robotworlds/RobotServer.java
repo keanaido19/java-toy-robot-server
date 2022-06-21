@@ -9,15 +9,12 @@ import za.co.wethinkcode.robotworlds.console.ServerConsole;
 import za.co.wethinkcode.robotworlds.world.data.WorldConfigData;
 import za.co.wethinkcode.robotworlds.world.data.WorldData;
 import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Random;
 
 public class RobotServer {
 
@@ -117,10 +114,7 @@ public class RobotServer {
                 );
 
         World world = new World(worldData);
-
-        for (Obstacle obstacle : obstacles) {
-            world.addObstacleToWorld(obstacle);
-        }
+        world.setObstacles(obstacles);
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
 

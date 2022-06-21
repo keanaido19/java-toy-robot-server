@@ -6,6 +6,7 @@ import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.CLIhandler.arguments.SizeOfWorldArgument;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
+import za.co.wethinkcode.robotworlds.world.builders.WorldBuilder;
 import za.co.wethinkcode.robotworlds.world.data.WorldConfigData;
 import za.co.wethinkcode.robotworlds.world.data.WorldData;
 import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
@@ -100,25 +101,14 @@ public class RobotServer {
 
         int serverPortNumber =
                 (int) CLIHandler.getArgumentValue(new ServerPortArgument());
-        int worldSize =
-                (int) CLIHandler.getArgumentValue(new SizeOfWorldArgument());
-        List<Obstacle> obstacles =
-                (List<Obstacle>) CLIHandler
-                        .getArgumentValue(new ObstacleArgument());
-
-        WorldData worldData =
-                new WorldData(
-                        worldSize,
-                        worldSize,
-                        new WorldConfigData()
-                );
-
-        World world = new World(worldData);
-        world.setObstacles(obstacles);
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
 
-        RobotServer robotServer = new RobotServer(serverSocket, world);
+        RobotServer robotServer =
+                new RobotServer(
+                        serverSocket,
+                        WorldBuilder.getWorld(args)
+                );
 
         System.out.println(
                 "Welcome to Robot Worlds Server!\n" +

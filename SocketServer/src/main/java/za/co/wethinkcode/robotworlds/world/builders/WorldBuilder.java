@@ -107,8 +107,6 @@ public class WorldBuilder {
         CommandLineArgumentHandler CLIHandler =
                 new CommandLineArgumentHandler(args);
 
-        int serverPortNumber =
-                (int) CLIHandler.getArgumentValue(new ServerPortArgument());
         int worldSize =
                 (int) CLIHandler.getArgumentValue(new SizeOfWorldArgument());
 

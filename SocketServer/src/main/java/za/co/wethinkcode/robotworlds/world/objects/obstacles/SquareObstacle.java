@@ -33,6 +33,10 @@ public class SquareObstacle implements Obstacle {
         return size;
     }
 
+    private int getAdjustedSize() {
+        return size <= 0 ? 0 : size - 1;
+    }
+
     @Override
     public boolean blocksPosition(Position position) {
         if(
@@ -67,11 +71,11 @@ public class SquareObstacle implements Obstacle {
     }
 
     public int getMaximumXCoordinate() {
-        return bottomLeftX + (size - 1);
+        return bottomLeftX + getAdjustedSize();
     }
 
     public int getMaximumYCoordinate() {
-        return bottomLeftY + (size - 1);
+        return bottomLeftY + getAdjustedSize();
     }
 
     public Position getBottomLeftPosition() {

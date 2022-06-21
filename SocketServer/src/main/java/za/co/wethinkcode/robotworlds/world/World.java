@@ -12,11 +12,11 @@ import java.util.Random;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.*;
 
 public class World {
-    private final List<Obstacle> obstacles = new ArrayList<>();
     private final List<Robot> robots = new ArrayList<>();
     private final Random random = new Random();
     private final WorldData worldData;
 
+    private List<Obstacle> obstacles = new ArrayList<>();
     private Position bottomRight;
     private Position topLeft;
 
@@ -161,7 +161,9 @@ public class World {
         return SUCCESS;
     }
 
-    public void addRobotToWorld(Robot robot) {robots.add(robot);}
+    public void setObstacles(List<Obstacle> obstacles) {
+        this.obstacles = obstacles;
+    }
 
-    public void addObstacleToWorld(Obstacle obstacle) {obstacles.add(obstacle);}
+    public void addRobotToWorld(Robot robot) {robots.add(robot);}
 }

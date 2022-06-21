@@ -4,6 +4,7 @@ import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.clienthandler.commands.CommandResult;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.World;
+import za.co.wethinkcode.robotworlds.world.builders.DataMapBuilder;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,19 +17,10 @@ public class StateCommand extends AuxiliaryCommand {
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        Map<String, Object> data = new LinkedHashMap<>();
-
-        data.put("visibility", clientHandler.getWorld().getVisibility());
-        data.put(
-                "position",
-                clientHandler.getRobot().getPosition().getPositionAsList()
-        );
-        data.put("objects", new ArrayList<>());
-
         return
                 new ServerResponse(
                         CommandResult.OK,
-                        data,
+                        DataMapBuilder.getDataMap(clientHandler),
                         clientHandler.getRobot().getRobotData()
                 );
     }

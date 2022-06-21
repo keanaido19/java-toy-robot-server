@@ -18,9 +18,9 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="ReferenceSocketClient" options="" />
-      <module name="SocketClient" options="" />
-      <module name="SocketServer" options="" />
+      <module name="ReferenceSocketClient" options="--add-modules java.base" />
+      <module name="SocketClient" options="--add-modules java.base" />
+      <module name="SocketServer" options="--add-modules java.base" />
     </option>
   </component>
 </project>

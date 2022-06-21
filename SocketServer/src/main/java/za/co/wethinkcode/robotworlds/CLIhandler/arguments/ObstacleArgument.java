@@ -2,6 +2,8 @@ package za.co.wethinkcode.robotworlds.CLIhandler.arguments;
 
 import org.apache.commons.cli.CommandLine;
 
+import java.util.ArrayList;
+
 public class ObstacleArgument extends Argument{
     public ObstacleArgument() {
         super(
@@ -17,6 +19,6 @@ public class ObstacleArgument extends Argument{
 
     @Override
     public Object getArgumentValue(CommandLine cmd) {
-        return null;
+        return new ArrayList<>();
     }
 }

@@ -1,48 +1,28 @@
 package za.co.wethinkcode.robotworlds.world;
 
-import za.co.wethinkcode.robotworlds.Position;
-import za.co.wethinkcode.robotworlds.robot.Robot;
+import za.co.wethinkcode.robotworlds.world.data.WorldData;
+import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
+import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.*;
 
 public class World {
-    private final ArrayList<Robot> robots;
+    private final List<Obstacle> obstacles = new ArrayList<>();
+    private final List<Robot> robots = new ArrayList<>();
+    private final Random random = new Random();
+    private final WorldData worldData;
 
-    private Position topLeft;
     private Position bottomRight;
-    private SquareObstacle[] obstacles;
-    public int visibility = 5;
+    private Position topLeft;
 
-    public World(
-            int width,
-            int height,
-            ArrayList<Robot> listOfRobots,
-            SquareObstacle[] listOfObstacles
-    ) {
-        this.setBounds(width, height);
-        this.robots = listOfRobots;
-        this.obstacles = listOfObstacles;
-    }
-
-    public World(int size, SquareObstacle[] obstacles) {
-        this(size, size, new ArrayList<>(), obstacles);
-    }
-
-    public World(ArrayList<Robot> listOfRobots) {
-        this(0, 0, listOfRobots, new SquareObstacle[]{});
-    }
-
-    public void showObstacles() {
-        System.out.println("There are some obstacles");
-        for (Obstacle obstacle : obstacles) {
-            System.out.println(
-                    "- At position " + obstacle.getBottomLeftX() + "," +
-                            obstacle.getBottomLeftY() + " (to " +
-                            (obstacle.getBottomLeftX() +
-                                    obstacle.getSize() - 1) + "," +
-                            (obstacle.getBottomLeftY() +
-                                    obstacle.getSize() - 1) + ")");
-        }
+    public World(WorldData worldData) {
+        this.worldData = worldData;
+        this.setBounds(worldData.getWidth(), worldData.getHeight());
     }
 
     private void setBounds(int width, int height) {
@@ -53,7 +33,31 @@ public class World {
         bottomRight = new Position(absWidth/2, -absHeight/2);
     }
 
-    public SquareObstacle[] getObstacles() {
+    public WorldData getWorldData() {
+        return worldData;
+    }
+
+    public int getVisibility() {
+        return worldData.getWorldConfigData().getVisibility();
+    }
+
+    public int getReload() {
+        return worldData.getWorldConfigData().getReload();
+    }
+
+    public int getRepair() {
+        return worldData.getWorldConfigData().getRepair();
+    }
+
+    public int getShields() {
+        return worldData.getWorldConfigData().getShields();
+    }
+
+    public int getShots() {
+        return worldData.getWorldConfigData().getShots();
+    }
+
+    public List<Obstacle> getObstacles() {
         return obstacles;
     }
 
@@ -65,27 +69,99 @@ public class World {
         return bottomRight;
     }
 
-    public void setTopLeft(Position topLeftPosition) {
-        this.topLeft = topLeftPosition;
-    }
-
-    public void setBottomRight(Position bottomRightPosition) {
-        this.bottomRight = bottomRightPosition;
-    }
-
-    public ArrayList<Robot> getRobots() {
+    public List<Robot> getRobots() {
         return robots;
     }
 
-    public void addRobot(Robot robot) {
-        robots.add(robot);
+    private int getRandomXCoordinate() {
+        if ((bottomRight.getX() - topLeft.getX()) < 1) return 0;
+        return
+                random.nextInt(bottomRight.getX() - topLeft.getX())
+                        + topLeft.getX();
     }
 
-    public void setObstacles(SquareObstacle[] listOfObstacles) {
-        this.obstacles = listOfObstacles;
+    private int getRandomYCoordinate() {
+        if ((topLeft.getY() - bottomRight.getY()) < 1) return 0;
+        return
+                random.nextInt(topLeft.getY() - bottomRight.getY())
+                        + bottomRight.getY();
     }
 
-    public void setVisibility(int visibility) {
-        this.visibility = visibility;
+    public boolean isPositionAtWorldEdge(Position p) {
+        int x = p.getX();
+        int y = p.getY();
+
+        int minWorldX = topLeft.getX();
+        int maxWorldX = bottomRight.getX();
+        int minWorldY = bottomRight.getY();
+        int maxWorldY = topLeft.getY();
+
+        boolean inXRange =
+                x >= minWorldX && x <= maxWorldX;
+        boolean inYRange =
+                y >= minWorldY && y <= maxWorldY;
+
+        boolean atTopEdge = y == maxWorldY && inXRange;
+        boolean atBottomEdge = y == minWorldY && inXRange;
+        boolean atLeftEdge = x == minWorldX && inYRange;
+        boolean atRightEdge = x == maxWorldX && inYRange;
+
+        return atTopEdge || atBottomEdge || atLeftEdge || atRightEdge;
     }
+
+    private boolean isPositionInsideWorld(Position p) {
+        return p.isIn(topLeft, bottomRight);
+    }
+
+    public boolean isSpaceAvailableForPosition(Position p) {
+        if (!isPositionInsideWorld(p)) return false;
+
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPosition(p)) return false;
+        }
+
+        for (Robot robot : robots) {
+            if (robot.getPosition().equals(p)) return false;
+        }
+
+        return true;
+    }
+
+    public Position getUnoccupiedPosition() {
+        Position p;
+        int counter = 0;
+        while (true) {
+            if (counter == 10000) return null;
+            p = new Position(getRandomXCoordinate(), getRandomYCoordinate());
+            if (isSpaceAvailableForPosition(p)) return p;
+            counter++;
+        }
+    }
+
+    public UpdateResponse moveRobot(Robot robot, Position newPosition) {
+        if (!isPositionInsideWorld(newPosition)) return FAILED_OUTSIDE_WORLD;
+
+        Position robotPosition = robot.getPosition();
+
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPath(robotPosition, newPosition))
+                return FAILED_OBSTRUCTED;
+        }
+
+        for (Robot worldRobot : robots) {
+            if (
+                    !robot.equals(worldRobot)
+                    && worldRobot.blocksPath(
+                            robotPosition,
+                            newPosition
+                    )
+            ) return FAILED_OBSTRUCTED;
+        }
+
+        return SUCCESS;
+    }
+
+    public void addRobotToWorld(Robot robot) {robots.add(robot);}
+
+    public void addObstacleToWorld(Obstacle obstacle) {obstacles.add(obstacle);}
 }

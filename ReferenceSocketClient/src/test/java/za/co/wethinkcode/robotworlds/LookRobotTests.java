@@ -95,7 +95,7 @@ public class LookRobotTests {
             if (objects.contains(object)) {
                 objects.remove(object);
             } else {
-                onlySeeWorldEdges = false;
+//                onlySeeWorldEdges = false;
                 break;
             }
         }

@@ -17,7 +17,7 @@ PORT_PID := $(shell lsof -t -i:5000)
 
 .PHONY: build clean
 
-build: maven_clean maven_verify maven_compile test_reference_server test_server clean
+build: maven_verify maven_compile test_reference_server test_server clean
 
 clean:
 	-@rm -rf test_reference_server.PID test_server.PID
@@ -47,7 +47,7 @@ endif
 	@kill `cat test_reference_server.PID`
 	-@rm -rf test_reference_server.PID
 
-test_server: maven_package
+test_server: maven_clean maven_package
 ifneq ($(strip $(shell lsof -t -i:5000)),)
 	$(eval PORT_PID=$(shell lsof -t -i:5000))
 	kill -9 $(PORT_PID)
@@ -95,7 +95,6 @@ kill_docker_containers:
 ifneq ($(strip $(shell $(get_running_docker_containers))),)
 	docker stop $(shell $(get_running_docker_containers))
 endif
-
 
 docker_release: maven_clean maven_package
 	@echo "Building docker image..."

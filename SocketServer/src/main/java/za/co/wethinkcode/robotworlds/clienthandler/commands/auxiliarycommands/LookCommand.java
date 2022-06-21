@@ -38,7 +38,8 @@ public class LookCommand extends AuxiliaryCommand {
             ObjectType objectType,
             int distance
     ) {
-        objects.add(new LookData(direction, objectType, distance));
+        if (null != objectType)
+            objects.add(new LookData(direction, objectType, distance));
     }
 
     private ObjectType lookForEdges(Position p) {
@@ -71,26 +72,25 @@ public class LookCommand extends AuxiliaryCommand {
         return true;
     }
 
-    private ObjectType lookAtPosition(Position p) {
-        ObjectType edge = lookForEdges(p);
-        if (edge != null) return EDGE;
+    private List<ObjectType> lookAtPosition(Position p) {
+        List<ObjectType> objects = new ArrayList<>();
+
+        objects.add(lookForEdges(p));
 
         Obstacle obstacle = lookForObstacles(p);
-        if (!hasObjectBeenObserved(obstacle)) {
-            return OBSTACLE;
-        }
+        if (!hasObjectBeenObserved(obstacle)) objects.add(OBSTACLE);
 
         Robot robot = lookForRobots(p);
-        if (!hasObjectBeenObserved(robot)) {
-            return ROBOT;
-        }
+        if (!hasObjectBeenObserved(robot)) objects.add(ROBOT);
 
-        return null;
+        return objects;
     }
 
     private void look(int distance, Direction direction, Position position) {
-        ObjectType objectType = lookAtPosition(position);
-        if (objectType != null) updateObjects(direction, objectType, distance);
+        List<ObjectType> objects = lookAtPosition(position);
+        for (ObjectType objectType : objects) {
+            updateObjects(direction, objectType, distance);
+        }
     }
 
     private void lookXAxis(int distance, Direction direction) {

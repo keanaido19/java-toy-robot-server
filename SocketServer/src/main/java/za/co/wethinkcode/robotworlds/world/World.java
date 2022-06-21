@@ -158,6 +158,7 @@ public class World {
             ) return FAILED_OBSTRUCTED;
         }
 
+        robot.setPosition(newPosition);
         return SUCCESS;
     }
 

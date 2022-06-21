@@ -61,7 +61,7 @@ public class MovementCommand extends Command{
         if (null != direction) {
             dataMap.put(
                     "message",
-                    "At the " + clientRobot.getDirection() + " edge"
+                    "At the " + direction + " edge"
             );
         } else {
             dataMap.put("message", updateResponse.getMessage());

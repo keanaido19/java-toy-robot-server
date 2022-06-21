@@ -4,95 +4,117 @@ import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.World;
-import za.co.wethinkcode.robotworlds.world.enums.Status;
-import za.co.wethinkcode.robotworlds.world.objects.WorldObject;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.Boundary;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
+import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
+
 public class FireCommand extends AuxiliaryCommand {
-    private List<WorldObject> worldObjects;
-
-    private Robot target;
-    private Boundary worldBoundary;
     private Robot clientRobot;
-    private int distance;
+    private Robot target;
+    private World world;
 
+    private int bulletCoordinate;
+    private int distance;
+    private int robotX;
+    private int robotY;
 
     public FireCommand(String robotName) {
         super(robotName, "fire");
     }
 
-    private boolean isBulletTouchingWorldObject(Position p) {
-
-        if (worldBoundary.containsPosition(p)) return true;
-
-        for (WorldObject o : worldObjects) {
-            if (o.containsPosition(p)) {
-                target = o;
+    private boolean hasBulletHitRobot(Position p) {
+        for (Robot robot : world.getRobots()) {
+            if (!robot.equals(clientRobot) && p.equals(robot.getPosition())) {
+                target = robot;
                 return true;
             }
         }
         return false;
     }
 
-    private void shootEast(int range) {
-        Position bulletPosition;
-        int x = clientRobot.getMaximumXCoordinate() + 1;
-        int y = clientRobot.getCenterYCoordinate();
+    private boolean hasBulletHitObstacle(Position p) {
+        for (Obstacle obstacle : world.getObstacles()) {
+            if (obstacle.blocksPosition(p))
+                return true;
+        }
+        return false;
+    }
 
-        for (int i = x; i <= x + range; i++) {
-            bulletPosition = new Position(i, y);
-            if (isBulletTouchingWorldObject(bulletPosition)) {
-                distance = i - clientRobot.getMaximumXCoordinate();
+    private boolean hasBulletHitEdge(Position p) {
+        return world.isPositionAtWorldEdge(p);
+    }
+
+    private boolean hasBulletHitObject(Position p) {
+        return
+                hasBulletHitEdge(p)
+                || hasBulletHitRobot(p)
+                || hasBulletHitObstacle(p);
+    }
+
+    private boolean loopCondition(
+            int range,
+            int coordinate,
+            Direction direction
+    ) {
+        if (direction.equals(NORTH) || direction.equals(EAST))
+            return bulletCoordinate <= coordinate + range;
+        return bulletCoordinate >= range - coordinate;
+    }
+
+    private void incrementBulletCoordinate(Direction direction) {
+        if (direction.equals(NORTH) || direction.equals(EAST)) {
+            bulletCoordinate++;
+        } else {
+            bulletCoordinate--;
+        }
+    }
+
+    private void fire(int range, int coordinate, Direction direction) {
+        Position bulletPosition;
+        for (
+                bulletCoordinate = coordinate;
+                loopCondition(range, coordinate, direction);
+                incrementBulletCoordinate(direction)
+        ) {
+            if (direction.equals(NORTH) || direction.equals(SOUTH)) {
+                bulletPosition = new Position(robotX, bulletCoordinate);
+            } else {
+                bulletPosition = new Position(bulletCoordinate, robotY);
+            }
+            if (hasBulletHitObject(bulletPosition)) {
+                distance = Math.abs(coordinate - bulletCoordinate);
                 break;
             }
         }
+    }
+
+    private void shootXAxis(int range, Direction direction) {
+        fire(range, robotX, direction);
+    }
+
+    private void shootYAxis(int range, Direction direction) {
+        fire(range, robotY, direction);
+    }
+
+    private void shootEast(int range) {
+        shootXAxis(range, EAST);
     }
 
     private void shootWest(int range) {
-        Position bulletPosition;
-        int x = clientRobot.getMinimumXCoordinate() - 1;
-        int y = clientRobot.getCenterYCoordinate();
-
-        for (int i = x; i >= x - range; i--) {
-            bulletPosition = new Position(i, y);
-            if (isBulletTouchingWorldObject(bulletPosition)) {
-                distance = clientRobot.getMinimumXCoordinate() - i;
-                break;
-            }
-        }
+        shootXAxis(range, WEST);
     }
 
     private void shootNorth(int range) {
-        Position bulletPosition;
-        int x = clientRobot.getCenterXCoordinate();
-        int y = clientRobot.getMaximumYCoordinate() + 1;
-
-        for (int i = y; i <= y + range; i++) {
-            bulletPosition = new Position(x, i);
-            if (isBulletTouchingWorldObject(bulletPosition)) {
-                distance = i - clientRobot.getMaximumYCoordinate();
-                break;
-            }
-        }
+        shootYAxis(range, NORTH);
     }
 
     private void shootSouth(int range) {
-        Position bulletPosition;
-        int x = clientRobot.getCenterXCoordinate();
-        int y = clientRobot.getMinimumYCoordinate() - 1;
-
-        for (int i = y; i >= y - range; i--) {
-            bulletPosition = new Position(x, i);
-            if (isBulletTouchingWorldObject(bulletPosition)) {
-                distance = clientRobot.getMinimumYCoordinate() - i;
-                break;
-            }
-        }
+        shootYAxis(range, SOUTH);
     }
 
     private void shoot(int range) {
@@ -117,6 +139,8 @@ public class FireCommand extends AuxiliaryCommand {
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
         clientRobot = clientHandler.getRobot();
+        robotX = clientRobot.getPosition().getX();
+        robotY = clientRobot.getPosition().getY();
 
         int maximumShots = clientRobot.getMaximumShots();
 
@@ -129,10 +153,7 @@ public class FireCommand extends AuxiliaryCommand {
                     clientRobot.getRobotData()
             );
 
-        World world = clientHandler.getWorld();
-
-        worldObjects = world.getWorldObjects();
-        worldBoundary = world.getWorldBoundary();
+        world = clientHandler.getWorld();
 
         shoot(clientRobot.getRange());
 

@@ -6,7 +6,7 @@
   <groupId>za.co.wethinkcode.robotworlds</groupId>
   <artifactId>RobotWorlds</artifactId>
   <packaging>pom</packaging>
-  <version>0.1.5-SNAPSHOT</version>
+  <version>v1.0.0</version>
   <modules>
     <module>SocketClient</module>
     <module>SocketServer</module>
@@ -26,7 +26,7 @@
     <connection>scm:git:git@gitlab.wethinkco.de:mxomagub021/gerald_lawson.git</connection>
     <developerConnection>scm:git:git@gitlab.wethinkco.de:mxomagub021/gerald_lawson.git</developerConnection>
     <url>https://gitlab.wethinkco.de/mxomagub021/gerald_lawson.git</url>
-    <tag>${project.version}</tag>
+    <tag>v1.0.0</tag>
   </scm>
 
   <dependencies>

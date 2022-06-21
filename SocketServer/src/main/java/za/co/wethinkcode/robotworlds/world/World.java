@@ -131,21 +131,27 @@ public class World {
         boolean inYRange =
                 y >= minWorldY && y <= maxWorldY;
 
-        return
-                isPositionAtEdge(
-                        y,
-                        minWorldY,
-                        maxWorldY,
-                        inXRange,
-                        direction
-                )
-                || isPositionAtEdge(
-                        x,
-                        minWorldX,
-                        maxWorldX,
-                        inYRange,
-                        direction
-                );
+        if (NORTH.equals(direction) || SOUTH.equals(direction)) {
+            return
+                    isPositionAtEdge(
+                            y,
+                            minWorldY,
+                            maxWorldY,
+                            inXRange,
+                            direction
+                    );
+        } else if (EAST.equals(direction) || WEST.equals(direction)) {
+            return
+                    isPositionAtEdge(
+                            x,
+                            minWorldX,
+                            maxWorldX,
+                            inYRange,
+                            direction
+                    );
+        }
+
+        return false;
     }
 
     public boolean isPositionAtWorldEdge(Position p) {
@@ -155,9 +161,12 @@ public class World {
         return false;
     }
 
-    public Direction getEdge(Position p) {
-        for (Direction direction : Direction.values()) {
-            if (isPositionAtWorldEdge(p, direction)) return direction;
+    public Direction getEdge(Position p, Direction direction) {
+
+        if (isPositionAtWorldEdge(p, direction)) return direction;
+
+        for (Direction d : Direction.values()) {
+            if (!d.equals(direction) && isPositionAtWorldEdge(p, d)) return d;
         }
         return null;
     }

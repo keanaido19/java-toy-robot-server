@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
+import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
+import static za.co.wethinkcode.robotworlds.world.enums.ObjectType.EDGE;
+import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.FAILED_OBSTRUCTED;
+import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.SUCCESS;
 
 public class MovementCommand extends Command{
     public MovementCommand(
@@ -35,18 +39,23 @@ public class MovementCommand extends Command{
         int newX = clientRobot.getPosition().getX();
         int newY = clientRobot.getPosition().getY();
 
+        Direction directionOfMovement = "back".equals(command) ? SOUTH : NORTH;
+
         switch (clientRobot.getDirection()) {
             case NORTH:
                 newY = newY + nrSteps;
                 break;
             case SOUTH:
                 newY = newY - nrSteps;
+                directionOfMovement = "back".equals(command) ? NORTH : SOUTH;
                 break;
             case EAST:
                 newX = newX + nrSteps;
+                directionOfMovement = "back".equals(command) ? WEST : EAST;
                 break;
             case WEST:
                 newX = newX - nrSteps;
+                directionOfMovement = "back".equals(command) ? EAST : WEST;
         }
 
         Position newPosition = new Position(newX, newY);
@@ -56,9 +65,13 @@ public class MovementCommand extends Command{
         HashMap<String, Object> dataMap =
                 DataMapBuilder.getDataMap(clientHandler);
 
-        Direction direction = world.getEdge(clientRobot.getPosition());
+        Direction direction =
+                world.getEdge(
+                        clientRobot.getPosition(),
+                        directionOfMovement
+                );
 
-        if (null != direction) {
+        if (null != direction && SUCCESS.equals(updateResponse)) {
             dataMap.put(
                     "message",
                     "At the " + direction + " edge"

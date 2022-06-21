@@ -1,7 +1,7 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.ClientCommands.ClientCommands;
-import za.co.wethinkcode.robotworlds.ClientCommands.Launch;
+import za.co.wethinkcode.robotworlds.commands.ClientCommands;
+import za.co.wethinkcode.robotworlds.commands.Launch;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;

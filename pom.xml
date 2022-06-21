@@ -6,7 +6,7 @@
   <groupId>za.co.wethinkcode.robotworlds</groupId>
   <artifactId>RobotWorlds</artifactId>
   <packaging>pom</packaging>
-  <version>0.1.5-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <modules>
     <module>SocketClient</module>
     <module>SocketServer</module>
@@ -118,8 +118,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
       <plugin>

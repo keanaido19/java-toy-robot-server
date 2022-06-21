@@ -6,6 +6,9 @@ import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.CLIhandler.arguments.SizeOfWorldArgument;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
+import za.co.wethinkcode.robotworlds.world.data.WorldConfigData;
+import za.co.wethinkcode.robotworlds.world.data.WorldData;
+import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 import za.co.wethinkcode.robotworlds.world.World;
 
@@ -21,7 +24,7 @@ public class RobotServer {
 
     public RobotServer(ServerSocket serverSocket, World world){
         this.serverSocket = serverSocket;
-        this.serverConsole = new ServerConsole();
+        this.serverConsole = new ServerConsole(this);
         this.world = world;
     }
 
@@ -43,11 +46,11 @@ public class RobotServer {
             }
 
         }catch (IOException e) {
-            closeServerSocket();
+            stopServer();
         }
     }
 
-    public void closeServerSocket() {
+    public void stopServer() {
         try {
             if (serverSocket != null) {
                 serverSocket.close();
@@ -99,11 +102,19 @@ public class RobotServer {
                 (int) CLIHandler.getArgumentValue(new ServerPortArgument());
         int worldSize =
                 (int) CLIHandler.getArgumentValue(new SizeOfWorldArgument());
-        SquareObstacle[] obstacles =
-                (SquareObstacle[]) CLIHandler
+        Obstacle obstacle =
+                (Obstacle) CLIHandler
                         .getArgumentValue(new ObstacleArgument());
 
-        World world = new World(worldSize, obstacles);
+        WorldData worldData =
+                new WorldData(
+                        worldSize,
+                        worldSize,
+                        new WorldConfigData()
+                );
+
+        World world = new World(worldData);
+        world.addObstacleToWorld(obstacle);
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
 

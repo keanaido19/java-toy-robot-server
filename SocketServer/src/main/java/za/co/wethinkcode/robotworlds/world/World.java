@@ -12,8 +12,8 @@ import java.util.Random;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.*;
 
 public class World {
+    private final List<Obstacle> obstacles = new ArrayList<>();
     private final List<Robot> robots = new ArrayList<>();
-    private List<Obstacle> obstacles = new ArrayList<>();
     private final Random random = new Random();
     private final WorldData worldData;
 
@@ -162,17 +162,4 @@ public class World {
     public void addRobotToWorld(Robot robot) {robots.add(robot);}
 
     public void addObstacleToWorld(Obstacle obstacle) {obstacles.add(obstacle);}
-
-    public void showObstacles() {
-        System.out.println("There are some obstacles");
-        for (Obstacle obstacle : obstacles) {
-            System.out.println(
-                    "- At position " + obstacle.getBottomLeftX() + "," +
-                            obstacle.getBottomLeftY() + " (to " +
-                            (obstacle.getBottomLeftX() +
-                                    obstacle.getSize() - 1) + "," +
-                            (obstacle.getBottomLeftY() +
-                                    obstacle.getSize() - 1) + ")");
-        }
-    }
 }

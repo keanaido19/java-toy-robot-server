@@ -1,35 +1,28 @@
 package za.co.wethinkcode.robotworlds.console;
 
-import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.RobotServer;
+import za.co.wethinkcode.robotworlds.console.commandhandler.ServerCommandHandler;
 import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
 
 import java.util.Scanner;
 
-public class ServerConsole extends Thread {
-    private final Scanner scanner = new Scanner(System.in);
-    ServerCommand serverCommand;
+public class ServerConsole extends Thread{
+    private final RobotServer server;
 
-    public ServerConsole() {}
+    public ServerConsole(RobotServer server) {
+        this.server = server;
+    }
 
     @Override
     public void run() {
+        Scanner scanner = new Scanner(System.in);
+        boolean continueLoop = true;
 
-        System.out.println("Console is ready for input:");
-
-        while (scanner.hasNextLine()) {
+        while (continueLoop) {
             String userInput = scanner.nextLine();
-            try {
-                serverCommand = ServerCommand.create(userInput);
-
-                serverCommand.execute(
-                        ClientHandler.users,
-                        ClientHandler.robots,
-                        ClientHandler.world
-                );
-
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid Command!");
-            }
+            ServerCommand serverCommand =
+                    ServerCommandHandler.getServerCommand(userInput);
+            continueLoop = serverCommand.execute(server);
         }
     }
 }

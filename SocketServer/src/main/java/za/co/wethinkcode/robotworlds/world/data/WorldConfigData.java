@@ -9,6 +9,14 @@ public class WorldConfigData {
     int shields;
     int shots;
 
+    public WorldConfigData() {
+        this.visibility = 1;
+        this.reload = 3;
+        this.repair = 3;
+        this.shields = 5;
+        this.shots = 5;
+    }
+
     public int getVisibility() {
         return visibility;
     }

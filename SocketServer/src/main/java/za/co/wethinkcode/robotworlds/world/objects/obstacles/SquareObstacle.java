@@ -35,11 +35,13 @@ public class SquareObstacle implements Obstacle {
 
     @Override
     public boolean blocksPosition(Position position) {
-        if(this.bottomLeftX <= position.getX()
-                && position.getX() <= (this.bottomLeftX + (size - 1))
+        if(
+                bottomLeftX <= position.getX()
+                && position.getX() <= (getMaximumXCoordinate())
         ){
-            return this.bottomLeftY <= position.getY()
-                    && position.getY() <= (this.bottomLeftY + (size - 1));
+            return
+                    bottomLeftY <= position.getY()
+                    && position.getY() <= (getMaximumYCoordinate());
         }
         return false;
     }
@@ -62,5 +64,27 @@ public class SquareObstacle implements Obstacle {
             }
         }
         return false;
+    }
+
+    public int getMaximumXCoordinate() {
+        return bottomLeftX + (size - 1);
+    }
+
+    public int getMaximumYCoordinate() {
+        return bottomLeftY + (size - 1);
+    }
+
+    public Position getBottomLeftPosition() {
+        return new Position(bottomLeftX, bottomLeftY);
+    }
+
+    public Position getTopRightPosition() {
+        return new Position(getMaximumXCoordinate(), getMaximumYCoordinate());
+    }
+
+    @Override
+    public String toString() {
+        return " * Square Obstacle - From " + getBottomLeftPosition() +
+                " To " + getTopRightPosition() +" *";
     }
 }

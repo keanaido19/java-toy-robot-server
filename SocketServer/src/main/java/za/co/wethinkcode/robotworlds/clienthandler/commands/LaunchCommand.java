@@ -8,10 +8,9 @@ import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.builders.robotbuilder.RobotBuilder;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+
+import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
 
 public class LaunchCommand extends Command{
     private String robotMake;
@@ -34,11 +33,11 @@ public class LaunchCommand extends Command{
         if (commandArguments.size() > 0) {
             robotMake = (String) commandArguments.get(0);
             if (commandArguments.size() == 3) {
-                robotShields = (int) ((double) commandArguments.get(1));
+                robotShields = getInteger(commandArguments.get(1));
                 if (robotShields > maximumShields) {
                     robotShields = maximumShields;
                 }
-                robotShots = (int) ((double) commandArguments.get(2));
+                robotShots = getInteger(commandArguments.get(2));
                 if (robotShots > maximumShots) {
                     robotShots = maximumShots;
                 }

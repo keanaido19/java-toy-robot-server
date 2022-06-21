@@ -9,6 +9,8 @@ import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.util.List;
 
+import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
+
 public class MovementCommand extends Command{
     public MovementCommand(
             String robotName,
@@ -23,7 +25,7 @@ public class MovementCommand extends Command{
         Robot clientRobot = clientHandler.getRobot();
         World world = clientHandler.getWorld();
 
-        int commandArgument = (int) ((double) commandArguments.get(0));
+        int commandArgument = getInteger(commandArguments.get(0));
         int nrSteps =
                 "back".equals(command) ? -1 * commandArgument: commandArgument;
 

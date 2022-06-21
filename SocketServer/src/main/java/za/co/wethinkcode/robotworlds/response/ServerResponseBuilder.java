@@ -14,19 +14,15 @@ import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 import java.util.List;
 
 public class ServerResponseBuilder {
+    private final ClientHandler clientHandler;
+
     private List<Object> commandArguments;
 
     private CommandHandler commandHandler;
-    private ClientHandler clientHandler;
     private String robotName;
     private String command;
 
-    public ServerResponseBuilder() {
-    }
-
-    public synchronized void setupServerResponseBuilder(
-            ClientHandler clientHandler
-    ) {
+    public ServerResponseBuilder(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }
 

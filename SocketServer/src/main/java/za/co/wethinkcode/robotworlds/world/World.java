@@ -74,12 +74,14 @@ public class World {
     }
 
     private int getRandomXCoordinate() {
+        if ((bottomRight.getX() - topLeft.getX()) < 1) return 0;
         return
-                random.nextInt(bottomRight.getX()- topLeft.getX())
+                random.nextInt(bottomRight.getX() - topLeft.getX())
                         + topLeft.getX();
     }
 
     private int getRandomYCoordinate() {
+        if ((topLeft.getY() - bottomRight.getY()) < 1) return 0;
         return
                 random.nextInt(topLeft.getY() - bottomRight.getY())
                         + bottomRight.getY();

@@ -21,7 +21,7 @@ public class ClientHandler implements Runnable{
     private final World world;
 
     private final ServerResponseBuilder responseBuilder =
-            new ServerResponseBuilder();
+            new ServerResponseBuilder(this);
 
     private Robot robot;
 

@@ -14,7 +14,9 @@ import za.co.wethinkcode.robotworlds.world.World;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 public class RobotServer {
 
@@ -102,8 +104,8 @@ public class RobotServer {
                 (int) CLIHandler.getArgumentValue(new ServerPortArgument());
         int worldSize =
                 (int) CLIHandler.getArgumentValue(new SizeOfWorldArgument());
-        Obstacle obstacle =
-                (Obstacle) CLIHandler
+        List<Obstacle> obstacles =
+                (List<Obstacle>) CLIHandler
                         .getArgumentValue(new ObstacleArgument());
 
         WorldData worldData =
@@ -114,7 +116,10 @@ public class RobotServer {
                 );
 
         World world = new World(worldData);
-        world.addObstacleToWorld(obstacle);
+
+        for (Obstacle obstacle : obstacles) {
+            world.addObstacleToWorld(obstacle);
+        }
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
 

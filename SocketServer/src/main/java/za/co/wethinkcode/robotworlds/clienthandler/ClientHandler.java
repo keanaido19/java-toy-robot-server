@@ -16,6 +16,7 @@ public class ClientHandler implements Runnable{
     private final BufferedReader inputFromClient;
     private final PrintStream outputToClient;
     private final ServerSocket serverSocket;
+    private final String clientIpAddress;
     private final Socket socket;
     private final World world;
 
@@ -28,7 +29,7 @@ public class ClientHandler implements Runnable{
         this.serverSocket = server.getServerSocket();
         this.socket = serverSocket.accept();
 
-        String clientIpAddress = socket.getInetAddress().getHostName();
+        clientIpAddress = socket.getInetAddress().getHostName();
         System.out.println("Client (" + clientIpAddress + ") Has Connected!");
 
         this.inputFromClient =
@@ -59,6 +60,9 @@ public class ClientHandler implements Runnable{
             PrintStream outputToClient
     ) {
         world.getRobots().remove(robot);
+        System.out.println(
+                "Client (" + clientIpAddress + ") Has Disconnected!"
+        );
         try {
             if (inputFromClient != null) {
                 inputFromClient.close();

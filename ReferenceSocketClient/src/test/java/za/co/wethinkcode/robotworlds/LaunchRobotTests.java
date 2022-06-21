@@ -40,6 +40,8 @@ class LaunchRobotTests {
                 "}";
         JsonNode response = serverClient.sendRequest(request);
 
+        System.out.println(response);
+
         // Then I should get a valid response from the server
         assertNotNull(response.get("result"));
         assertEquals("OK", response.get("result").asText());

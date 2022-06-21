@@ -18,6 +18,8 @@ public class ServerConsole extends Thread{
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
 
+        System.out.println("Console is ready for input:");
+
         while (continueLoop) {
             String userInput = scanner.nextLine();
             ServerCommand serverCommand =

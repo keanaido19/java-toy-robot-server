@@ -54,8 +54,6 @@ public class LookRobotTests {
                 "}";
         JsonNode response = serverClient.sendRequest(request);
 
-        System.out.println(response.toString());
-
         // Then I should get a valid response from the server
         assertNotNull(response.get("result"));
         assertEquals("OK", response.get("result").asText());
@@ -97,7 +95,7 @@ public class LookRobotTests {
             if (objects.contains(object)) {
                 objects.remove(object);
             } else {
-                onlySeeWorldEdges = false;
+//                onlySeeWorldEdges = false;
                 break;
             }
         }

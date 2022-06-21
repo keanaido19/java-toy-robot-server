@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.clienthandler.commands.auxiliarycommands;
 
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
+import za.co.wethinkcode.robotworlds.clienthandler.commands.CommandResult;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.World;
@@ -11,7 +12,9 @@ import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
 import static za.co.wethinkcode.robotworlds.world.enums.ObjectType.*;
@@ -145,9 +148,20 @@ public class LookCommand extends AuxiliaryCommand {
                     "Nothing to look at",
                     clientRobot.getRobotData());
 
-        return ServerResponse.getSuccessResponse(
-                    "objects",
-                    objects,
-                    clientRobot.getRobotData());
+        Map<String, Object> data = new LinkedHashMap<>();
+
+        data.put("visibility", clientHandler.getWorld().getVisibility());
+        data.put(
+                "position",
+                clientHandler.getRobot().getPosition().getPositionAsList()
+        );
+        data.put("objects", objects);
+
+        return
+                new ServerResponse(
+                        CommandResult.OK,
+                        data,
+                        clientHandler.getRobot().getRobotData()
+                );
     }
 }

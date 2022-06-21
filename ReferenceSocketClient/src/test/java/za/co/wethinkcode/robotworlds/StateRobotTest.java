@@ -1,22 +1,14 @@
 package za.co.wethinkcode.robotworlds;
 
-
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-
 import com.fasterxml.jackson.databind.JsonNode;
-import za.co.wethinkcode.robotworlds.RobotWorldClient;
-import za.co.wethinkcode.robotworlds.RobotWorldJsonClient;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 
 public class StateRobotTest {
@@ -81,7 +73,7 @@ public class StateRobotTest {
                 "  \"command\": \"launch\"," +
                 "  \"arguments\": [\"sniper\",\"5\",\"5\"]" +
                 "}";
-        response = serverClient.sendRequest(request);
+        serverClient.sendRequest(request);
 
         // When I send a valid state request to the server
         request = "{" +
@@ -90,8 +82,6 @@ public class StateRobotTest {
                 "  \"arguments\": []" +
                 "}";
         response = serverClient.sendRequest(request);
-
-        System.out.println(response);
 
         // Then I should get a valid response from the server
         Assertions.assertNotNull(response.get("result"));

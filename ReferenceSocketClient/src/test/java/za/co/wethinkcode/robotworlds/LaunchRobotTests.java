@@ -40,8 +40,6 @@ class LaunchRobotTests {
                 "}";
         JsonNode response = serverClient.sendRequest(request);
 
-        System.out.println(response);
-
         // Then I should get a valid response from the server
         assertNotNull(response.get("result"));
         assertEquals("OK", response.get("result").asText());
@@ -165,7 +163,6 @@ class LaunchRobotTests {
         // And the message "Too many of you in this world"
         assertNotNull(response.get("data"));
         assertNotNull(response.get("data").get("message"));
-        System.out.println(response.get("data").get("message").asText());
         assertTrue(
                 response.get("data").get("message").asText()
                         .contains("Too many of you in this world")

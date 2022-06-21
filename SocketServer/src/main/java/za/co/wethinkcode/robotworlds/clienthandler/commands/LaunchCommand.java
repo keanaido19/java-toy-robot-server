@@ -50,6 +50,11 @@ public class LaunchCommand extends Command{
         World world = clientHandler.getWorld();
         Position position = world.getUnoccupiedPosition();
 
+        for (Robot worldRobot : world.getRobots()) {
+            if (worldRobot.getName().equals(robotName))
+                return ServerResponse.nameErrorResponse();
+        }
+
         if (position == null) return ServerResponse.spaceErrorResponse();
 
         maximumShields = world.getShields();

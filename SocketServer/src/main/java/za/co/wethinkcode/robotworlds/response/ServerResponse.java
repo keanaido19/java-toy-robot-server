@@ -71,7 +71,7 @@ public class ServerResponse {
     }
 
     public static ServerResponse robotErrorResponse() {
-        return getErrorResponse("Robot is not in this world");
+        return getErrorResponse("Robot does not exist");
     }
 
     public static ServerResponse illegalErrorResponse() {

@@ -20,7 +20,7 @@ public class ServerConsole extends Thread{
 
         System.out.println("Console is ready for input:");
 
-        while (continueLoop) {
+        while (continueLoop && scanner.hasNextLine()) {
             String userInput = scanner.nextLine();
             ServerCommand serverCommand =
                     ServerCommandHandler.getServerCommand(userInput);

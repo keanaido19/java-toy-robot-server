@@ -56,8 +56,6 @@ public class StateRobotTest {
         assertNotNull(response.get("data"));
         assertEquals("Robot does not exist",
                 response.get("data").get("message").asText());
-
-
     }
 
     @Test

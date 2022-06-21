@@ -9,13 +9,11 @@ import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
 import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
-import static za.co.wethinkcode.robotworlds.world.enums.ObjectType.EDGE;
-import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.FAILED_OBSTRUCTED;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.SUCCESS;
 
 public class MovementCommand extends Command{
@@ -62,7 +60,7 @@ public class MovementCommand extends Command{
         UpdateResponse updateResponse =
                 world.moveRobot(clientRobot, newPosition);
 
-        HashMap<String, Object> dataMap =
+        LinkedHashMap<String, Object> dataMap =
                 DataMapBuilder.getDataMap(clientHandler);
 
         Direction direction =

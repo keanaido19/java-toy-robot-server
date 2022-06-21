@@ -5,14 +5,15 @@ import za.co.wethinkcode.robotworlds.world.data.LookData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class DataMapBuilder {
-    public static HashMap<String, Object> getDataMap(
+    public static LinkedHashMap<String, Object> getDataMap(
             ClientHandler clientHandler,
             List<LookData> objects
     ) {
-        return new HashMap<>() {
+        return new LinkedHashMap<>() {
             {
                 put("visibility", clientHandler.getWorld().getVisibility());
                 put(
@@ -25,7 +26,7 @@ public class DataMapBuilder {
         };
     }
 
-    public static HashMap<String, Object> getDataMap(
+    public static LinkedHashMap<String, Object> getDataMap(
             ClientHandler clientHandler
     ) {
         return getDataMap(clientHandler, new ArrayList<>());

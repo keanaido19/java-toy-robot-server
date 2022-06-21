@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.world;
 
 import za.co.wethinkcode.robotworlds.world.data.WorldData;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
 import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.*;
 
 public class World {
@@ -87,7 +89,35 @@ public class World {
                         + bottomRight.getY();
     }
 
-    public boolean isPositionAtWorldEdge(Position p) {
+    private boolean isPositionAtEdge(
+            int coordinate,
+            int edgeCoordinate,
+            boolean inWorldRange
+    ) {
+        return coordinate == edgeCoordinate && inWorldRange;
+    }
+
+    private boolean isPositionAtEdge(
+            int coordinate,
+            int minEdge,
+            int maxEdge,
+            boolean inWorldRange,
+            Direction direction
+    ) {
+        int edgeCoordinate;
+
+        if (NORTH.equals(direction) || EAST.equals(direction)) {
+            edgeCoordinate = maxEdge;
+        } else if (SOUTH.equals(direction) || WEST.equals(direction)) {
+            edgeCoordinate = minEdge;
+        } else {
+            return false;
+        }
+
+        return isPositionAtEdge(coordinate, edgeCoordinate, inWorldRange);
+    }
+
+    private boolean isPositionAtWorldEdge(Position p, Direction direction) {
         int x = p.getX();
         int y = p.getY();
 
@@ -101,12 +131,35 @@ public class World {
         boolean inYRange =
                 y >= minWorldY && y <= maxWorldY;
 
-        boolean atTopEdge = y == maxWorldY && inXRange;
-        boolean atBottomEdge = y == minWorldY && inXRange;
-        boolean atLeftEdge = x == minWorldX && inYRange;
-        boolean atRightEdge = x == maxWorldX && inYRange;
+        return
+                isPositionAtEdge(
+                        y,
+                        minWorldY,
+                        maxWorldY,
+                        inXRange,
+                        direction
+                )
+                || isPositionAtEdge(
+                        x,
+                        minWorldX,
+                        maxWorldX,
+                        inYRange,
+                        direction
+                );
+    }
 
-        return atTopEdge || atBottomEdge || atLeftEdge || atRightEdge;
+    public boolean isPositionAtWorldEdge(Position p) {
+        for (Direction direction : Direction.values()) {
+            if (isPositionAtWorldEdge(p, direction)) return true;
+        }
+        return false;
+    }
+
+    public Direction getEdge(Position p) {
+        for (Direction direction : Direction.values()) {
+            if (isPositionAtWorldEdge(p, direction)) return direction;
+        }
+        return null;
     }
 
     private boolean isPositionInsideWorld(Position p) {

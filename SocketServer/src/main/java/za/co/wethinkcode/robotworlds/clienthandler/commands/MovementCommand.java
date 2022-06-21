@@ -4,9 +4,12 @@ import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.response.ServerResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.World;
+import za.co.wethinkcode.robotworlds.world.builders.DataMapBuilder;
+import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
@@ -50,9 +53,22 @@ public class MovementCommand extends Command{
         UpdateResponse updateResponse =
                 world.moveRobot(clientRobot, newPosition);
 
+        HashMap<String, Object> dataMap =
+                DataMapBuilder.getDataMap(clientHandler);
+
+        Direction direction = world.getEdge(clientRobot.getPosition());
+
+        if (null != direction) {
+            dataMap.put(
+                    "message",
+                    "At the " + clientRobot.getDirection() + " edge"
+            );
+        } else {
+            dataMap.put("message", updateResponse.getMessage());
+        }
+
         return ServerResponse.getSuccessResponse(
-                "message",
-                updateResponse.getMessage(),
+                dataMap,
                 clientRobot.getRobotData()
         );
     }

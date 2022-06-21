@@ -21,14 +21,11 @@ public class StateRobotTest {
     @BeforeEach
     void connectToServer() throws IOException {
         serverClient.connect(DEFAULT_IP, DEFAULT_PORT);
-
     }
 
     @AfterEach
     void disconnectFromServer(){
         serverClient.disconnect();
-
-
     }
 
     /** A Valid State Command is issued to the server

@@ -139,7 +139,7 @@ public class World {
     }
 
     public UpdateResponse moveRobot(Robot robot, Position newPosition) {
-        if (!isPositionInsideWorld(newPosition)) return FAILED_NOT_IN_WORLD;
+        if (!isPositionInsideWorld(newPosition)) return FAILED_OUTSIDE_WORLD;
 
         Position robotPosition = robot.getPosition();
 

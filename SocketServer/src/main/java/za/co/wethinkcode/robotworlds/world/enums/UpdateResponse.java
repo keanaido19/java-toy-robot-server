@@ -7,10 +7,10 @@ public enum UpdateResponse {
             return "Done";
         }
     },
-    FAILED_NOT_IN_WORLD {
+    FAILED_OUTSIDE_WORLD {
         @Override
         public String getMessage() {
-            return "Object not in world";
+            return "Sorry, I cannot go outside my safe zone.";
         }
     },
     FAILED_OBSTRUCTED {

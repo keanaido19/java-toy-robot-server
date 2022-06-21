@@ -1,7 +1,7 @@
 package za.co.wethinkcode.robotworlds;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.AfterEach;;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ public class StateRobotTest {
 
 
     @BeforeEach
-    void connectToServer() throws IOException {
+    void connectToServer() {
         serverClient.connect(DEFAULT_IP, DEFAULT_PORT);
     }
 

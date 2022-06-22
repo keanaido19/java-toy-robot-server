@@ -1,9 +1,13 @@
-package za.co.wethinkcode.robotworlds;
+package za.co.wethinkcode.robotworlds.iteration2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.RobotWorldClient;
+import za.co.wethinkcode.robotworlds.RobotWorldJsonClient;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -109,17 +113,23 @@ class LaunchRobotTests {
                 "}";
         response = serverClient.sendRequest(request);
 
-        // Then I should get an error response
+        // Then I should get ok response
         assertNotNull(response.get("result"));
-        assertEquals("ERROR", response.get("result").asText());
+        assertEquals("OK", response.get("result").asText());
 
-        // And the message "No more space in this world"
+        List<Integer> listOfPossibleCoordinates = List.of(-1, 0, 1);
+
+        // And the position should be positioned randomly
         assertNotNull(response.get("data"));
-        assertNotNull(response.get("data").get("message"));
-        assertTrue(
-                response.get("data").get("message").asText()
-                        .contains("No more space in this world")
-        );
+        assertNotNull(response.get("data").get("position"));
+        assertTrue(listOfPossibleCoordinates.contains(response.get("data").get("position").get(0).asInt()));
+        assertTrue(listOfPossibleCoordinates.contains(response.get("data").get("position").get(1).asInt()));
+//        assertEquals(randNumber, response.get("data").get("position").get(0).asInt());
+//        assertEquals(randNumber, response.get("data").get("position").get(1).asInt());
+
+        // And I should also get the state of the robot
+        assertNotNull(response.get("state"));
+
     }
 
     @Test

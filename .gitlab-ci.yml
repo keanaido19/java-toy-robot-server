@@ -38,6 +38,7 @@ world1x1-test-job:
     - apt-get install make -y
     - apt install build-essential -y
     - apt install lsof -y
+    - ls
     - chmod +x test_script
     - ./test_script.sh
 

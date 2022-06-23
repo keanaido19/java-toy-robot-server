@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.RobotWorldClient;
+import za.co.wethinkcode.robotworlds.RobotWorldJsonClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 

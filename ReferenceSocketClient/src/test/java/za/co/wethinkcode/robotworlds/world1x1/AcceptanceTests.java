@@ -1,8 +1,9 @@
-package za.co.wethinkcode.robotworlds;
+package za.co.wethinkcode.robotworlds.world1x1;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.TestBase;
 
 import java.util.ArrayList;
 import java.util.Iterator;

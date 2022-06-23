@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class TestBase {
     private final static int DEFAULT_PORT = 5000;
     private final static String DEFAULT_IP = "localhost";
-    final RobotWorldClient serverClient = new RobotWorldJsonClient();
+    public final RobotWorldClient serverClient = new RobotWorldJsonClient();
 
     @BeforeEach
     void connectToServer(){
@@ -19,7 +19,7 @@ public class TestBase {
         serverClient.disconnect();
     }
 
-    JsonNode launchRobot(String name) {
+    public JsonNode launchRobot(String name) {
         String request = "{" +
                 "  \"robot\": \"" + name + "\"," +
                 "  \"command\": \"launch\"," +

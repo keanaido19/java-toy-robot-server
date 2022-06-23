@@ -25,10 +25,7 @@ run_server_2x2_obs = $(call run_server_2x2,$(1),-o $(2)$(comma)$(3))
 
 maven_release = mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(1) -DdevelopmentVersion=$(2)
 
-build: clean maven_verify maven_compile test_reference_server test_server clean
-
-clean:
-	-@rm -rf test_reference_server.PID test_server.PID
+build: maven_verify maven_compile test_reference_server test_server maven_package
 
 maven_clean:
 	mvn clean
@@ -155,7 +152,6 @@ get_running_docker_containers = docker container ls -q
 docker_arguments = java -jar RobotWorldsServer.jar -p 5050 $(1) $(2)
 
 run_docker_image = docker run -p 5000:5050 robot-worlds-server:$(1) $(2) & echo "Running docker image..."
-
 
 kill_docker_containers:
 ifneq ($(strip $(shell $(get_running_docker_containers))),)

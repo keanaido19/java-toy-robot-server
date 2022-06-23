@@ -1,4 +1,4 @@
-image: docker:latest
+image: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:test-environment
 
 stages:          # List of stages for jobs, and their order of execution
   - build

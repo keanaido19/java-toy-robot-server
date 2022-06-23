@@ -26,8 +26,6 @@ class AcceptanceTests extends TestBaseExtension {
             assertNotNull(response.get("data"));
             assertNotNull(response.get("data").get("objects"));
 
-            System.out.println(response.get("data").get("objects").toString());
-
             for (Iterator<JsonNode> it =
                  response.get("data").get("objects").elements(); it.hasNext();
             ) {

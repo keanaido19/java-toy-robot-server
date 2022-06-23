@@ -132,7 +132,7 @@ public class LookCommand extends AuxiliaryCommand {
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        clientRobot = clientHandler.getRobot();
+        clientRobot = clientHandler.getRobot(robotName);
         robotX = clientRobot.getPosition().getX();
         robotY = clientRobot.getPosition().getY();
 
@@ -153,7 +153,7 @@ public class LookCommand extends AuxiliaryCommand {
         data.put("visibility", clientHandler.getWorld().getVisibility());
         data.put(
                 "position",
-                clientHandler.getRobot().getPosition().getPositionAsList()
+                clientHandler.getRobot(robotName).getPosition().getPositionAsList()
         );
         data.put("objects", objects);
 
@@ -161,7 +161,7 @@ public class LookCommand extends AuxiliaryCommand {
                 new ServerResponse(
                         CommandResult.OK,
                         data,
-                        clientHandler.getRobot().getRobotData()
+                        clientHandler.getRobot(robotName).getRobotData()
                 );
     }
 }

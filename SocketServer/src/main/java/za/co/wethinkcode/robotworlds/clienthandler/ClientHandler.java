@@ -49,7 +49,10 @@ public class ClientHandler implements Runnable{
         return world;
     }
 
-    public Robot getRobot() {
+    public Robot getRobot(String robotName) {
+        for (Robot r : robots) {
+            if (robotName.equals(r.getName())) return r;
+        }
         return robot;
     }
 

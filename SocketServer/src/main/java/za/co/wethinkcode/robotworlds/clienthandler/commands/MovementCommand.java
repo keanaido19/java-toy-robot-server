@@ -28,7 +28,7 @@ public class MovementCommand extends Command{
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        Robot clientRobot = clientHandler.getRobot();
+        Robot clientRobot = clientHandler.getRobot(robotName);
         World world = clientHandler.getWorld();
 
         int commandArgument = getInteger(commandArguments.get(0));
@@ -62,7 +62,7 @@ public class MovementCommand extends Command{
                 world.moveRobot(clientRobot, newPosition);
 
         LinkedHashMap<String, Object> dataMap =
-                DataMapBuilder.getDataMap(clientHandler);
+                DataMapBuilder.getDataMap(clientHandler, clientRobot);
 
         Direction direction =
                 world.getEdge(

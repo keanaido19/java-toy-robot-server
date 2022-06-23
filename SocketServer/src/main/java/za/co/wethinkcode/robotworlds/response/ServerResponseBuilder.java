@@ -83,7 +83,7 @@ public class ServerResponseBuilder {
             return JsonHandler.convertJavaObjectToJsonString(serverResponse);
         }
 
-        Robot clientRobot = clientHandler.getRobot();
+        Robot clientRobot = clientHandler.getRobot(robotName);
 
         if (clientRobot == null) {
             serverResponse = ServerResponse.robotErrorResponse();

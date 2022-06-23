@@ -138,7 +138,7 @@ public class FireCommand extends AuxiliaryCommand {
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        clientRobot = clientHandler.getRobot();
+        clientRobot = clientHandler.getRobot(robotName);
         robotX = clientRobot.getPosition().getX();
         robotY = clientRobot.getPosition().getY();
 

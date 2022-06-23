@@ -35,6 +35,7 @@ world1x1-test-job:
     - apt-get upgrade -y
     - apt-get install openjdk-11-jdk -y
     - apt-get install maven -y
+    - apt-get install make -y
     - make test_server
     - mvn clean install -DskipTests
     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-p 5000" &

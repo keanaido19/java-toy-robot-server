@@ -25,7 +25,7 @@ run_server_2x2_obs = $(call run_server_2x2,$(1),-o $(2)$(comma)$(3))
 
 maven_release = mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(1) -DdevelopmentVersion=$(2)
 
-build: maven_verify maven_compile test_reference_server test_server maven_package
+build: maven_verify maven_compile test_reference_server test_server
 
 maven_clean:
 	mvn clean

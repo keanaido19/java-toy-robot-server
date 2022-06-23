@@ -32,9 +32,9 @@ world1x1-test-job:
   script:
     - echo "Running acceptance tests for 1x1 world..."
     - apt-get update
-    - apt-get updgrade
-    - apt-get install maven
+    - apt-get upgrade
     - apt-get install openjdk-11-jdk
+    - apt-get install maven
     - make test_server
     - mvn clean install -DskipTests
     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-p 5000" &

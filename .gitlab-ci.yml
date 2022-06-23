@@ -10,7 +10,7 @@ default:
     - maven
 
 services:
-  - name: $CI_REGISTRY_IMAGE    # <--- image under test
+  - name: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:v1.2.0    # <--- image under test
     alias: localhost
 
 

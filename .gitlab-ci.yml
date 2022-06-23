@@ -35,32 +35,28 @@ world1x1-test-job:
   script:
     - echo "Running acceptance tests for 1x1 world..."
     - mvn $MAVEN_CLI_OPTS clean install -DskipTests
-    - mvn exec:java -pl SocketServer -Dexec.mainClass=za.co.wethinkcode.robotworlds.RobotServer
-    - mvn $MAVEN_CLI_OPTS test -Dtest="world1x1.AcceptanceTests*"  -pl ReferenceSocketClient
+    - mvn exec:java -pl SocketServer -Dexec.mainClass=za.co.wethinkcode.robotworlds.RobotServer & mvn $MAVEN_CLI_OPTS test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
     - kill -9 $(lsof -t -i:5000)
 
 world2x2-test-job:
   stage: test
   script:
     - echo "Running acceptance tests for 2x2 world..."
-    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2"
-    - mvn $MAVEN_CLI_OPTS test -Dtest="world2x2.AcceptanceTests*"  -pl ReferenceSocketClient
+    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2" & mvn $MAVEN_CLI_OPTS test -Dtest="world2x2.AcceptanceTests*"  -pl ReferenceSocketClient
     - kill -9 $(lsof -t -i:5000)
 
 world2x2obs[1,1]-test-job:
   stage: test
   script:
     - echo "Running acceptance tests for 2x2 world with an obstacle at [1,1]..."
-    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2 -o 1,1"
-    - mvn $MAVEN_CLI_OPTS test -Dtest="obstacle1_1.AcceptanceTests*"  -pl ReferenceSocketClient
+    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2 -o 1,1" & mvn $MAVEN_CLI_OPTS test -Dtest="obstacle1_1.AcceptanceTests*"  -pl ReferenceSocketClient
     - kill -9 $(lsof -t -i:5000)
 
 world2x2obs[0,1]-test-job:
   stage: test
   script:
     - echo "Running acceptance tests for 2x2 world with an obstacle at [0,1]..."
-    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2 -o 0,1"
-    - mvn $MAVEN_CLI_OPTS test -Dtest="obstacle0_1.AcceptanceTests*"  -pl ReferenceSocketClient
+    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2 -o 0,1" & mvn $MAVEN_CLI_OPTS test -Dtest="obstacle0_1.AcceptanceTests*"  -pl ReferenceSocketClient
     - kill -9 $(lsof -t -i:5000)
 
 

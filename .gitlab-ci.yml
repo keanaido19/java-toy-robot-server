@@ -38,10 +38,8 @@ world1x1-test-job:
     - apt-get install make -y
     - apt install build-essential -y
     - apt install lsof -y
-    - make test_server
-    - mvn clean install -DskipTests
-    - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-p 5000" &
-    - mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
+    - chmod +x test_script
+    - ./test_script.sh
 
 # world2x2-test-job:
 #   stage: test

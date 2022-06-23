@@ -26,33 +26,10 @@ unit-test-job:   # This job runs in the test stage.
     - echo "Running unit tests..."
     - mvn $MAVEN_CLI_OPTS test -pl SocketServer -pl SocketClient
 
-world1x1-test-job:
+acceptance-test-job:
   stage: test
   script:
-    - ls
-    - chmod +x test_script.sh
     - ./test_script.sh
-
-    
-
-# world2x2-test-job:
-#   stage: test
-#   script:
-#     - echo "Running acceptance tests for 2x2 world..."
-#     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2" & mvn $MAVEN_CLI_OPTS test -Dtest="world2x2.AcceptanceTests*" -pl ReferenceSocketClient
-
-# world2x2obs[1,1]-test-job:
-#   stage: test
-#   script:
-#     - echo "Running acceptance tests for 2x2 world with an obstacle at [1,1]..."
-#     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2 -o 1,1" & mvn $MAVEN_CLI_OPTS test -Dtest="obstacle1_1.AcceptanceTests*" -pl ReferenceSocketClient
-
-# world2x2obs[0,1]-test-job:
-#   stage: test
-#   script:
-#     - echo "Running acceptance tests for 2x2 world with an obstacle at [0,1]..."
-#     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-s 2 -o 0,1" & mvn $MAVEN_CLI_OPTS test -Dtest="obstacle0_1.AcceptanceTests*" -pl ReferenceSocketClient
-
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.

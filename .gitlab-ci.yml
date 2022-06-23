@@ -31,12 +31,14 @@ unit-test-job:   # This job runs in the test stage.
     - mvn $MAVEN_CLI_OPTS test -pl SocketServer -pl SocketClient
 
 world1x1-test-job:
+  environment: testing
   stage: test
   script:
     - echo "Running acceptance tests for 1x1 world..."
     - hostname -i
     - ifconfig -a
-    - mvn exec:java & mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
+    - mvn $MAVEN_CLI_OPTS exec:java
+    # - mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
 
 world2x2-test-job:
   stage: test

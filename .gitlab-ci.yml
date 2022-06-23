@@ -27,9 +27,12 @@ unit-test-job:   # This job runs in the test stage.
     - mvn $MAVEN_CLI_OPTS test -pl SocketServer -pl SocketClient
 
 world1x1-test-job:
+  image: ubuntu:latest
   stage: test
   script:
     - echo "Running acceptance tests for 1x1 world..."
+    - apt-get install maven
+    - apt-get install openjdk-11-jdk
     - make test_server
     - mvn clean install -DskipTests
     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-p 5000" &

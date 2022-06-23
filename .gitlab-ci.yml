@@ -37,7 +37,7 @@ world1x1-test-job:
     - mvn -B clean install
     - echo "Running acceptance tests for 1x1 world..."
     - mvn $MAVEN_CLI_OPTS exec:java
-    # - mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
+    - mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
 
 world2x2-test-job:
   stage: test

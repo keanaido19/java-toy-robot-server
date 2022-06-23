@@ -10,8 +10,9 @@ default:
     - maven
 
 services:
-  - name: docker:dind
+  - name: $CI_REGISTRY_IMAGE    # <--- image under test
     alias: localhost
+
 
 
 variables:

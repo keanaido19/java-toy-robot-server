@@ -69,7 +69,10 @@ public class MovementCommand extends Command{
                         directionOfMovement
                 );
 
-        if (null != direction && SUCCESS.equals(updateResponse)) {
+        if (
+                null != direction
+                && world.isPositionAtWorldEdge(clientRobot.getPosition())
+        ) {
             dataMap.put(
                     "message",
                     "At the " + direction + " edge"

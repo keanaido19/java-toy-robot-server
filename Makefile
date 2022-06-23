@@ -15,9 +15,7 @@ SNAPSHOT_VERSION = $$(VERSION)-SNAPSHOT
 
 PORT_PID := $(shell lsof -t -i:5000)
 
-.PHONY: build clean
-
-build: maven_verify maven_compile test_reference_server test_server clean
+build: clean maven_verify maven_compile test_reference_server test_server clean
 
 clean:
 	-@rm -rf test_reference_server.PID test_server.PID
@@ -34,7 +32,7 @@ maven_verify:
 maven_test:
 	mvn test
 
-maven_package:
+maven_package: maven_clean
 	mvn package -DskipTests
 
 test_reference_server:
@@ -96,7 +94,7 @@ ifneq ($(strip $(shell $(get_running_docker_containers))),)
 	docker stop $(shell $(get_running_docker_containers))
 endif
 
-docker_release: maven_clean maven_package
+docker_release: maven_package
 	@echo "Building docker image..."
 	docker build -t robot-worlds-server:$(get_project_version) .
 	$(MAKE) kill_docker_containers

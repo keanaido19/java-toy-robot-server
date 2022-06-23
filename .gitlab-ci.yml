@@ -35,8 +35,6 @@ world1x1-test-job:
   stage: test
   script:
     - echo "Running acceptance tests for 1x1 world..."
-    - hostname -i
-    - ifconfig -a
     - mvn $MAVEN_CLI_OPTS exec:java
     # - mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
 

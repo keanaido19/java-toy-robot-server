@@ -176,13 +176,8 @@ class AcceptanceTests extends TestBase {
             assertTrue(serverClient.isConnected());
             launchRobot("HAL");
 
-            // When I send a valid launch request to the server
-            String request = "{" +
-                    "  \"robot\": \"HAL\"," +
-                    "  \"command\": \"look\"," +
-                    "  \"arguments\": []" +
-                    "}";
-            JsonNode response = serverClient.sendRequest(request);
+            // When I send a valid look request to the server
+            JsonNode response = executeCommand("HAL", "look");
 
             // Then I should get a valid response from the server
             assertNotNull(response.get("result"));
@@ -266,12 +261,8 @@ class AcceptanceTests extends TestBase {
             assertTrue(serverClient.isConnected());
 
             // When I send a valid state request to the server
-            String request = "{" +
-                    "  \"robot\": \"HAL\"," +
-                    "  \"command\": \"state\"," +
-                    "  \"arguments\": []" +
-                    "}";
-            JsonNode response = serverClient.sendRequest(request);
+            JsonNode response =
+                    executeCommand("Hal", "state");
 
             // Then I should get an error response from the server
             assertNotNull(response.get("result"));
@@ -291,12 +282,8 @@ class AcceptanceTests extends TestBase {
             launchRobot("HAL");
 
             // When I send a valid state request to the server
-            String request = "{" +
-                    "  \"robot\": \"HAL\"," +
-                    "  \"command\": \"state\"," +
-                    "  \"arguments\": []" +
-                    "}";
-            JsonNode response = serverClient.sendRequest(request);
+            JsonNode response =
+                    executeCommand("HAL", "state");
 
             // Then I should get a valid response from the server
             assertNotNull(response.get("result"));

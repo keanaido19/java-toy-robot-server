@@ -31,5 +31,5 @@ deploy-job:      # This job runs in the deploy stage.
   script:
     - echo "Deploying application..."
     - mvn $MAVEN_CLI_OPTS clean $MAVEN_OPTS
-    - mvn $MAVEN_CLI_OPTS package $MAVEN_OPTS
+    - mvn $MAVEN_CLI_OPTS package $MAVEN_OPTS -DskipTests
     - mvn $MAVEN_CLI_OPTS exec:java

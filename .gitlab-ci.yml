@@ -1,4 +1,4 @@
-image: maven:latest
+image: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:test-environment
 
 stages:          # List of stages for jobs, and their order of execution
   - build
@@ -27,19 +27,10 @@ unit-test-job:   # This job runs in the test stage.
     - mvn $MAVEN_CLI_OPTS test -pl SocketServer -pl SocketClient
 
 world1x1-test-job:
-  image: ubuntu:latest
   stage: test
   script:
-    - echo "Running acceptance tests for 1x1 world..."
-    - apt-get update -y
-    - apt-get upgrade -y
-    - apt-get install openjdk-11-jdk -y
-    - apt-get install maven -y
-    - apt-get install make -y
-    - apt install build-essential -y
-    - apt install lsof -y
     - ls
-    - chmod +x test_script
+    - chmod +x test_script.sh
     - ./test_script.sh
 
     

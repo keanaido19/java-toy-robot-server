@@ -9,6 +9,11 @@ default:
   tags: 
     - maven
 
+services:
+  - name: docker:dind
+    alias: localhost
+
+
 variables:
   MAVEN_CLI_OPTS: " --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
@@ -34,6 +39,7 @@ world1x1-test-job:
   stage: test
   script:
     - echo "Running acceptance tests for 1x1 world..."
+    - hostname -i
     - curl localhost:5000
     - mvn $MAVEN_CLI_OPTS exec:java & mvn $MAVEN_CLI_OPTS test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
 

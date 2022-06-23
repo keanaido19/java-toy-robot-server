@@ -39,7 +39,7 @@ class AcceptanceTests extends TestBaseExtension {
         }
 
         @Test
-        void worldWithoutObstaclesIsFull() {
+        void worldWithObstaclesIsFull() {
             // Given that I am connected to a running Robot Worlds server
             // And the world is of size 2x2
             //      (The world is configured or hardcoded to this size)

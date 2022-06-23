@@ -14,6 +14,7 @@ import java.util.List;
 
 import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
 import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
+import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.FAILED_OBSTRUCTED;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.SUCCESS;
 
 public class MovementCommand extends Command{
@@ -72,6 +73,7 @@ public class MovementCommand extends Command{
         if (
                 null != direction
                 && world.isPositionAtWorldEdge(clientRobot.getPosition())
+                && !updateResponse.equals(FAILED_OBSTRUCTED)
         ) {
             dataMap.put(
                     "message",

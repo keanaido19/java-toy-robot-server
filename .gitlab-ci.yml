@@ -9,12 +9,6 @@ default:
   tags: 
     - maven
 
-services:
-  - name: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:v1.2.0    # <--- image under test
-    alias: localhost
-
-
-
 variables:
   MAVEN_CLI_OPTS: " --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
@@ -41,7 +35,7 @@ world1x1-test-job:
   script:
     - echo "Running acceptance tests for 1x1 world..."
     - hostname -i
-    - curl localhost:5000
+    - ifconfig -a
     - mvn $MAVEN_CLI_OPTS exec:java & mvn $MAVEN_CLI_OPTS test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
 
 world2x2-test-job:

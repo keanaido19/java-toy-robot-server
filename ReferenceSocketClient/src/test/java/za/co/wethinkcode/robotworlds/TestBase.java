@@ -13,10 +13,10 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBase {
-    private final static int DEFAULT_PORT = 5000;
-    private final static String DEFAULT_IP = "localhost";
-
     public final RobotWorldClient serverClient = new RobotWorldJsonClient();
+
+    private final static String DEFAULT_IP = "localhost";
+    private final static int DEFAULT_PORT = 5000;
 
     private String request;
 
@@ -37,6 +37,14 @@ public class TestBase {
                 "  \"arguments\": [\"sniper\",\"5\",\"5\"]" +
                 "}";
         return serverClient.sendRequest(request);
+    }
+
+    public List<JsonNode> multiRobotLaunch(int numberOfRobots) {
+        List<JsonNode> returnList = new ArrayList<>();
+        for (int i = 0; i < numberOfRobots; i++) {
+            returnList.add(launchRobot(String.valueOf(i)));
+        }
+        return returnList;
     }
 
     public JsonNode executeCommand(
@@ -64,10 +72,22 @@ public class TestBase {
         return executeCommand(robotName, command, new ArrayList<>());
     }
 
+    public void testCommandResult(JsonNode response, String result) {
+        assertNotNull(response.get("result"));
+        assertEquals(result, response.get("result").asText());
+    }
+
+    public void testCommandSuccessful(JsonNode response) {
+        testCommandResult(response, "OK");
+    }
+
+    public void testCommandFailed(JsonNode response) {
+        testCommandResult(response, "ERROR");
+    }
+
     public void testSuccessfulLaunch(JsonNode response, int worldSize) {
         // Then I should get a valid response from the server
-        assertNotNull(response.get("result"));
-        assertEquals("OK", response.get("result").asText());
+        testCommandSuccessful(response);
 
         // And the position should be random within worldSize x worldSize world
         assertNotNull(response.get("data"));
@@ -92,10 +112,9 @@ public class TestBase {
         assertNotNull(response.get("state"));
     }
 
-    public void testFailedLaunch(JsonNode response, String message) {
+    public void testFailedCommand(JsonNode response, String message) {
         // Then I should get an error response
-        assertNotNull(response.get("result"));
-        assertEquals("ERROR", response.get("result").asText());
+        testCommandFailed(response);
 
         // And the message "No more space in this world"
         assertNotNull(response.get("data"));
@@ -107,14 +126,21 @@ public class TestBase {
     }
 
     public void testFailedLaunchNoSpace(JsonNode response) {
-        testFailedLaunch(response, "No more space in this world");
+        testFailedCommand(response, "No more space in this world");
     }
 
-    public List<JsonNode> multiRobotLaunch(int numberOfRobots) {
-        List<JsonNode> returnList = new ArrayList<>();
-        for (int i = 0; i < numberOfRobots; i++) {
-            returnList.add(launchRobot(String.valueOf(i)));
-        }
-        return returnList;
+    public String createObject(String objectType, String direction,
+                             int distance) {
+        return "{\"direction\":\"" + direction + "\"," +
+                "\"type\":\"" + objectType + "\",\"distance\":" +
+                distance + "}";
+    }
+
+    public String createObstacle(String direction, int distance) {
+        return createObject("OBSTACLE", direction, distance);
+    }
+
+    public String createRobot(String direction, int distance) {
+        return createObject("ROBOT", direction, distance);
     }
 }

@@ -245,7 +245,7 @@ class AcceptanceTests extends TestBase {
      * So that I can use the information to plan my next move
      */
     @Nested
-    class StateRobotTest {
+    class StateRobotTests {
 
         /** A Valid State Command is issued to the server
          * and Connection has been established
@@ -332,6 +332,48 @@ class AcceptanceTests extends TestBase {
             assertEquals(
                     status.length() - 1,
                     status.lastIndexOf("\"")
+            );
+        }
+    }
+
+    /**
+     * As a player I want to launch my robot in the online robot world And
+     * move my robot forward, so I can explore the world
+     */
+    @Nested
+    class ForwardRobotTests {
+        @Test
+        void movingAtTheEdgeOfTheWorld() {
+            // Given that I am connected to a running Robot Worlds server
+            // And the world is of size 1x1
+            //      (The world is configured or hardcoded to this size)
+            // And a robot called "HAL" is already connected and launched
+            assertTrue(serverClient.isConnected());
+            testSuccessfulLaunch(launchRobot("HAL"), 1);
+
+            // When I send a command for "HAL" to move forward by 5 steps
+            JsonNode response = executeCommand(
+                    "HAL",
+                    "forward",
+                    List.of(5));
+
+            // Then I should get an "OK" response
+            testCommandSuccessful(response);
+
+            // And the message "At the NORTH edge"
+            assertNotNull(response.get("data"));
+            assertNotNull(response.get("data").get("message"));
+            assertEquals(
+                    "At the NORTH edge",
+                    response.get("data").get("message").asText()
+            );
+
+            // And the position information returned should be at
+            //      co-ordinates [0,0]
+            assertNotNull(response.get("data").get("position"));
+            assertEquals(
+                    "[0,0]",
+                    response.get("data").get("position").toString()
             );
         }
     }

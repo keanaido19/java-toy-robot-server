@@ -20,8 +20,11 @@ public class StateCommand extends AuxiliaryCommand {
         return
                 new ServerResponse(
                         CommandResult.OK,
-                        DataMapBuilder.getDataMap(clientHandler),
-                        clientHandler.getRobot().getRobotData()
+                        DataMapBuilder.getDataMap(
+                                clientHandler,
+                                clientHandler.getRobot(robotName)
+                        ),
+                        clientHandler.getRobot(robotName).getRobotData()
                 );
     }
 }

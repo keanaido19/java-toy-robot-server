@@ -81,8 +81,8 @@ public class LaunchCommand extends Command{
                 return ServerResponse.nameErrorResponse();
         }
 
-        if (null != clientHandler.getRobot())
-            world.getRobots().remove(clientHandler.getRobot());
+//        if (null != clientHandler.getRobot())
+//            world.getRobots().remove(clientHandler.getRobot());
 
         clientHandler.setRobot(robot);
         world.addRobotToWorld(robot);

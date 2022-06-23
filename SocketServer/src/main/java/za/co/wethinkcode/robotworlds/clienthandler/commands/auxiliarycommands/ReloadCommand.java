@@ -14,7 +14,7 @@ public class ReloadCommand extends AuxiliaryCommand {
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        Robot clientRobot = clientHandler.getRobot();
+        Robot clientRobot = clientHandler.getRobot(robotName);
         int maximumShots = clientRobot.getMaximumShots();
 
         if (0 == maximumShots) return ServerResponse.shotsErrorResponse();

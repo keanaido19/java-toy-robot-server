@@ -14,7 +14,7 @@ public class RepairCommand extends AuxiliaryCommand {
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        Robot clientRobot = clientHandler.getRobot();
+        Robot clientRobot = clientHandler.getRobot(robotName);
         int maximumShields = clientRobot.getMaximumShields();
 
         if (0 == maximumShields) return ServerResponse.shieldErrorResponse();

@@ -1,21 +1,18 @@
 package za.co.wethinkcode.robotworlds;
 
 import za.co.wethinkcode.robotworlds.CLIhandler.CommandLineArgumentHandler;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ObstacleArgument;
 import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.SizeOfWorldArgument;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
-import za.co.wethinkcode.robotworlds.world.builders.WorldBuilder;
-import za.co.wethinkcode.robotworlds.world.data.WorldConfigData;
-import za.co.wethinkcode.robotworlds.world.data.WorldData;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
 import za.co.wethinkcode.robotworlds.world.World;
+import za.co.wethinkcode.robotworlds.world.builders.WorldBuilder;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.Enumeration;
-import java.util.List;
 
 public class RobotServer {
 

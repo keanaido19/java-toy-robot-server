@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientHandler implements Runnable{
     private final BufferedReader inputFromClient;
@@ -20,6 +22,7 @@ public class ClientHandler implements Runnable{
     private final Socket socket;
     private final World world;
 
+    private final List<Robot> robots = new ArrayList<>();
     private final ServerResponseBuilder responseBuilder =
             new ServerResponseBuilder(this);
 
@@ -46,12 +49,16 @@ public class ClientHandler implements Runnable{
         return world;
     }
 
-    public Robot getRobot() {
+    public Robot getRobot(String robotName) {
+        for (Robot r : robots) {
+            if (robotName.equals(r.getName())) return r;
+        }
         return robot;
     }
 
     public void setRobot(Robot robot) {
         this.robot = robot;
+        robots.add(robot);
     }
 
     public void closeEverything(
@@ -59,7 +66,9 @@ public class ClientHandler implements Runnable{
             BufferedReader inputFromClient,
             PrintStream outputToClient
     ) {
-        world.getRobots().remove(robot);
+        for (Robot r : robots) {
+            world.getRobots().remove(r);
+        }
         System.out.println(
                 "Client (" + clientIpAddress + ") Has Disconnected!"
         );

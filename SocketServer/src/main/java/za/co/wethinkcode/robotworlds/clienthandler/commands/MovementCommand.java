@@ -14,6 +14,7 @@ import java.util.List;
 
 import static za.co.wethinkcode.robotworlds.Helpers.getInteger;
 import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
+import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.FAILED_OBSTRUCTED;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.SUCCESS;
 
 public class MovementCommand extends Command{
@@ -27,7 +28,7 @@ public class MovementCommand extends Command{
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        Robot clientRobot = clientHandler.getRobot();
+        Robot clientRobot = clientHandler.getRobot(robotName);
         World world = clientHandler.getWorld();
 
         int commandArgument = getInteger(commandArguments.get(0));
@@ -61,7 +62,7 @@ public class MovementCommand extends Command{
                 world.moveRobot(clientRobot, newPosition);
 
         LinkedHashMap<String, Object> dataMap =
-                DataMapBuilder.getDataMap(clientHandler);
+                DataMapBuilder.getDataMap(clientHandler, clientRobot);
 
         Direction direction =
                 world.getEdge(
@@ -69,7 +70,11 @@ public class MovementCommand extends Command{
                         directionOfMovement
                 );
 
-        if (null != direction && SUCCESS.equals(updateResponse)) {
+        if (
+                null != direction
+                && world.isPositionAtWorldEdge(clientRobot.getPosition())
+                && !updateResponse.equals(FAILED_OBSTRUCTED)
+        ) {
             dataMap.put(
                     "message",
                     "At the " + direction + " edge"

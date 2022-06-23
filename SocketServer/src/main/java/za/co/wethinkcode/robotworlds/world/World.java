@@ -78,14 +78,14 @@ public class World {
     private int getRandomXCoordinate() {
         if ((bottomRight.getX() - topLeft.getX()) < 1) return 0;
         return
-                random.nextInt(bottomRight.getX() - topLeft.getX())
+                random.nextInt(bottomRight.getX() - topLeft.getX() + 1)
                         + topLeft.getX();
     }
 
     private int getRandomYCoordinate() {
         if ((topLeft.getY() - bottomRight.getY()) < 1) return 0;
         return
-                random.nextInt(topLeft.getY() - bottomRight.getY())
+                random.nextInt(topLeft.getY() - bottomRight.getY() + 1)
                         + bottomRight.getY();
     }
 
@@ -190,12 +190,12 @@ public class World {
     }
 
     public Position getUnoccupiedPosition() {
-        Position p;
+        Position p = new Position(0, 0);
         int counter = 0;
         while (true) {
             if (counter == 10000) return null;
-            p = new Position(getRandomXCoordinate(), getRandomYCoordinate());
             if (isSpaceAvailableForPosition(p)) return p;
+            p = new Position(getRandomXCoordinate(), getRandomYCoordinate());
             counter++;
         }
     }

@@ -19,7 +19,7 @@ public class TurnCommand extends Command {
 
     @Override
     public ServerResponse execute(ClientHandler clientHandler) {
-        Robot clientRobot = clientHandler.getRobot();
+        Robot clientRobot = clientHandler.getRobot(robotName);
 
         if ("right".equals(commandArguments.get(0)))
             clientRobot.turnRight();

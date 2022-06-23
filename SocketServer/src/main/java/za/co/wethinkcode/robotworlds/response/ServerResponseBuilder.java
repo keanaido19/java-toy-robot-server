@@ -92,10 +92,10 @@ public class ServerResponseBuilder {
 
         String clientRobotName = clientRobot.getName();
 
-        if (!robotName.equals(clientRobotName)) {
-            serverResponse = ServerResponse.illegalErrorResponse();
-            return JsonHandler.convertJavaObjectToJsonString(serverResponse);
-        }
+//        if (!robotName.equals(clientRobotName)) {
+//            serverResponse = ServerResponse.illegalErrorResponse();
+//            return JsonHandler.convertJavaObjectToJsonString(serverResponse);
+//        }
 
         if (command instanceof StateCommand) {
             serverResponse = command.execute(clientHandler);

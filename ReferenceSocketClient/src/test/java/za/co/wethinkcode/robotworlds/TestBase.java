@@ -87,6 +87,7 @@ public class TestBase {
 
     public void testSuccessfulLaunch(JsonNode response, int worldSize) {
         // Then I should get a valid response from the server
+        System.out.println(response);
         testCommandSuccessful(response);
 
         // And the position should be random within worldSize x worldSize world

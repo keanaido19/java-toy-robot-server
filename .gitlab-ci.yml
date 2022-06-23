@@ -35,7 +35,8 @@ world1x1-test-job:
   script:
     - echo "Running acceptance tests for 1x1 world..."
     - mvn $MAVEN_CLI_OPTS clean install -DskipTests
-    - mvn exec:java -pl SocketServer -Dexec.mainClass=za.co.wethinkcode.robotworlds.RobotServer & echo "Running..."
+    - mvn exec:java -pl SocketServer -Dexec.mainClass=za.co.wethinkcode.robotworlds.RobotServer &
+    - nohup nc -l localhost -p 5000 &
     - mvn $MAVEN_CLI_OPTS test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
     - kill -9 $(lsof -t -i:5000)
 

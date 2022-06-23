@@ -152,18 +152,54 @@ get_project_version = v$(get_major_version).$(get_minor_version).$(get_patch_ver
 
 get_running_docker_containers = docker container ls -q
 
+docker_arguments = java -jar RobotWorldsServer.jar -p 5050 $(1) $(2)
+
+run_docker_image = docker run -p 5000:5050 robot-worlds-server:$(1) $(2) & echo "Running docker image..."
+
+
 kill_docker_containers:
 ifneq ($(strip $(shell $(get_running_docker_containers))),)
 	docker stop $(shell $(get_running_docker_containers))
 endif
 
-docker_release: maven_package
-	docker build -t robot-worlds-server:$(get_project_version) .
+test_docker_world1x1:
 	$(MAKE) kill_docker_containers
+	$(call run_docker_image,$(get_project_version),$(call docker_arguments))
+	$(call acceptance_test,world1x1)
+	$(MAKE) kill_docker_containers
+
+test_docker_world2x2:
+	$(MAKE) kill_docker_containers
+	$(call run_docker_image,$(get_project_version),$(call docker_arguments,-s 2))
+	$(call acceptance_test,world2x2)
+	$(MAKE) kill_docker_containers
+
+test_docker_world2x2_obs_0_1:
+	$(MAKE) kill_docker_containers
+	$(call run_docker_image,$(get_project_version),$(call docker_arguments,-s 2,-o 0$(comma)1))
+	$(call acceptance_test,obstacle0_1)
+	$(MAKE) kill_docker_containers
+
+test_docker_world2x2_obs_1_1:
+	$(MAKE) kill_docker_containers
+	$(call run_docker_image,$(get_project_version),$(call docker_arguments,-s2,-o 1$(comma)1))
+	$(call acceptance_test,obstacle1_1)
+	$(MAKE) kill_docker_containers
+
+test_docker_world2x2_obs:
+	$(MAKE) test_docker_world2x2_obs_0_1
+	$(MAKE) test_docker_world2x2_obs_1_1
+
+test_docker:
 	$(MAKE) kill_pid_on_5000
-	docker run -p 5000:5050 robot-worlds-server:$(get_project_version) & echo "Running docker image..."
-	mvn test
-	$(MAKE) kill_docker_containers
+	$(MAKE) test_docker_world1x1
+	$(MAKE) test_docker_world2x2
+	$(MAKE) test_docker_world2x2_obs
+
+docker_build: maven_package
+	docker build -t robot-worlds-server:$(get_project_version) .
+
+docker_release: docker_build test_docker
 	docker login gitlab.wethinkco.de:5050
 	docker tag robot-worlds-server:$(get_project_version) gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:$(get_project_version)
 	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:$(get_project_version)

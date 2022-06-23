@@ -31,11 +31,11 @@ unit-test-job:   # This job runs in the test stage.
     - mvn $MAVEN_CLI_OPTS test -pl SocketServer -pl SocketClient
 
 world1x1-test-job:
-  image: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:v1.2.0
   stage: test
+  environment: staging
   script:
     - echo "Running acceptance tests for 1x1 world..."
-    - ls
+    - mvn $MAVEN_CLI_OPTS exec:java & mvn $MAVEN_CLI_OPTS test -Dtest="world1x1.AcceptanceTests*"  -pl ReferenceSocketClient
 
 world2x2-test-job:
   stage: test

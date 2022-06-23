@@ -15,6 +15,16 @@ SNAPSHOT_VERSION = $$(VERSION)-SNAPSHOT
 
 PORT_PID := $(shell lsof -t -i:5000)
 
+acceptance_test = mvn test -Dtest="$(1).AcceptanceTests*" -pl ReferenceSocketClient
+
+comma := ,
+
+run_server = @java -jar $(1) $(2) $(3) &
+run_server_2x2 = $(call run_server,$(1),-s 2,$(2))
+run_server_2x2_obs = $(call run_server_2x2,$(1),-o $(2)$(comma)$(3))
+
+maven_release = mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(1) -DdevelopmentVersion=$(2)
+
 build: clean maven_verify maven_compile test_reference_server test_server clean
 
 clean:
@@ -35,30 +45,83 @@ maven_test:
 maven_package: maven_clean
 	mvn package -DskipTests
 
-test_reference_server:
+kill_pid_on_5000:
 ifneq ($(strip $(shell lsof -t -i:5000)),)
 	$(eval PORT_PID=$(shell lsof -t -i:5000))
-	kill -9 $(PORT_PID)
+	@kill -9 $(PORT_PID)
 endif
-	@java -jar $(REF_SERVER_JAR) & echo $$! > test_reference_server.PID
-	mvn test
-	@kill `cat test_reference_server.PID`
-	-@rm -rf test_reference_server.PID
+
+test_reference_server_world1x1:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server,$(REF_SERVER_JAR),-v 1)
+	$(call acceptance_test,world1x1)
+	$(MAKE) kill_pid_on_5000
+
+test_reference_server_world2x2:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server_2x2,$(REF_SERVER_JAR))
+	$(call acceptance_test,world2x2)
+	$(MAKE) kill_pid_on_5000
+
+test_reference_server_world2x2_obs_0_1:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server_2x2_obs,$(REF_SERVER_JAR),0,1)
+	$(call acceptance_test,obstacle0_1)
+	$(MAKE) kill_pid_on_5000
+
+test_reference_server_world2x2_obs_1_1:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server_2x2_obs,$(REF_SERVER_JAR),1,1)
+	$(call acceptance_test,obstacle1_1)
+	$(MAKE) kill_pid_on_5000
+
+test_reference_server_world2x2_obs:
+	$(MAKE) test_reference_server_world2x2_obs_0_1
+	$(MAKE) test_reference_server_world2x2_obs_1_1
+
+test_reference_server:
+	$(MAKE) test_reference_server_world1x1
+	$(MAKE) test_reference_server_world2x2
+	$(MAKE) test_reference_server_world2x2_obs
+
+test_server_world1x1:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server,$(SERVER_JAR))
+	$(call acceptance_test,world1x1)
+	$(MAKE) kill_pid_on_5000
+
+test_server_world2x2:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server_2x2,$(SERVER_JAR))
+	$(call acceptance_test,world2x2)
+	$(MAKE) kill_pid_on_5000
+
+test_server_world2x2_obs_0_1:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server_2x2_obs,$(SERVER_JAR),0,1)
+	$(call acceptance_test,obstacle0_1)
+	$(MAKE) kill_pid_on_5000
+
+test_server_world2x2_obs_1_1:
+	$(MAKE) kill_pid_on_5000
+	$(call run_server_2x2_obs,$(SERVER_JAR),1,1)
+	$(call acceptance_test,obstacle1_1)
+	$(MAKE) kill_pid_on_5000
+
+test_server_world2x2_obs:
+	$(MAKE) test_server_world2x2_obs_0_1
+	$(MAKE) test_server_world2x2_obs_1_1
 
 test_server: maven_clean maven_package
-ifneq ($(strip $(shell lsof -t -i:5000)),)
-	$(eval PORT_PID=$(shell lsof -t -i:5000))
-	kill -9 $(PORT_PID)
-endif
-	@java -jar $(SERVER_JAR) & echo $$! > test_server.PID
-	mvn test
-	@kill `cat test_server.PID`
-	-@rm -rf test_server.PID
+	mvn test -pl SocketServer -pl SocketClient
+	$(MAKE) test_server_world1x1
+	$(MAKE) test_server_world2x2
+	$(MAKE) test_server_world2x2_obs
 
 release_patch: build
 	$(eval VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(NEXT_PATCH_VERSION))
 	$(eval SNAPSHOT_VERSION=$$(VERSION)-SNAPSHOT)
-	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	$(call maven_release,$(VERSION),$(SNAPSHOT_VERSION))
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
 	$(MAKE) docker_release
@@ -66,7 +129,7 @@ release_patch: build
 release_minor: build
 	$(eval VERSION=$(MAJOR_VERSION).$(NEXT_MINOR_VERSION).0)
 	$(eval SNAPSHOT_VERSION=$$(VERSION)-SNAPSHOT)
-	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	$(call maven_release,$(VERSION),$(SNAPSHOT_VERSION))
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
 	$(MAKE) docker_release
@@ -74,7 +137,7 @@ release_minor: build
 release_major: build
 	$(eval VERSION=$(NEXT_MAJOR_VERSION).0.0)
 	$(eval SNAPSHOT_VERSION=$$(VERSION)-SNAPSHOT)
-	mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(VERSION) -DdevelopmentVersion=$(SNAPSHOT_VERSION)
+	$(call maven_release,$(VERSION),$(SNAPSHOT_VERSION))
 	mvn release:perform -DskipTests -Darguments=-DskipTests
 	mvn release:clean
 	$(MAKE) docker_release
@@ -95,13 +158,9 @@ ifneq ($(strip $(shell $(get_running_docker_containers))),)
 endif
 
 docker_release: maven_package
-	@echo "Building docker image..."
 	docker build -t robot-worlds-server:$(get_project_version) .
 	$(MAKE) kill_docker_containers
-ifneq ($(strip $(shell lsof -t -i:5000)),)
-	$(eval PORT_PID=$(shell lsof -t -i:5000))
-	kill -9 $(PORT_PID)
-endif
+	$(MAKE) kill_pid_on_5000
 	docker run -p 5000:5050 robot-worlds-server:$(get_project_version) & echo "Running docker image..."
 	mvn test
 	$(MAKE) kill_docker_containers

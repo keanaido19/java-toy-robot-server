@@ -36,7 +36,7 @@ world1x1-test-job:
     - echo "Running acceptance tests for 1x1 world..."
     - mvn clean install -DskipTests
     - mvn $MAVEN_CLI_OPTS exec:java -Dexec.args="-p 5000" &
-    - ssh --help
+    - ssh -L 5000:172.17.0.2:5000 $CI_REGISTRY_NAME
     - mvn test -Dtest="world1x1.AcceptanceTests*" -pl ReferenceSocketClient
 
 # world2x2-test-job:

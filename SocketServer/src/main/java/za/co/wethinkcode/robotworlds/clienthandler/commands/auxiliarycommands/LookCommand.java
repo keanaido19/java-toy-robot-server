@@ -58,7 +58,7 @@ public class LookCommand extends AuxiliaryCommand {
         for (Robot robot : world.getRobots()) {
             if (
                     !robot.equals(clientRobot)
-                    && robot.getPosition().equals(clientRobot.getPosition())
+                    && robot.getPosition().equals(p)
             ) return robot;
         }
         return null;

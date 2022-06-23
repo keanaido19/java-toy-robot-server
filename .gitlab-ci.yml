@@ -30,7 +30,6 @@ acceptance-test-job:
   stage: test
   script:
     - echo "Running acceptance tests..."
-    - chmod +x test_script.sh
     - ./test_script.sh
 
 deploy-job:      # This job runs in the deploy stage.

@@ -98,23 +98,21 @@ public class World {
     }
 
     private boolean isPositionAtEdge(
-            int coordinate,
-            int minEdge,
-            int maxEdge,
+            int[] values,
             boolean inWorldRange,
             Direction direction
     ) {
         int edgeCoordinate;
 
         if (NORTH.equals(direction) || EAST.equals(direction)) {
-            edgeCoordinate = maxEdge;
+            edgeCoordinate = values[2];
         } else if (SOUTH.equals(direction) || WEST.equals(direction)) {
-            edgeCoordinate = minEdge;
+            edgeCoordinate = values[1];
         } else {
             return false;
         }
 
-        return isPositionAtEdge(coordinate, edgeCoordinate, inWorldRange);
+        return isPositionAtEdge(values[0], edgeCoordinate, inWorldRange);
     }
 
     private boolean isPositionAtWorldEdge(Position p, Direction direction) {
@@ -134,18 +132,14 @@ public class World {
         if (NORTH.equals(direction) || SOUTH.equals(direction)) {
             return
                     isPositionAtEdge(
-                            y,
-                            minWorldY,
-                            maxWorldY,
+                            new int[] {y, minWorldY, maxWorldY},
                             inXRange,
                             direction
                     );
         } else if (EAST.equals(direction) || WEST.equals(direction)) {
             return
                     isPositionAtEdge(
-                            x,
-                            minWorldX,
-                            maxWorldX,
+                            new int[] {x, minWorldX, maxWorldX},
                             inYRange,
                             direction
                     );

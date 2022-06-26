@@ -98,23 +98,21 @@ public class World {
     }
 
     private boolean isPositionAtEdge(
-            int coordinate,
-            int minEdge,
-            int maxEdge,
+            int[] values,
             boolean inWorldRange,
             Direction direction
     ) {
         int edgeCoordinate;
 
         if (NORTH.equals(direction) || EAST.equals(direction)) {
-            edgeCoordinate = maxEdge;
+            edgeCoordinate = values[2];
         } else if (SOUTH.equals(direction) || WEST.equals(direction)) {
-            edgeCoordinate = minEdge;
+            edgeCoordinate = values[1];
         } else {
             return false;
         }
 
-        return isPositionAtEdge(coordinate, edgeCoordinate, inWorldRange);
+        return isPositionAtEdge(values[0], edgeCoordinate, inWorldRange);
     }
 
     private boolean isPositionAtWorldEdge(Position p, Direction direction) {
@@ -134,18 +132,14 @@ public class World {
         if (NORTH.equals(direction) || SOUTH.equals(direction)) {
             return
                     isPositionAtEdge(
-                            y,
-                            minWorldY,
-                            maxWorldY,
+                            new int[] {y, minWorldY, maxWorldY},
                             inXRange,
                             direction
                     );
         } else if (EAST.equals(direction) || WEST.equals(direction)) {
             return
                     isPositionAtEdge(
-                            x,
-                            minWorldX,
-                            maxWorldX,
+                            new int[] {x, minWorldX, maxWorldX},
                             inYRange,
                             direction
                     );
@@ -175,18 +169,24 @@ public class World {
         return p.isIn(topLeft, bottomRight);
     }
 
+    public boolean doesObstacleBlockPosition(Position p) {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPosition(p)) return true;
+        }
+        return false;
+    }
+
+    public boolean doesRobotBlockPosition(Position p) {
+        for (Robot robot : robots) {
+            if (robot.getPosition().equals(p)) return true;
+        }
+        return false;
+    }
+
     public boolean isSpaceAvailableForPosition(Position p) {
         if (!isPositionInsideWorld(p)) return false;
-
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.blocksPosition(p)) return false;
-        }
-
-        for (Robot robot : robots) {
-            if (robot.getPosition().equals(p)) return false;
-        }
-
-        return true;
+        if (doesObstacleBlockPosition(p)) return false;
+        return !doesRobotBlockPosition(p);
     }
 
     public Position getUnoccupiedPosition() {
@@ -200,25 +200,37 @@ public class World {
         }
     }
 
+    public boolean doesObstacleBlockPath(Position start, Position end) {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPath(start, end))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean doesRobotBlockPath(Robot robot, Position end) {
+        for (Robot worldRobot : robots) {
+            if (
+                    !robot.equals(worldRobot)
+                            && worldRobot.blocksPath(
+                            robot.getPosition(),
+                            end
+                    )
+            ) return true;
+        }
+        return false;
+    }
+
     public UpdateResponse moveRobot(Robot robot, Position newPosition) {
         if (!isPositionInsideWorld(newPosition)) return FAILED_OUTSIDE_WORLD;
 
         Position robotPosition = robot.getPosition();
 
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.blocksPath(robotPosition, newPosition))
-                return FAILED_OBSTRUCTED;
-        }
+        if (doesObstacleBlockPath(robotPosition, newPosition))
+            return FAILED_OBSTRUCTED;
 
-        for (Robot worldRobot : robots) {
-            if (
-                    !robot.equals(worldRobot)
-                    && worldRobot.blocksPath(
-                            robotPosition,
-                            newPosition
-                    )
-            ) return FAILED_OBSTRUCTED;
-        }
+        if (doesRobotBlockPath(robot, newPosition))
+            return FAILED_OBSTRUCTED;
 
         robot.setPosition(newPosition);
         return SUCCESS;

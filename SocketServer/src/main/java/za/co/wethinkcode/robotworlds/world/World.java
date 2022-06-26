@@ -169,18 +169,24 @@ public class World {
         return p.isIn(topLeft, bottomRight);
     }
 
+    public boolean doesObstacleBlockPosition(Position p) {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPosition(p)) return true;
+        }
+        return false;
+    }
+
+    public boolean doesRobotBlockPosition(Position p) {
+        for (Robot robot : robots) {
+            if (robot.getPosition().equals(p)) return true;
+        }
+        return false;
+    }
+
     public boolean isSpaceAvailableForPosition(Position p) {
         if (!isPositionInsideWorld(p)) return false;
-
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.blocksPosition(p)) return false;
-        }
-
-        for (Robot robot : robots) {
-            if (robot.getPosition().equals(p)) return false;
-        }
-
-        return true;
+        if (doesObstacleBlockPosition(p)) return false;
+        return !doesRobotBlockPosition(p);
     }
 
     public Position getUnoccupiedPosition() {
@@ -194,25 +200,37 @@ public class World {
         }
     }
 
+    public boolean doesObstacleBlockPath(Position start, Position end) {
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.blocksPath(start, end))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean doesRobotBlockPath(Robot robot, Position end) {
+        for (Robot worldRobot : robots) {
+            if (
+                    !robot.equals(worldRobot)
+                            && worldRobot.blocksPath(
+                            robot.getPosition(),
+                            end
+                    )
+            ) return true;
+        }
+        return false;
+    }
+
     public UpdateResponse moveRobot(Robot robot, Position newPosition) {
         if (!isPositionInsideWorld(newPosition)) return FAILED_OUTSIDE_WORLD;
 
         Position robotPosition = robot.getPosition();
 
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.blocksPath(robotPosition, newPosition))
-                return FAILED_OBSTRUCTED;
-        }
+        if (doesObstacleBlockPath(robotPosition, newPosition))
+            return FAILED_OBSTRUCTED;
 
-        for (Robot worldRobot : robots) {
-            if (
-                    !robot.equals(worldRobot)
-                    && worldRobot.blocksPath(
-                            robotPosition,
-                            newPosition
-                    )
-            ) return FAILED_OBSTRUCTED;
-        }
+        if (doesRobotBlockPath(robot, newPosition))
+            return FAILED_OBSTRUCTED;
 
         robot.setPosition(newPosition);
         return SUCCESS;

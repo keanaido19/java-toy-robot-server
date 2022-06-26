@@ -1,7 +1,6 @@
 package za.co.wethinkcode.robotworlds.world1x1;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.TestBase;
 
@@ -27,18 +26,14 @@ public class StateRobotTests extends TestBase {
         // Given that I am connected to a running Robot Worlds server
         // And the world is of size 1x1
         //      (The world is configured or hardcoded to this size)
-        Assertions.assertTrue(serverClient.isConnected());
+        assertTrue(serverClient.isConnected());
 
         // When I send a valid state request to the server
         JsonNode response =
                 executeCommand("Hal", "state");
 
         // Then I should get an error response from the server
-        assertNotNull(response.get("result"));
-        assertEquals("ERROR", response.get("result").asText());
-        assertNotNull(response.get("data"));
-        assertEquals("Robot does not exist",
-                response.get("data").get("message").asText());
+        testFailedCommand(response, "Robot does not exist");
     }
 
     @Test
@@ -46,8 +41,7 @@ public class StateRobotTests extends TestBase {
         // Given that I am connected to a running Robot Worlds server
         // And the world is of size 1x1
         //      (The world is configured or hardcoded to this size)
-        Assertions.assertTrue(serverClient.isConnected());
-
+        assertTrue(serverClient.isConnected());
         launchRobot("HAL");
 
         // When I send a valid state request to the server
@@ -55,8 +49,7 @@ public class StateRobotTests extends TestBase {
                 executeCommand("HAL", "state");
 
         // Then I should get a valid response from the server
-        assertNotNull(response.get("result"));
-        assertEquals("OK", response.get("result").asText());
+        testCommandSuccessful(response);
 
         // And the position should be (x:0, y:0)
         assertNotNull(response.get("state"));

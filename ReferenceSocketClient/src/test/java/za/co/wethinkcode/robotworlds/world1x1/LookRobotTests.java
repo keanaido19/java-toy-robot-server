@@ -1,7 +1,6 @@
 package za.co.wethinkcode.robotworlds.world1x1;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.TestBase;
 
@@ -23,15 +22,14 @@ public class LookRobotTests extends TestBase {
         // Given that I am connected to a running Robot Worlds server
         // And the world is of size 1x1
         //      (The world is configured or hardcoded to this size)
-        Assertions.assertTrue(serverClient.isConnected());
+        assertTrue(serverClient.isConnected());
         launchRobot("HAL");
 
         // When I send a valid look request to the server
         JsonNode response = executeCommand("HAL", "look");
 
         // Then I should get a valid response from the server
-        assertNotNull(response.get("result"));
-        assertEquals("OK", response.get("result").asText());
+        testCommandSuccessful(response);
 
         // And the position should be (x:0, y:0)
         assertNotNull(response.get("data"));

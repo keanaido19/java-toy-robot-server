@@ -12,7 +12,9 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 public class RobotServer {
 
@@ -43,7 +45,7 @@ public class RobotServer {
                 clientThread.start();
             }
 
-        }catch (IOException e) {
+        } catch (IOException e) {
             stopServer();
         }
     }
@@ -58,35 +60,36 @@ public class RobotServer {
         }
     }
 
-    public static String getServerIpAddress() {
+    private static Enumeration<InetAddress> getInetAddress()
+            throws SocketException {
+        Enumeration<NetworkInterface> networkInterfaces =
+                NetworkInterface.getNetworkInterfaces();
 
+        while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface =
+                    networkInterfaces.nextElement();
+
+            // filters out 127.0.0.1 and inactive interfaces
+            if (networkInterface.isLoopback() || !networkInterface.isUp())
+                continue;
+
+            return networkInterface.getInetAddresses();
+        }
+
+        throw new SocketException();
+    }
+
+    public static String getServerIpAddress() throws SocketException {
         String serverIpAddress;
 
-        try {
-            Enumeration<NetworkInterface> networkInterfaces =
-                    NetworkInterface.getNetworkInterfaces();
+        Enumeration<InetAddress> inetAddresses = getInetAddress();
 
-            while (networkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface =
-                        networkInterfaces.nextElement();
+        while (inetAddresses.hasMoreElements()) {
+            InetAddress inetAddress = inetAddresses.nextElement();
+            serverIpAddress = inetAddress.getHostAddress();
 
-                // filters out 127.0.0.1 and inactive interfaces
-                if (networkInterface.isLoopback() || !networkInterface.isUp())
-                    continue;
-
-                Enumeration<InetAddress> inetAddresses =
-                        networkInterface.getInetAddresses();
-
-                while (inetAddresses.hasMoreElements()) {
-                    InetAddress inetAddress = inetAddresses.nextElement();
-                    serverIpAddress = inetAddress.getHostAddress();
-
-                    if (serverIpAddress.length() <= 15)
-                        return serverIpAddress;
-                }
-            }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
+            if (serverIpAddress.length() <= 15)
+                return serverIpAddress;
         }
         return "localhost";
     }

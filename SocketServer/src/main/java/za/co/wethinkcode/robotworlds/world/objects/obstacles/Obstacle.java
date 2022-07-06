@@ -22,6 +22,10 @@ public interface Obstacle {
          */
         int getSize();
 
+        int getWidth();
+
+        int getHeight();
+
         /**
          * Checks if this obstacle blocks access to the specified position.
          * @param position the position to check

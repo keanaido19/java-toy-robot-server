@@ -9,7 +9,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLiteDbConnector {
+public class SQLiteDbConnector implements DbConnector {
     private final Connection dbConnection;
 
     public SQLiteDbConnector(String dbUrl) throws SQLException {
@@ -166,6 +166,7 @@ public class SQLiteDbConnector {
         saveObjects("mines", mines, world_id);
     }
 
+    @Override
     public void saveWorld(String worldName, WorldDbObject world)
             throws SQLException {
         createTables();
@@ -246,6 +247,7 @@ public class SQLiteDbConnector {
         return returnList;
     }
 
+    @Override
     public WorldDbObject restoreWorld(String worldName) throws SQLException {
         int world_id = getWorldID(worldName);
         return new WorldDbObject(

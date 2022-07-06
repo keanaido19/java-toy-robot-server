@@ -83,25 +83,25 @@ test_reference_server:
 
 test_server_world1x1:
 	$(MAKE) kill_pid_on_5000
-	$(call run_server,$(SERVER_JAR))
+	mvn exec:java -Dexec.args="-s 1" &
 	$(call acceptance_test,world1x1)
 	$(MAKE) kill_pid_on_5000
 
 test_server_world2x2:
 	$(MAKE) kill_pid_on_5000
-	$(call run_server_2x2,$(SERVER_JAR))
+	mvn exec:java -Dexec.args="-s 2" &
 	$(call acceptance_test,world2x2)
 	$(MAKE) kill_pid_on_5000
 
 test_server_world2x2_obs_0_1:
 	$(MAKE) kill_pid_on_5000
-	$(call run_server_2x2_obs,$(SERVER_JAR),0,1)
+	mvn exec:java -Dexec.args="-s 2 -o 0,1" &
 	$(call acceptance_test,obstacle0_1)
 	$(MAKE) kill_pid_on_5000
 
 test_server_world2x2_obs_1_1:
 	$(MAKE) kill_pid_on_5000
-	$(call run_server_2x2_obs,$(SERVER_JAR),1,1)
+	mvn exec:java -Dexec.args="-s 2 -o 1,1" &
 	$(call acceptance_test,obstacle1_1)
 	$(MAKE) kill_pid_on_5000
 
@@ -109,7 +109,7 @@ test_server_world2x2_obs:
 	$(MAKE) test_server_world2x2_obs_0_1
 	$(MAKE) test_server_world2x2_obs_1_1
 
-test_server: maven_clean maven_package
+test_server:
 	mvn test -pl SocketServer -pl SocketClient
 	$(MAKE) test_server_world1x1
 	$(MAKE) test_server_world2x2

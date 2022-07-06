@@ -80,6 +80,8 @@
                     <skip>false</skip>
                     <executable>java</executable>
                     <mainClass>za.co.wethinkcode.robotworlds.RobotServer</mainClass>
+                    <includeProjectDependencies>
+                    </includeProjectDependencies>
                 </configuration>
             </plugin>
             <plugin>

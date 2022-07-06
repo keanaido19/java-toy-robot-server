@@ -29,8 +29,8 @@ public class WorldBuilder {
     private static final String CONFIG_FILE =
             CONFIG_DIRECTORY + "WorldData.json";
     private static final String DEFAULT_WORLD_DATA =
-            "{\"visibility\":1,\"reload\":3,\"repair\":3,\"shields\"" +
-            ":5,\"shots\":5}";
+            "{\"visibility\":1,\"reload\":3,\"repair\":3,\"mine\":3," +
+                    "\"shields\":5,\"shots\":5}";
     private static File file;
 
     private static void createConfigDirectory() {
@@ -65,7 +65,8 @@ public class WorldBuilder {
     private static boolean verifyConfigData(String configData) {
         Pattern pattern = Pattern.compile(
                 "^\\{\"visibility\":\\d+,\"reload\":\\d+," +
-                        "\"repair\":\\d+,\"shields\":\\d+,\"shots\":\\d+}$");
+                        "\"repair\":\\d+,\"mine\":\\d+," +
+                        "\"shields\":\\d+,\"shots\":\\d+}$");
 
         if (!pattern.matcher(configData).find()) return false;
 
@@ -78,6 +79,7 @@ public class WorldBuilder {
                         "visibility",
                         "reload",
                         "repair",
+                        "mine",
                         "shields",
                         "shots"
                 );

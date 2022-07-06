@@ -33,6 +33,16 @@ public class SquareObstacle implements Obstacle {
         return size;
     }
 
+    @Override
+    public int getWidth() {
+        return size;
+    }
+
+    @Override
+    public int getHeight() {
+        return size;
+    }
+
     private int getAdjustedSize() {
         return size <= 0 ? 0 : size - 1;
     }

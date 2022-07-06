@@ -8,13 +8,22 @@ public class WorldConfigData {
     int repair;
     int shields;
     int shots;
+    int mine;
 
-    public WorldConfigData() {
-        this.visibility = 1;
-        this.reload = 3;
-        this.repair = 3;
-        this.shields = 5;
-        this.shots = 5;
+    public WorldConfigData(
+            int visibility,
+            int reload,
+            int repair,
+            int mine,
+            int shields,
+            int shots
+    ) {
+        this.visibility = visibility;
+        this.reload = reload;
+        this.repair = repair;
+        this.shields = shields;
+        this.shots = shots;
+        this.mine = mine;
     }
 
     public int getVisibility() {
@@ -37,6 +46,10 @@ public class WorldConfigData {
         return shots;
     }
 
+    public int getMine() {
+        return mine;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,11 +60,12 @@ public class WorldConfigData {
                 && reload == that.reload
                 && repair == that.repair
                 && shields == that.shields
-                && shots == that.shots;
+                && shots == that.shots
+                && mine == that.mine;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(visibility, reload, repair, shields, shots);
+        return Objects.hash(visibility, reload, repair, shields, shots, mine);
     }
 }

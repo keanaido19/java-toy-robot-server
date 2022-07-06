@@ -12,10 +12,11 @@ public class WorldDbObjectConverter {
                 new WorldDataDbObject(
                         worldData.getWidth(),
                         worldData.getHeight(),
+                        worldData.getWorldConfigData().getVisibility(),
                         worldData.getWorldConfigData().getRepair(),
                         worldData.getWorldConfigData().getReload(),
                         worldData.getWorldConfigData().getMine(),
-                        worldData.getWorldConfigData().getRepair()
+                        worldData.getWorldConfigData().getShields()
                 );
         return null;
     }

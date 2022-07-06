@@ -2,15 +2,17 @@ package za.co.wethinkcode.robotworlds.dbobjects;
 
 public class WorldDataDbObject {
     private final int
-            width, height, repairTime, reloadTime, mineTime, maxShield;
+            width, height, visibility, repairTime, reloadTime, mineTime,
+            maxShield;
 
     public WorldDataDbObject() {
-        this(0, 0, 0, 0, 0, 0);
+        this(0, 0, 0, 0, 0, 0, 0);
     }
 
     public WorldDataDbObject(
             int width,
             int height,
+            int visibility,
             int repairTime,
             int reloadTime,
             int mineTime,
@@ -18,6 +20,7 @@ public class WorldDataDbObject {
     ) {
         this.width = width;
         this.height = height;
+        this.visibility = visibility;
         this.repairTime = repairTime;
         this.reloadTime = reloadTime;
         this.mineTime = mineTime;
@@ -30,6 +33,10 @@ public class WorldDataDbObject {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getVisibility() {
+        return visibility;
     }
 
     public int getRepairTime() {

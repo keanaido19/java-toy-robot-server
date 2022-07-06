@@ -28,6 +28,7 @@ public class SQLiteDbConnector implements DbConnector {
                         "reloadTime INTEGER NOT NULL, " +
                         "mineTime INTEGER NOT NULL, " +
                         "maxShield INTEGER NOT NULL, " +
+                        "maxShots INTEGER NOT NULL, " +
                         "world_id INTEGER UNIQUE NOT NULL, " +
                         "FOREIGN KEY (world_id) REFERENCES " +
                         "world (world_id) ON DELETE CASCADE ON UPDATE CASCADE)"
@@ -113,9 +114,10 @@ public class SQLiteDbConnector implements DbConnector {
                 MessageFormat.format(
                         "INSERT INTO worldData" +
                                 "(width, height, visibility, repairTime, " +
-                                "reloadTime, mineTime, maxShield, world_id) " +
+                                "reloadTime, mineTime, maxShield, " +
+                                "maxShots, world_id) " +
                                 "VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, " +
-                                "{7})",
+                                "{7}, {8})",
                         worldData.getWidth(),
                         worldData.getHeight(),
                         worldData.getVisibility(),
@@ -123,6 +125,7 @@ public class SQLiteDbConnector implements DbConnector {
                         worldData.getReloadTime(),
                         worldData.getMineTime(),
                         worldData.getMaxShield(),
+                        worldData.getMaxShots(),
                         world_id
                 )
         );
@@ -220,7 +223,8 @@ public class SQLiteDbConnector implements DbConnector {
                 resultSet.getInt("repairTime"),
                 resultSet.getInt("reloadTime"),
                 resultSet.getInt("mineTime"),
-                resultSet.getInt("maxShield")
+                resultSet.getInt("maxShield"),
+                resultSet.getInt("maxShots")
         );
     }
 

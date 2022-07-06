@@ -10,13 +10,20 @@ public class WorldConfigData {
     int shots;
     int mine;
 
-    public WorldConfigData() {
-        this.visibility = 1;
-        this.reload = 3;
-        this.repair = 3;
-        this.shields = 5;
-        this.shots = 5;
-        this.mine = 3;
+    public WorldConfigData(
+            int visibility,
+            int reload,
+            int repair,
+            int mine,
+            int shields,
+            int shots
+    ) {
+        this.visibility = visibility;
+        this.reload = reload;
+        this.repair = repair;
+        this.shields = shields;
+        this.shots = shots;
+        this.mine = mine;
     }
 
     public int getVisibility() {

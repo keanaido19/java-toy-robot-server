@@ -39,6 +39,10 @@ public class World {
         return worldData;
     }
 
+    public int getWidth() { return worldData.getWidth();}
+
+    public int getHeight() { return worldData.getHeight();}
+
     public int getVisibility() {
         return worldData.getWorldConfigData().getVisibility();
     }
@@ -49,6 +53,10 @@ public class World {
 
     public int getRepair() {
         return worldData.getWorldConfigData().getRepair();
+    }
+
+    public int getMine() {
+        return worldData.getWorldConfigData().getMine();
     }
 
     public int getShields() {

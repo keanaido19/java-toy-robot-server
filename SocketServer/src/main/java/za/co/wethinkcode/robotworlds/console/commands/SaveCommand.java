@@ -6,8 +6,6 @@ import za.co.wethinkcode.robotworlds.databaseconnectors.SQLiteDbConnector;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDbObject;
 import za.co.wethinkcode.robotworlds.world.WorldDbObjectConverter;
 
-import java.sql.SQLException;
-
 public class SaveCommand extends ServerCommand {
     private final String worldName;
 

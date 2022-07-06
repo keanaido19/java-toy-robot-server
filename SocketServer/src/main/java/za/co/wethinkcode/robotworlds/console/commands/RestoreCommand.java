@@ -15,21 +15,23 @@ public class RestoreCommand extends ServerCommand {
 
     @Override
     public boolean execute(RobotServer server) {
-//        WorldDbObject worldDbObject =
-//                WorldDbObjectConverter.getWorldDbObject(server.getWorld());
-//        try {
-//            DbConnector databaseConnector =
-//                    new SQLiteDbConnector("world.sqlite");
-//            databaseConnector.saveWorld(worldName, worldDbObject);
-//
-//            System.out.printf(
-//                    "Saved world as \"%s\" in database.%n",
-//                    worldName
-//            );
-//
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
+
+        try {
+            DbConnector databaseConnector =
+                    new SQLiteDbConnector("world.sqlite");
+            WorldDbObject worldDbObject =
+                    databaseConnector.restoreWorld(worldName);
+
+            server.setWorld(WorldDbObjectConverter.getWorld(worldDbObject));
+
+            System.out.printf(
+                    "World \"%s\" successfully restored.%n",
+                    worldName
+            );
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         return true;
     }

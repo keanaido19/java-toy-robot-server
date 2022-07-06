@@ -20,7 +20,7 @@ public class RobotServer {
 
     private final ServerConsole serverConsole;
     private final ServerSocket serverSocket;
-    private final World world;
+    private World world;
 
     public RobotServer(ServerSocket serverSocket, World world){
         this.serverSocket = serverSocket;
@@ -34,6 +34,10 @@ public class RobotServer {
 
     public World getWorld() {
         return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public void startServer(){

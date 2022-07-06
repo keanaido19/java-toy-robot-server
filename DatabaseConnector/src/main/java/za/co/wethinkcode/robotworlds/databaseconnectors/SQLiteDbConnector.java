@@ -193,7 +193,7 @@ public class SQLiteDbConnector implements DbConnector {
                         )
                 );
         if (resultSet.isClosed())
-            throw new SQLException("Name does not exist!");
+            throw new SQLException("World name does not exist!");
 
         return resultSet.getInt("world_id");
     }

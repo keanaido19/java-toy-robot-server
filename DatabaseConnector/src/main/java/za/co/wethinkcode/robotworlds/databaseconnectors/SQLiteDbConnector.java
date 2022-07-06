@@ -23,6 +23,7 @@ public class SQLiteDbConnector {
                 "CREATE TABLE IF NOT EXISTS worldData(" +
                         "width INTEGER NOT NULL, " +
                         "height INTEGER NOT NULL, " +
+                        "visibility INTEGER NOT NULL, " +
                         "repairTime INTEGER NOT NULL, " +
                         "reloadTime INTEGER NOT NULL, " +
                         "mineTime INTEGER NOT NULL, " +
@@ -111,11 +112,13 @@ public class SQLiteDbConnector {
         statement.executeUpdate(
                 MessageFormat.format(
                         "INSERT INTO worldData" +
-                                "(width, height, repairTime, reloadTime, " +
-                                "mineTime, maxShield, world_id) " +
-                                "VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6})",
+                                "(width, height, visibility, repairTime, " +
+                                "reloadTime, mineTime, maxShield, world_id) " +
+                                "VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, " +
+                                "{7})",
                         worldData.getWidth(),
                         worldData.getHeight(),
+                        worldData.getVisibility(),
                         worldData.getRepairTime(),
                         worldData.getReloadTime(),
                         worldData.getMineTime(),
@@ -212,6 +215,7 @@ public class SQLiteDbConnector {
         return new WorldDataDbObject(
                 resultSet.getInt("width"),
                 resultSet.getInt("height"),
+                resultSet.getInt("visibility"),
                 resultSet.getInt("repairTime"),
                 resultSet.getInt("reloadTime"),
                 resultSet.getInt("mineTime"),

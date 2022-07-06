@@ -9,7 +9,8 @@ public class ServerCommandHandler {
             {new QuitCommandHandler(),
             new RobotsCommandHandler(),
             new DumpCommandHandler(),
-            new SaveCommandHandler()};
+            new SaveCommandHandler(),
+            new RestoreCommandHandler()};
 
     public static ServerCommand getServerCommand(String command) {
         for (ServerCommandHandlerStrategy serverCommandHandlerStrategy :

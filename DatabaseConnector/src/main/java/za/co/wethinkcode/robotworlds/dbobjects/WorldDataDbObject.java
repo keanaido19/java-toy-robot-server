@@ -3,10 +3,10 @@ package za.co.wethinkcode.robotworlds.dbobjects;
 public class WorldDataDbObject {
     private final int
             width, height, visibility, repairTime, reloadTime, mineTime,
-            maxShield;
+            maxShield, maxShots;
 
     public WorldDataDbObject() {
-        this(0, 0, 0, 0, 0, 0, 0);
+        this(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     public WorldDataDbObject(
@@ -16,7 +16,8 @@ public class WorldDataDbObject {
             int repairTime,
             int reloadTime,
             int mineTime,
-            int maxShield
+            int maxShield,
+            int maxShots
     ) {
         this.width = width;
         this.height = height;
@@ -25,6 +26,7 @@ public class WorldDataDbObject {
         this.reloadTime = reloadTime;
         this.mineTime = mineTime;
         this.maxShield = maxShield;
+        this.maxShots = maxShots;
     }
 
     public int getWidth() {
@@ -53,5 +55,9 @@ public class WorldDataDbObject {
 
     public int getMaxShield() {
         return maxShield;
+    }
+
+    public int getMaxShots() {
+        return maxShots;
     }
 }

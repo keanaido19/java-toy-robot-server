@@ -215,6 +215,7 @@ public class ORMLiteDbConnector implements DbConnector {
     public WorldDbObject restoreWorld(String worldName)
             throws SQLException {
         WorldDO worldDO = getWorldDO(worldName);
+        if (null == worldDO) throw new SQLException();
         return new WorldDbObject(
                 getWorldData(worldDO.getWorldData()),
                 getObstacles(worldDO.getObstacles()),

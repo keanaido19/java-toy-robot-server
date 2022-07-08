@@ -30,7 +30,11 @@ public class SaveCommand extends ServerCommand {
             );
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.printf(
+                    "Unable to save World (\"%s\"), world name already in " +
+                            "use.%n",
+                    worldName
+            );
         }
 
         return true;

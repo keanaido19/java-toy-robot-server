@@ -32,7 +32,10 @@ public class RestoreCommand extends ServerCommand {
             );
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.printf(
+                    "Unable to restore World (\"%s\"), world does not exist.%n",
+                    worldName
+            );
         }
 
         return true;

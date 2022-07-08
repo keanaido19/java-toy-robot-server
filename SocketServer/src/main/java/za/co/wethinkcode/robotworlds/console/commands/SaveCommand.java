@@ -18,8 +18,7 @@ public class SaveCommand extends ServerCommand {
         WorldDbObject worldDbObject =
                 WorldDbObjectConverter.getWorldDbObject(server.getWorld());
         try {
-            DbConnector databaseConnector =
-                    new SQLiteDbConnector("world.sqlite");
+            DbConnector databaseConnector = new SQLiteDbConnector();
             databaseConnector.saveWorld(worldName, worldDbObject);
 
             System.out.printf(

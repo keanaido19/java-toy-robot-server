@@ -18,7 +18,7 @@ public class RestoreCommand extends ServerCommand {
 
         try {
             DbConnector databaseConnector =
-                    new SQLiteDbConnector("world.sqlite");
+                    new SQLiteDbConnector();
             WorldDbObject worldDbObject =
                     databaseConnector.restoreWorld(worldName);
 

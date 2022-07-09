@@ -20,7 +20,7 @@
       <module name="CommandLineInterface" options="--add-modules java.base" />
       <module name="DatabaseConnector" options="--add-modules java.base" />
       <module name="ReferenceSocketClient" options="--add-modules java.base" />
-      <module name="RobotWorldsDomain" options="--add-modules java.base" />
+      <module name="RobotWorldsDomain" options="--add-modules java.base,java.sql" />
       <module name="SocketServer" options="--add-modules java.base" />
     </option>
   </component>

@@ -1,13 +1,19 @@
 package za.co.wethinkcode.robotworlds.database;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.RobotServer;
 
 import java.io.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AcceptanceTests {
+
+    @BeforeAll
+    static void beforeAll() {
+    }
 
     private void simulateServerConsole(
             String simulatedUserInput,
@@ -27,8 +33,8 @@ public class AcceptanceTests {
         }
 
         String[] linesOutput = outputStreamCaptor.toString().split("\n");
-        String lastLine = linesOutput[linesOutput.length - 1];
-        assertEquals(expectedLastLine, lastLine);
+        String secondLastLine = linesOutput[linesOutput.length - 2];
+        assertEquals(expectedLastLine, secondLastLine);
     }
 
     /**
@@ -39,6 +45,6 @@ public class AcceptanceTests {
      */
     @Test
     void saveTheWorld() {
-        String simulatedUserInput = "save world\nquit\n";
+        String simulatedUserInput = "save testWorld\nquit\n";
     }
 }

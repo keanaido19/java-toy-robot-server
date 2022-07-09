@@ -31,7 +31,7 @@ public class ORMLiteDbConnector implements DbConnector {
     }
 
     public ORMLiteDbConnector() throws SQLException {
-        this("world.db");
+        this("world.sqlite");
     }
 
     private void createTables() throws SQLException {

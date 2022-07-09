@@ -27,18 +27,16 @@ public class SQLiteDbConnector implements DbConnector {
     private void createWorldDataTable() throws SQLException {
         Statement sqlStatement = dbConnection.createStatement();
         sqlStatement.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS worldData(" +
-                        "width INTEGER NOT NULL, " +
-                        "height INTEGER NOT NULL, " +
-                        "visibility INTEGER NOT NULL, " +
-                        "repairTime INTEGER NOT NULL, " +
-                        "reloadTime INTEGER NOT NULL, " +
-                        "mineTime INTEGER NOT NULL, " +
-                        "maxShield INTEGER NOT NULL, " +
-                        "maxShots INTEGER NOT NULL, " +
-                        "world_id INTEGER UNIQUE NOT NULL, " +
-                        "FOREIGN KEY (world_id) REFERENCES " +
-                        "world (world_id) ON UPDATE CASCADE ON DELETE CASCADE)"
+                "CREATE TABLE IF NOT EXISTS `worldData` (" +
+                        "`worldDataID` INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                        "`width` INTEGER NOT NULL , " +
+                        "`height` INTEGER NOT NULL , " +
+                        "`visibility` INTEGER NOT NULL , " +
+                        "`repairTime` INTEGER NOT NULL , " +
+                        "`reloadTime` INTEGER NOT NULL , " +
+                        "`mineTime` INTEGER NOT NULL , " +
+                        "`maxShield` INTEGER NOT NULL , " +
+                        "`maxShots` INTEGER NOT NULL )"
         );
     }
 
@@ -46,15 +44,13 @@ public class SQLiteDbConnector implements DbConnector {
         Statement sqlStatement = dbConnection.createStatement();
         sqlStatement.executeUpdate(
                 MessageFormat.format(
-                        "CREATE TABLE IF NOT EXISTS {0}(" +
-                                "{0}_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                "width INTEGER NOT NULL, " +
-                                "height INTEGER NOT NULL, " +
-                                "x INTEGER NOT NULL, " +
-                                "y INTEGER NOT NULL, " +
-                                "world_id INTEGER NOT NULL, " +
-                                "FOREIGN KEY (world_id) REFERENCES world" +
-                                "(world_id) ON UPDATE CASCADE ON DELETE CASCADE" +
+                        "CREATE TABLE IF NOT EXISTS `{0}` (" +
+                                "`{0}ID` INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                                "`width` INTEGER NOT NULL , " +
+                                "`height` INTEGER NOT NULL , " +
+                                "`x` INTEGER NOT NULL , " +
+                                "`y` INTEGER NOT NULL , " +
+                                "`worldDO_id` INTEGER " +
                                 ")",
                         tableName
                 )
@@ -64,9 +60,13 @@ public class SQLiteDbConnector implements DbConnector {
     private void createWorldTable() throws SQLException {
         Statement sqlStatement = dbConnection.createStatement();
         sqlStatement.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS world(" +
-                        "world_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "name TEXT UNIQUE NOT NULL)"
+                "CREATE TABLE IF NOT EXISTS `world` (" +
+                        "`worldID` INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                        "`name` VARCHAR NOT NULL , " +
+                        "`worldDataDO_id` INTEGER NOT NULL ,  " +
+                        "UNIQUE (`name`),  " +
+                        "UNIQUE (`worldDataDO_id`)" +
+                        ")"
         );
     }
 
@@ -83,28 +83,32 @@ public class SQLiteDbConnector implements DbConnector {
         ResultSet result =
                 statement.executeQuery(
                         MessageFormat.format(
-                                "SELECT * FROM {0} WHERE {0}_id = " +
-                                        "(SELECT MAX({0}_id) FROM {0})",
+                                "SELECT * FROM {0} WHERE {0}ID = " +
+                                        "(SELECT MAX({0}ID) FROM {0})",
                                 tableName
                         )
                 );
         if (result.isClosed()) return 0;
-        return result.getInt(tableName + "_id");
+        return result.getInt(tableName + "ID");
     }
 
-    private void saveWorldName(String worldName) throws SQLException {
+    private void saveWorldName(String worldName, int worldDataID)
+            throws SQLException {
         Statement statement = dbConnection.createStatement();
         String sqlStatement;
         if (worldName == null) {
             sqlStatement = MessageFormat.format(
-                    "INSERT INTO world(world_id, name) " +
-                            "VALUES({0}, {0})",
-                    getLastTableIndex("world") + 1
+                    "INSERT INTO world(worldID, name, worldDataDO_id) " +
+                            "VALUES({0}, {0}, {1})",
+                    getLastTableIndex("world") + 1,
+                    worldDataID
             );
         } else {
             sqlStatement = String.format(
-                    "INSERT INTO world(name) VALUES(\"%s\")",
-                    worldName
+                    "INSERT INTO world(name, worldDataDO_id) " +
+                            "VALUES('%s', %d)",
+                    worldName,
+                    worldDataID
             );
         }
 
@@ -115,7 +119,7 @@ public class SQLiteDbConnector implements DbConnector {
         }
     }
 
-    private void saveWorldData(WorldDataDbObject worldData, int world_id)
+    private void saveWorldData(WorldDataDbObject worldData)
             throws SQLException {
         Statement statement = dbConnection.createStatement();
         statement.executeUpdate(
@@ -123,9 +127,9 @@ public class SQLiteDbConnector implements DbConnector {
                         "INSERT INTO worldData" +
                                 "(width, height, visibility, repairTime, " +
                                 "reloadTime, mineTime, maxShield, " +
-                                "maxShots, world_id) " +
+                                "maxShots) " +
                                 "VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, " +
-                                "{7}, {8})",
+                                "{7})",
                         worldData.getWidth(),
                         worldData.getHeight(),
                         worldData.getVisibility(),
@@ -133,8 +137,7 @@ public class SQLiteDbConnector implements DbConnector {
                         worldData.getReloadTime(),
                         worldData.getMineTime(),
                         worldData.getMaxShield(),
-                        worldData.getMaxShots(),
-                        world_id
+                        worldData.getMaxShots()
                 )
         );
     }
@@ -142,53 +145,53 @@ public class SQLiteDbConnector implements DbConnector {
     private void saveObjects(
             String tableName,
             List<WorldObjectDbData> objects,
-            int world_id
+            int worldID
     ) throws SQLException {
         Statement statement = dbConnection.createStatement();
         for (WorldObjectDbData object : objects) {
             statement.executeUpdate(
                     MessageFormat.format(
                             "INSERT INTO {0}" +
-                                    "(width, height, x, y, world_id) " +
+                                    "(width, height, x, y, worldDO_id) " +
                                     "VALUES({1}, {2}, {3}, {4}, {5})",
                             tableName,
                             object.getWidth(),
                             object.getHeight(),
                             object.getX(),
                             object.getY(),
-                            world_id
+                            worldID
                     )
             );
         }
     }
 
-    private void saveObstacles(List<WorldObjectDbData> obstacles, int world_id)
+    private void saveObstacles(List<WorldObjectDbData> obstacles, int worldID)
             throws SQLException {
-        saveObjects("obstacles", obstacles, world_id);
+        saveObjects("obstacles", obstacles, worldID);
     }
 
-    private void savePits(List<WorldObjectDbData> pits, int world_id)
+    private void savePits(List<WorldObjectDbData> pits, int worldID)
             throws SQLException {
-        saveObjects("pits", pits, world_id);
+        saveObjects("pits", pits, worldID);
     }
 
-    private void saveMines(List<WorldObjectDbData> mines, int world_id)
+    private void saveMines(List<WorldObjectDbData> mines, int worldID)
             throws SQLException {
-        saveObjects("mines", mines, world_id);
+        saveObjects("mines", mines, worldID);
     }
 
     @Override
     public void saveWorld(String worldName, WorldDbObject world)
             throws SQLException {
         createTables();
-        saveWorldName(worldName);
+        saveWorldData(world.getWorldData());
+        saveWorldName(worldName, getLastTableIndex("worldData"));
 
-        int world_id = getLastTableIndex("world");
+        int worldID = getLastTableIndex("world");
 
-        saveWorldData(world.getWorldData(), world_id);
-        saveObstacles(world.getObstacles(), world_id);
-        savePits(world.getPits(), world_id);
-        saveMines(world.getMines(), world_id);
+        saveObstacles(world.getObstacles(), worldID);
+        savePits(world.getPits(), worldID);
+        saveMines(world.getMines(), worldID);
     }
 
     private int getWorldID(String worldName) throws SQLException {
@@ -203,26 +206,49 @@ public class SQLiteDbConnector implements DbConnector {
         if (resultSet.isClosed())
             throw new SQLException("World name does not exist!");
 
-        return resultSet.getInt("world_id");
+        return resultSet.getInt("worldID");
+    }
+
+    private int getWorldDataID(String worldName) throws SQLException {
+        Statement statement = dbConnection.createStatement();
+        ResultSet resultSet =
+                statement.executeQuery(
+                        String.format(
+                                "SELECT * FROM world WHERE name = \"%s\"",
+                                worldName
+                        )
+                );
+        if (resultSet.isClosed())
+            throw new SQLException("World name does not exist!");
+
+        return resultSet.getInt("worldDataDO_id");
     }
 
     private ResultSet getResultsLinkedToWorldID(
             String tableName,
-            int world_id
+            int worldID
     ) throws SQLException {
         Statement statement = dbConnection.createStatement();
         return statement.executeQuery(
                 MessageFormat.format(
-                        "SELECT * FROM {0} WHERE world_id = {1}",
+                        "SELECT * FROM {0} WHERE worldDO_id = {1}",
                         tableName,
-                        world_id
+                        worldID
                 )
         );
     }
 
-    private WorldDataDbObject getWorldData(int world_id) throws SQLException {
+    private WorldDataDbObject getWorldData(int worldDataID)
+            throws SQLException {
+        Statement statement = dbConnection.createStatement();
         ResultSet resultSet =
-                getResultsLinkedToWorldID("worldData", world_id);
+                statement.executeQuery(
+                        MessageFormat.format(
+                                "SELECT * FROM worldData WHERE " +
+                                        "worldDataID = {0}",
+                                worldDataID
+                        )
+                );
         if (resultSet.isClosed()) return new WorldDataDbObject();
         return new WorldDataDbObject(
                 resultSet.getInt("width"),
@@ -238,12 +264,12 @@ public class SQLiteDbConnector implements DbConnector {
 
     private List<WorldObjectDbData> getWorldObjects(
             String tableName,
-            int world_id
+            int worldID
     ) throws SQLException {
         ArrayList<WorldObjectDbData> returnList = new ArrayList<>();
 
         ResultSet resultSet =
-                getResultsLinkedToWorldID(tableName, world_id);
+                getResultsLinkedToWorldID(tableName, worldID);
 
         while (!resultSet.isClosed() && resultSet.next()) {
             returnList.add(
@@ -261,34 +287,56 @@ public class SQLiteDbConnector implements DbConnector {
 
     @Override
     public WorldDbObject restoreWorld(String worldName) throws SQLException {
-        int world_id = getWorldID(worldName);
+        int worldID = getWorldID(worldName);
         return new WorldDbObject(
-                getWorldData(world_id),
-                getWorldObjects("obstacles", world_id),
-                getWorldObjects("pits", world_id),
-                getWorldObjects("mines", world_id)
+                getWorldData(getWorldDataID(worldName)),
+                getWorldObjects("obstacles", worldID),
+                getWorldObjects("pits", worldID),
+                getWorldObjects("mines", worldID)
         );
     }
 
-    private void deleteRowUsingWorldID(String tableName, int world_id)
+    private void deleteRowUsingWorldID(String tableName, int worldID)
             throws SQLException {
         dbConnection.createStatement().executeUpdate(
                 String.format(
-                        "DELETE FROM %s WHERE world_id = %d",
+                        "DELETE FROM %s WHERE worldDO_id = %d",
                         tableName,
-                        world_id
+                        worldID
+                )
+        );
+    }
+
+    private void deleteWorldDataRow(String worldName) throws SQLException {
+        dbConnection.createStatement().executeUpdate(
+                String.format(
+                        "DELETE FROM worldData WHERE worldDataID = %d",
+                        getWorldDataID(worldName)
+                )
+        );
+    }
+
+    private void deleteWorldRow(String worldName) throws  SQLException {
+        dbConnection.createStatement().executeUpdate(
+                String.format(
+                        "DELETE FROM world WHERE worldID = %d",
+                        getWorldID(worldName)
                 )
         );
     }
 
     @Override
     public void deleteWorld(String worldName) throws SQLException {
-        int world_id = getWorldID(worldName);
+        int worldID = getWorldID(worldName);
+
+        deleteWorldDataRow(worldName);
+        deleteWorldRow(worldName);
+
         for (
                 String tableName :
-                List.of("world", "worldData", "pits", "obstacles", "mines")
+                List.of("pits", "obstacles", "mines")
         ) {
-            deleteRowUsingWorldID(tableName, world_id);
+            deleteRowUsingWorldID(tableName, worldID);
         }
     }
 }

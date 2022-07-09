@@ -1,4 +1,14 @@
 package za.co.wethinkcode.robotworlds.commands.auxilliarycommands;
 
-public class LookCommand {
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class LookCommand extends AuxiliaryCommand {
+    public LookCommand(String robotName) {
+        super(robotName, "look");
+    }
+
+    @Override
+    public JsonNode execute() {
+        return null;
+    }
 }

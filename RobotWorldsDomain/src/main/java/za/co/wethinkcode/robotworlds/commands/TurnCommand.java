@@ -1,4 +1,20 @@
 package za.co.wethinkcode.robotworlds.commands;
 
-public class TurnCommand {
+import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.List;
+
+public class TurnCommand extends Command {
+    public TurnCommand(
+            String robotName,
+            String command,
+            List<String> commandArguments
+    ) {
+        super(robotName, command, commandArguments);
+    }
+
+    @Override
+    public JsonNode execute() {
+        return null;
+    }
 }

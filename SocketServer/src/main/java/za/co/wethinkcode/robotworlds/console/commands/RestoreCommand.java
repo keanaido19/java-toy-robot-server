@@ -2,9 +2,12 @@ package za.co.wethinkcode.robotworlds.console.commands;
 
 import za.co.wethinkcode.robotworlds.RobotServer;
 import za.co.wethinkcode.robotworlds.databaseconnectors.DbConnector;
+import za.co.wethinkcode.robotworlds.databaseconnectors.ORMLiteDbConnector;
 import za.co.wethinkcode.robotworlds.databaseconnectors.SQLiteDbConnector;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDbObject;
 import za.co.wethinkcode.robotworlds.world.WorldDbObjectConverter;
+
+import java.sql.SQLException;
 
 public class RestoreCommand extends ServerCommand {
     private final String worldName;
@@ -17,8 +20,7 @@ public class RestoreCommand extends ServerCommand {
     public boolean execute(RobotServer server) {
 
         try {
-            DbConnector databaseConnector =
-                    new SQLiteDbConnector("world.sqlite");
+            DbConnector databaseConnector = new ORMLiteDbConnector();
             WorldDbObject worldDbObject =
                     databaseConnector.restoreWorld(worldName);
 
@@ -29,8 +31,11 @@ public class RestoreCommand extends ServerCommand {
                     worldName
             );
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.printf(
+                    "Unable to restore World (\"%s\"), world does not exist.%n",
+                    worldName
+            );
         }
 
         return true;

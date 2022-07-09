@@ -13,4 +13,11 @@
       </profile>
     </annotationProcessing>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="DatabaseConnector" options="" />
+      <module name="ReferenceSocketClient" options="" />
+      <module name="SocketServer" options="" />
+    </option>
+  </component>
 </project>

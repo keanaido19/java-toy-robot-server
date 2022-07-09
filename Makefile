@@ -25,6 +25,8 @@ run_server_2x2_obs = $(call run_server_2x2,$(1),-o $(2)$(comma)$(3))
 
 maven_release = mvn build-helper:parse-version -B release:prepare -DskipTests -Darguments=-DskipTests -DreleaseVersion=v$(1) -DdevelopmentVersion=$(2)
 
+all: build maven_package
+
 build: maven_verify maven_compile maven_install test_reference_server test_server
 
 maven_clean:
@@ -113,10 +115,11 @@ test_server_world2x2_obs:
 	$(MAKE) test_server_world2x2_obs_1_1
 
 test_server:
-	mvn test -pl SocketServer -pl SocketClient
+	mvn test -pl SocketServer -pl SocketClient -pl DatabaseConnector
 	$(MAKE) test_server_world1x1
 	$(MAKE) test_server_world2x2
 	$(MAKE) test_server_world2x2_obs
+	$(call acceptance_test,database)
 
 release_patch: build
 	$(eval VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(NEXT_PATCH_VERSION))
@@ -190,6 +193,7 @@ test_docker_world2x2_obs:
 	$(MAKE) test_docker_world2x2_obs_1_1
 
 test_docker:
+	$(MAKE) maven_install
 	$(MAKE) kill_pid_on_5000
 	$(MAKE) test_docker_world1x1
 	$(MAKE) test_docker_world2x2

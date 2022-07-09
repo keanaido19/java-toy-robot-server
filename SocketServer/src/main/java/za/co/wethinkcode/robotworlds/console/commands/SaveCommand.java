@@ -2,9 +2,12 @@ package za.co.wethinkcode.robotworlds.console.commands;
 
 import za.co.wethinkcode.robotworlds.RobotServer;
 import za.co.wethinkcode.robotworlds.databaseconnectors.DbConnector;
+import za.co.wethinkcode.robotworlds.databaseconnectors.ORMLiteDbConnector;
 import za.co.wethinkcode.robotworlds.databaseconnectors.SQLiteDbConnector;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDbObject;
 import za.co.wethinkcode.robotworlds.world.WorldDbObjectConverter;
+
+import java.sql.SQLException;
 
 public class SaveCommand extends ServerCommand {
     private final String worldName;
@@ -18,8 +21,7 @@ public class SaveCommand extends ServerCommand {
         WorldDbObject worldDbObject =
                 WorldDbObjectConverter.getWorldDbObject(server.getWorld());
         try {
-            DbConnector databaseConnector =
-                    new SQLiteDbConnector("world.sqlite");
+            DbConnector databaseConnector = new ORMLiteDbConnector();
             databaseConnector.saveWorld(worldName, worldDbObject);
 
             System.out.printf(
@@ -27,8 +29,12 @@ public class SaveCommand extends ServerCommand {
                     worldName
             );
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.printf(
+                    "Unable to save World (\"%s\"), world name already in " +
+                            "use.%n",
+                    worldName
+            );
         }
 
         return true;

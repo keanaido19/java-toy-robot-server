@@ -2,8 +2,12 @@ package za.co.wethinkcode.robotworlds.databaseconnectors;
 
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDbObject;
 
-public interface DbConnector {
-    void saveWorld(String worldName, WorldDbObject world) throws Exception;
+import java.sql.SQLException;
 
-    WorldDbObject restoreWorld(String worldName) throws Exception;
+public interface DbConnector {
+    void saveWorld(String worldName, WorldDbObject world) throws SQLException;
+
+    WorldDbObject restoreWorld(String worldName) throws SQLException;
+
+    void deleteWorld(String worldName) throws SQLException;
 }

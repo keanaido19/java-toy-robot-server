@@ -106,4 +106,19 @@ class SQLiteDbConnectorTest {
 
         assertEquals(world, worldFromDb);
     }
+
+    @Test
+    void deleteWorld() throws SQLException {
+        SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
+        Connection connection = dbConnector.getConnection();
+
+        dbConnector.saveWorld("world", createWorld());
+        dbConnector.deleteWorld("world");
+
+        assertTrue(checkTableEmpty("world", connection));
+        assertTrue(checkTableEmpty("worldData", connection));
+        assertTrue(checkTableEmpty("mines", connection));
+        assertTrue(checkTableEmpty("obstacles", connection));
+        assertTrue(checkTableEmpty("pits", connection));
+    }
 }

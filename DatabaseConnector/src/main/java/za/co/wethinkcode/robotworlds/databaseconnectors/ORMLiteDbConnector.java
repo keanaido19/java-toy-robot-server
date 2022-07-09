@@ -228,4 +228,15 @@ public class ORMLiteDbConnector implements DbConnector {
                 getMines(worldDO.getMines())
         );
     }
+
+    @Override
+    public void deleteWorld(String worldName) throws SQLException {
+        WorldDao worldDao =
+                DaoManager.createDao(connectionSource, WorldDO.class);
+
+        WorldDO worldDO = worldDao.getWorld(worldName);
+        if (null == worldDO) throw new SQLException();
+
+        worldDao.deleteById(worldDO.getWorldID());
+    }
 }

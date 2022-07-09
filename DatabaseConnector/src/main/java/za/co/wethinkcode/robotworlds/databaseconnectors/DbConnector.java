@@ -8,4 +8,6 @@ public interface DbConnector {
     void saveWorld(String worldName, WorldDbObject world) throws SQLException;
 
     WorldDbObject restoreWorld(String worldName) throws SQLException;
+
+    void deleteWorld(String worldName) throws SQLException;
 }

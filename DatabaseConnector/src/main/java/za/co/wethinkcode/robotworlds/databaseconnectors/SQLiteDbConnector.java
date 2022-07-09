@@ -38,7 +38,7 @@ public class SQLiteDbConnector implements DbConnector {
                         "maxShots INTEGER NOT NULL, " +
                         "world_id INTEGER UNIQUE NOT NULL, " +
                         "FOREIGN KEY (world_id) REFERENCES " +
-                        "world (world_id) ON DELETE CASCADE ON UPDATE CASCADE)"
+                        "world (world_id) ON UPDATE CASCADE ON DELETE CASCADE)"
         );
     }
 
@@ -54,7 +54,8 @@ public class SQLiteDbConnector implements DbConnector {
                                 "y INTEGER NOT NULL, " +
                                 "world_id INTEGER NOT NULL, " +
                                 "FOREIGN KEY (world_id) REFERENCES world" +
-                                "(world_id))",
+                                "(world_id) ON UPDATE CASCADE ON DELETE CASCADE" +
+                                ")",
                         tableName
                 )
         );
@@ -267,5 +268,27 @@ public class SQLiteDbConnector implements DbConnector {
                 getWorldObjects("pits", world_id),
                 getWorldObjects("mines", world_id)
         );
+    }
+
+    private void deleteRowUsingWorldID(String tableName, int world_id)
+            throws SQLException {
+        dbConnection.createStatement().executeUpdate(
+                String.format(
+                        "DELETE FROM %s WHERE world_id = %d",
+                        tableName,
+                        world_id
+                )
+        );
+    }
+
+    @Override
+    public void deleteWorld(String worldName) throws SQLException {
+        int world_id = getWorldID(worldName);
+        for (
+                String tableName :
+                List.of("world", "worldData", "pits", "obstacles", "mines")
+        ) {
+            deleteRowUsingWorldID(tableName, world_id);
+        }
     }
 }

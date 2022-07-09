@@ -1,7 +1,6 @@
 package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.CLIhandler.CommandLineArgumentHandler;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
+import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
 import za.co.wethinkcode.robotworlds.console.ServerConsole;
 import za.co.wethinkcode.robotworlds.world.World;

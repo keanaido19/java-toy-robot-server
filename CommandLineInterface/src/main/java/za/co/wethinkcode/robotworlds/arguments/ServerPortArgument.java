@@ -1,4 +1,4 @@
-package za.co.wethinkcode.robotworlds.CLIhandler.arguments;
+package za.co.wethinkcode.robotworlds.arguments;
 
 import org.apache.commons.cli.CommandLine;
 

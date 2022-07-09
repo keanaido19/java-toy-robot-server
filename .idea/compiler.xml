@@ -6,18 +6,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="RobotWorldsDomain" />
         <module name="DatabaseConnector" />
         <module name="SocketClient" />
         <module name="ReferenceSocketClient" />
         <module name="SocketServer" />
+        <module name="CommandLineInterface" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="DatabaseConnector" options="" />
-      <module name="ReferenceSocketClient" options="" />
-      <module name="SocketServer" options="" />
+      <module name="CommandLineInterface" options="--add-modules java.base" />
+      <module name="DatabaseConnector" options="--add-modules java.base" />
+      <module name="ReferenceSocketClient" options="--add-modules java.base" />
+      <module name="RobotWorldsDomain" options="--add-modules java.base" />
+      <module name="SocketServer" options="--add-modules java.base" />
     </option>
   </component>
 </project>

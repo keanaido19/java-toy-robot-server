@@ -1,9 +1,6 @@
-package za.co.wethinkcode.robotworlds.CLIhandler.arguments;
+package za.co.wethinkcode.robotworlds.arguments;
 
 import org.apache.commons.cli.CommandLine;
-import za.co.wethinkcode.robotworlds.world.Position;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.Obstacle;
-import za.co.wethinkcode.robotworlds.world.objects.obstacles.SquareObstacle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +23,11 @@ public class ObstacleArgument extends Argument{
     public Object getArgumentValue(
             CommandLine cmd
     ) throws IllegalArgumentException {
-        List<Obstacle> obstacles = new ArrayList<>();
+        List<int[]> obstaclePositions = new ArrayList<>();
 
         String value = (String) super.getArgumentValue(cmd);
 
-        if (null == value || "none".equals(value)) return obstacles;
+        if (null == value || "none".equals(value)) return obstaclePositions;
 
         Pattern pattern = Pattern.compile("^\\d+,\\d+$");
         if (!pattern.matcher(value).find())
@@ -44,7 +41,7 @@ public class ObstacleArgument extends Argument{
         try {
             int x = Integer.parseInt(coordinates[0]);
             int y = Integer.parseInt(coordinates[1]);
-            obstacles.add(new SquareObstacle(x, y, 1));
+            obstaclePositions.add(new int[] {x, y});
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
                     "Position of fixed obstacle as [x,y] coordinate in form " +
@@ -52,6 +49,6 @@ public class ObstacleArgument extends Argument{
             );
         }
 
-        return obstacles;
+        return obstaclePositions;
     }
 }

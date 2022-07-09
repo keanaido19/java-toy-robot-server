@@ -105,6 +105,7 @@ public class WorldBuilder {
                 WorldConfigData.class
         );
     }
+
     private static List<Obstacle> getObstacles(List<int[]> obstaclePositions) {
         List<Obstacle> returnList = new ArrayList<>();
         for (int[] position : obstaclePositions) {

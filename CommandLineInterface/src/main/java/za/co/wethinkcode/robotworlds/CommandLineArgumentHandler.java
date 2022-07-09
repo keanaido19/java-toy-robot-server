@@ -1,11 +1,10 @@
-package za.co.wethinkcode.robotworlds.CLIhandler;
-
+package za.co.wethinkcode.robotworlds;
 
 import org.apache.commons.cli.*;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.Argument;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ObstacleArgument;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.CLIhandler.arguments.SizeOfWorldArgument;
+import za.co.wethinkcode.robotworlds.arguments.Argument;
+import za.co.wethinkcode.robotworlds.arguments.ObstacleArgument;
+import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
+import za.co.wethinkcode.robotworlds.arguments.SizeOfWorldArgument;
 
 import java.util.Arrays;
 import java.util.List;

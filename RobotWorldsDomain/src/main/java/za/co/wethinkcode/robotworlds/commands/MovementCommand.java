@@ -25,18 +25,18 @@ public class MovementCommand extends Command {
 
     @Override
     public JsonResponse execute() {
-        Robot clientRobot = world.getRobot(robotName);
+        Robot robot = world.getRobot(robotName);
 
         int commandArgument = getInteger(commandArguments.get(0));
         int nrSteps =
                 "back".equals(command) ? -1 * commandArgument: commandArgument;
 
-        int newX = clientRobot.getPosition().getX();
-        int newY = clientRobot.getPosition().getY();
+        int newX = robot.getPosition().getX();
+        int newY = robot.getPosition().getY();
 
         Direction directionOfMovement = "back".equals(command) ? SOUTH : NORTH;
 
-        switch (clientRobot.getDirection()) {
+        switch (robot.getDirection()) {
             case NORTH:
                 newY = newY + nrSteps;
                 break;
@@ -55,20 +55,20 @@ public class MovementCommand extends Command {
 
         Position newPosition = new Position(newX, newY);
         UpdateResponse updateResponse =
-                world.moveRobot(clientRobot, newPosition);
+                world.moveRobot(robot, newPosition);
 
         LinkedHashMap<String, Object> dataMap =
-                DataMapBuilder.getDataMap(world, clientRobot);
+                DataMapBuilder.getDataMap(world, robot);
 
         Direction direction =
                 world.getEdge(
-                        clientRobot.getPosition(),
+                        robot.getPosition(),
                         directionOfMovement
                 );
 
         if (
                 null != direction
-                        && world.isPositionAtWorldEdge(clientRobot.getPosition())
+                        && world.isPositionAtWorldEdge(robot.getPosition())
                         && !updateResponse.equals(FAILED_OBSTRUCTED)
         ) {
             dataMap.put(
@@ -81,7 +81,7 @@ public class MovementCommand extends Command {
 
         return JsonResponse.getSuccessResponse(
                 dataMap,
-                clientRobot.getRobotData()
+                robot.getRobotData()
         );
     }
 }

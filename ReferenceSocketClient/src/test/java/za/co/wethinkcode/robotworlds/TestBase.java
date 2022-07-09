@@ -23,11 +23,21 @@ public class TestBase {
     @BeforeEach
     void connectToServer(){
         serverClient.connect(DEFAULT_IP, DEFAULT_PORT);
+        try {
+            Thread.sleep(69);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterEach
     void disconnectFromServer(){
         serverClient.disconnect();
+        try {
+            Thread.sleep(69);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public JsonNode launchRobot(String name) {
@@ -87,7 +97,6 @@ public class TestBase {
 
     public void testSuccessfulLaunch(JsonNode response, int worldSize) {
         // Then I should get a valid response from the server
-        System.out.println(response);
         testCommandSuccessful(response);
 
         // And the position should be random within worldSize x worldSize world

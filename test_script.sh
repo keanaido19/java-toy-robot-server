@@ -23,3 +23,5 @@ mvn exec:java -Dexec.args="-s 2 -o 0,1"  &
 mvn test -Dtest="obstacle0_1.AcceptanceTests*" -pl ReferenceSocketClient
 
 kill -9 $(lsof -t -i:5000)
+
+mvn test -Dtest="database.AcceptanceTests*" -pl ReferenceSocketClient

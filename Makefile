@@ -117,6 +117,7 @@ test_server:
 	$(MAKE) test_server_world1x1
 	$(MAKE) test_server_world2x2
 	$(MAKE) test_server_world2x2_obs
+	$(call acceptance_test,database)
 
 release_patch: build
 	$(eval VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(NEXT_PATCH_VERSION))

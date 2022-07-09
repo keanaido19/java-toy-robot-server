@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.databaseconnectors;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDataDbObject;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDbObject;
@@ -13,6 +14,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SQLiteDbConnectorTest {
+    SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
+
+    SQLiteDbConnectorTest() throws SQLException {}
 
     WorldDbObject createWorld() {
         WorldDataDbObject worldData =
@@ -49,7 +53,6 @@ class SQLiteDbConnectorTest {
 
     @Test
     void createTables() throws SQLException {
-        SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
         Connection connection = dbConnector.getConnection();
 
         dbConnector.saveWorld("world", createWorld());
@@ -82,7 +85,6 @@ class SQLiteDbConnectorTest {
 
     @Test
     void saveWorld() throws SQLException {
-        SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
         Connection connection = dbConnector.getConnection();
 
         dbConnector.saveWorld("world", createWorld());
@@ -96,7 +98,6 @@ class SQLiteDbConnectorTest {
 
     @Test
     void restoreWorld() throws SQLException {
-        SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
         Connection connection = dbConnector.getConnection();
 
         WorldDbObject world = createWorld();
@@ -109,7 +110,6 @@ class SQLiteDbConnectorTest {
 
     @Test
     void deleteWorld() throws SQLException {
-        SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
         Connection connection = dbConnector.getConnection();
 
         dbConnector.saveWorld("world", createWorld());

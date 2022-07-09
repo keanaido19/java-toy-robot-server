@@ -14,24 +14,23 @@ public class RepairCommand extends AuxiliaryCommand {
 
     @Override
     public JsonResponse execute() {
-        Robot clientRobot = world.getRobot(robotName);
-        int maximumShields = clientRobot.getMaximumShields();
+        Robot robot = world.getRobot(robotName);
+        int maximumShields = robot.getMaximumShields();
 
         if (0 == maximumShields) return JsonResponse.shieldErrorResponse();
 
-        if (Status.REPAIR.equals(clientRobot.getRobotStatus()))
+        if (Status.REPAIR.equals(robot.getRobotStatus()))
             return
                     JsonResponse.getSuccessResponse(
                             "message",
                             "Robot is repairing",
-                            clientRobot.getRobotData()
+                            robot.getRobotData()
                     );
 
-        if (clientRobot.getShields() != maximumShields) {
-            milliSeconds =
-                    world.getReload() * 1000;
-            clientRobot.setRobotStatus(Status.REPAIR);
-            clientRobot.timer(Status.REPAIR, milliSeconds);
+        if (robot.getShields() != maximumShields) {
+            milliSeconds = world.getReload() * 1000;
+            robot.setRobotStatus(Status.REPAIR);
+            robot.timer(Status.REPAIR, milliSeconds);
             return new StateCommand(robotName).execute();
         }
 
@@ -39,7 +38,7 @@ public class RepairCommand extends AuxiliaryCommand {
                 JsonResponse.getSuccessResponse(
                         "message",
                         "Shields are already at maximum",
-                        clientRobot.getRobotData()
+                        robot.getRobotData()
                 );
     }
 }

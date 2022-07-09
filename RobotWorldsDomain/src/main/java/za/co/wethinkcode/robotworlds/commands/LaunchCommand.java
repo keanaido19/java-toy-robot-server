@@ -1,10 +1,8 @@
 package za.co.wethinkcode.robotworlds.commands;
 
-import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.commands.auxilliarycommands.StateCommand;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
-import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.builders.robotbuilder.RobotBuilder;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
@@ -44,7 +42,6 @@ public class LaunchCommand extends Command {
 
     @Override
     public JsonResponse execute() {
-        World world = Play.getWorld();
         Position position = world.getUnoccupiedPosition();
 
         for (Robot worldRobot : world.getRobots()) {

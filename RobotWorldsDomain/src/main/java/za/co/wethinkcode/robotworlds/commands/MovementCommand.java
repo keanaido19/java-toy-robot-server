@@ -1,9 +1,7 @@
 package za.co.wethinkcode.robotworlds.commands;
 
-import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
-import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.builders.DataMapBuilder;
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
 import za.co.wethinkcode.robotworlds.world.enums.UpdateResponse;
@@ -27,7 +25,6 @@ public class MovementCommand extends Command {
 
     @Override
     public JsonResponse execute() {
-        World world = Play.getWorld();
         Robot clientRobot = world.getRobot(robotName);
 
         int commandArgument = getInteger(commandArguments.get(0));

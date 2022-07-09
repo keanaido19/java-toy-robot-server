@@ -1,6 +1,5 @@
 package za.co.wethinkcode.robotworlds.commands;
 
-import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.commands.auxilliarycommands.StateCommand;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
@@ -18,7 +17,7 @@ public class TurnCommand extends Command {
 
     @Override
     public JsonResponse execute() {
-        Robot robot = Play.getWorld().getRobot(robotName);
+        Robot robot = world.getRobot(robotName);
 
         if ("right".equals(commandArguments.get(0)))
             robot.turnRight();

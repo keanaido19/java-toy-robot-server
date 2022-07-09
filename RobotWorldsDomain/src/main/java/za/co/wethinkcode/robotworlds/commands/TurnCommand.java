@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import za.co.wethinkcode.robotworlds.response.JsonResponse;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class TurnCommand extends Command {
     }
 
     @Override
-    public JsonNode execute() {
+    public JsonResponse execute() {
         return null;
     }
 }

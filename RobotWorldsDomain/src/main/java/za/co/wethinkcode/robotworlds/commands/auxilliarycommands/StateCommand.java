@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands.auxilliarycommands;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import za.co.wethinkcode.robotworlds.response.JsonResponse;
 
 public class StateCommand extends AuxiliaryCommand {
 
@@ -9,7 +9,7 @@ public class StateCommand extends AuxiliaryCommand {
     }
 
     @Override
-    public JsonNode execute() {
+    public JsonResponse execute() {
         return null;
     }
 }

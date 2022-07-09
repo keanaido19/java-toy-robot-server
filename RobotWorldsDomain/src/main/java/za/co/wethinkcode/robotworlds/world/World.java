@@ -79,6 +79,13 @@ public class World {
         return bottomRight;
     }
 
+    public Robot getRobot(String robotName) {
+        for (Robot robot : robots) {
+            if (robotName.equals(robot.getName())) return robot;
+        }
+        return null;
+    }
+
     public List<Robot> getRobots() {
         return robots;
     }

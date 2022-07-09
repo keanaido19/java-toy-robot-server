@@ -13,6 +13,8 @@ public class RobotData {
     int shots;
     Status status;
 
+    public RobotData() {}
+
     public RobotData(
             List<Integer> position,
             Direction direction,
@@ -24,6 +26,26 @@ public class RobotData {
         this.shields = shields;
         this.shots = shots;
         this.status = status;
+    }
+
+    public List<Integer> getPosition() {
+        return position;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public int getShields() {
+        return shields;
+    }
+
+    public int getShots() {
+        return shots;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     @Override

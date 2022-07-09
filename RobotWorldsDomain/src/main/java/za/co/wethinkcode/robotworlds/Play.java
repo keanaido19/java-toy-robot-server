@@ -5,6 +5,7 @@ import za.co.wethinkcode.robotworlds.console.Console;
 import za.co.wethinkcode.robotworlds.response.JsonResponseBuilder;
 import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.builders.WorldBuilder;
+import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
 public class Play {
     private static World world;
@@ -25,8 +26,8 @@ public class Play {
         Play.world = world;
     }
 
-    public JsonNode getJsonResponse(JsonNode jsonRequest) {
-        return JSON_RESPONSE_BUILDER.getResponse(jsonRequest);
+    public String getJsonStringResponse(JsonNode jsonRequest) {
+        return JSON_RESPONSE_BUILDER.getStringResponse(jsonRequest);
     }
 
     public JsonResponseBuilder getResponseBuilder() {
@@ -34,6 +35,5 @@ public class Play {
     }
 
     public static void main(String[] args) {
-        new Play(args);
     }
 }

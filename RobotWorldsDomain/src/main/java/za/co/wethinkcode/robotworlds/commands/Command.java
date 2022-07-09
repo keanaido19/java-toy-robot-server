@@ -1,6 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import za.co.wethinkcode.robotworlds.response.JsonResponse;
 
 import java.util.List;
 
@@ -19,5 +19,5 @@ public abstract class Command {
         this.commandArguments = commandArguments;
     }
 
-    public abstract JsonNode execute();
+    public abstract JsonResponse execute();
 }

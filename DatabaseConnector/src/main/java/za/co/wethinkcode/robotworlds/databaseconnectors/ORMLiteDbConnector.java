@@ -22,11 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ORMLiteDbConnector implements DbConnector {
-    private final JdbcPooledConnectionSource connectionSource =
-            new JdbcPooledConnectionSource("jdbc:sqlite:world.db");
+    private final JdbcPooledConnectionSource connectionSource;
+
+    public ORMLiteDbConnector(String dbUrl) throws SQLException {
+        connectionSource =
+                new JdbcPooledConnectionSource("jdbc:sqlite:" + dbUrl);
+        Logger.setGlobalLogLevel(Level.ERROR);
+    }
 
     public ORMLiteDbConnector() throws SQLException {
-        Logger.setGlobalLogLevel(Level.ERROR);
+        this("world.db");
     }
 
     private void createTables() throws SQLException {

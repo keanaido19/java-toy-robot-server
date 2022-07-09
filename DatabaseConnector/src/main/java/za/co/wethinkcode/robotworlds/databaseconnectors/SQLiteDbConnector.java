@@ -10,10 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteDbConnector implements DbConnector {
-    private final Connection dbConnection =
-            DriverManager.getConnection("jdbc:sqlite:world.sqlite");
+    private final Connection dbConnection;
 
-    public SQLiteDbConnector() throws SQLException {}
+    public SQLiteDbConnector(String dbUrl) throws SQLException {
+        dbConnection =
+                DriverManager.getConnection("jdbc:sqlite:" + dbUrl);
+    }
+    public SQLiteDbConnector() throws SQLException {
+        this("world.sqlite");
+    }
+
+    public Connection getConnection() {
+        return dbConnection;
+    }
 
     private void createWorldDataTable() throws SQLException {
         Statement sqlStatement = dbConnection.createStatement();

@@ -193,6 +193,7 @@ test_docker_world2x2_obs:
 	$(MAKE) test_docker_world2x2_obs_1_1
 
 test_docker:
+	$(MAKE) maven_install
 	$(MAKE) kill_pid_on_5000
 	$(MAKE) test_docker_world1x1
 	$(MAKE) test_docker_world2x2

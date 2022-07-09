@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands.auxilliarycommands;
 
+import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.enums.Direction;
@@ -135,7 +136,7 @@ public class FireCommand extends AuxiliaryCommand {
     }
 
     @Override
-    public JsonResponse execute() {
+    public JsonResponse execute(Play play) {
         robot = world.getRobot(robotName);
         robotX = robot.getPosition().getX();
         robotY = robot.getPosition().getY();

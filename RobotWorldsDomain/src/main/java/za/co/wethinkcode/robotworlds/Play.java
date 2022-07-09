@@ -7,10 +7,16 @@ import za.co.wethinkcode.robotworlds.world.World;
 import za.co.wethinkcode.robotworlds.world.builders.WorldBuilder;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Play {
     private static World world;
-    private static final JsonResponseBuilder JSON_RESPONSE_BUILDER =
-            new JsonResponseBuilder();
+
+    private final List<Robot> robots = new ArrayList<>();
+
+    private final JsonResponseBuilder jsonResponseBuilder =
+            new JsonResponseBuilder(this);
 
     public Play(String[] args) {
         new Console().start();
@@ -26,12 +32,18 @@ public class Play {
         Play.world = world;
     }
 
-    public String getJsonStringResponse(JsonNode jsonRequest) {
-        return JSON_RESPONSE_BUILDER.getStringResponse(jsonRequest);
+    public void addRobot(Robot robot) {
+        robots.add(robot);
     }
 
-    public JsonResponseBuilder getResponseBuilder() {
-        return JSON_RESPONSE_BUILDER;
+    public String getJsonStringResponse(JsonNode jsonRequest) {
+        return jsonResponseBuilder.getStringResponse(jsonRequest);
+    }
+
+    public void stop() {
+        for (Robot robot : robots) {
+            world.removeRobot(robot);
+        }
     }
 
     public static void main(String[] args) {

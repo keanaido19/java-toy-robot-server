@@ -16,10 +16,15 @@ import java.util.Iterator;
 import java.util.List;
 
 public class JsonResponseBuilder {
+    private final Play play;
     private String robotName;
     private String command;
     private List<String> commandArguments;
     private CommandHandler commandHandler;
+
+    public JsonResponseBuilder(Play play) {
+        this.play = play;
+    }
 
     private List<String> processCommandArguments(JsonNode commandArguments) {
         List<String> returnList = new ArrayList<>();
@@ -71,7 +76,7 @@ public class JsonResponseBuilder {
         }
 
         if (command instanceof LaunchCommand) {
-            jsonResponse = command.execute();
+            jsonResponse = command.execute(play);
             return JsonHandler.convertJavaObjectToJsonString(jsonResponse);
         }
 
@@ -83,7 +88,7 @@ public class JsonResponseBuilder {
         }
 
         if (command instanceof StateCommand) {
-            jsonResponse = command.execute();
+            jsonResponse = command.execute(play);
             return JsonHandler.convertJavaObjectToJsonString(jsonResponse);
         }
 
@@ -95,7 +100,7 @@ public class JsonResponseBuilder {
         }
 
         if (command instanceof LookCommand) {
-            jsonResponse = command.execute();
+            jsonResponse = command.execute(play);
             return JsonHandler.convertJavaObjectToJsonString(jsonResponse);
         }
 
@@ -113,7 +118,7 @@ public class JsonResponseBuilder {
         }
 
         if (command != null) {
-            jsonResponse = command.execute();
+            jsonResponse = command.execute(play);
             return JsonHandler.convertJavaObjectToJsonString(jsonResponse);
         }
 

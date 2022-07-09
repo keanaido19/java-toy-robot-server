@@ -22,5 +22,6 @@ public class Console extends Thread{
                     ServerCommandHandler.getServerCommand(userInput);
             continueLoop = consoleCommand.execute();
         }
+        System.exit(0);
     }
 }

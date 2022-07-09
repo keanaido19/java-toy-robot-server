@@ -90,6 +90,10 @@ public class World {
         return robots;
     }
 
+    public void removeRobot(Robot robot) {
+        robots.remove(robot);
+    }
+
     private int getRandomXCoordinate() {
         if ((bottomRight.getX() - topLeft.getX()) < 1) return 0;
         return

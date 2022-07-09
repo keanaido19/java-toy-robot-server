@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands.auxilliarycommands;
 
+import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.commands.CommandResult;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.builders.DataMapBuilder;
@@ -12,7 +13,7 @@ public class StateCommand extends AuxiliaryCommand {
     }
 
     @Override
-    public JsonResponse execute() {
+    public JsonResponse execute(Play play) {
         Robot robot = world.getRobot(robotName);
         return
                 new JsonResponse(

@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands;
 
+import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.Position;
 import za.co.wethinkcode.robotworlds.world.builders.DataMapBuilder;
@@ -24,7 +25,7 @@ public class MovementCommand extends Command {
     }
 
     @Override
-    public JsonResponse execute() {
+    public JsonResponse execute(Play play) {
         Robot robot = world.getRobot(robotName);
 
         int commandArgument = getInteger(commandArguments.get(0));

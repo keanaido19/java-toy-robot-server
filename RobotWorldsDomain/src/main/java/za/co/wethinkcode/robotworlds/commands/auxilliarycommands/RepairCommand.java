@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.commands.auxilliarycommands;
 
+import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.response.JsonResponse;
 import za.co.wethinkcode.robotworlds.world.enums.Status;
 import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
@@ -13,7 +14,7 @@ public class RepairCommand extends AuxiliaryCommand {
     }
 
     @Override
-    public JsonResponse execute() {
+    public JsonResponse execute(Play play) {
         Robot robot = world.getRobot(robotName);
         int maximumShields = robot.getMaximumShields();
 
@@ -31,7 +32,7 @@ public class RepairCommand extends AuxiliaryCommand {
             milliSeconds = world.getReload() * 1000;
             robot.setRobotStatus(Status.REPAIR);
             robot.timer(Status.REPAIR, milliSeconds);
-            return new StateCommand(robotName).execute();
+            return new StateCommand(robotName).execute(play);
         }
 
         return

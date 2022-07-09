@@ -22,5 +22,5 @@ public abstract class Command {
         this.commandArguments = commandArguments;
     }
 
-    public abstract JsonResponse execute();
+    public abstract JsonResponse execute(Play play);
 }

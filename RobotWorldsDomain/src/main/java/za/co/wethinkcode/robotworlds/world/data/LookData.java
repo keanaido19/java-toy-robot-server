@@ -5,6 +5,8 @@ import za.co.wethinkcode.robotworlds.world.enums.ObjectType;
 
 import java.util.Objects;
 
+import static za.co.wethinkcode.robotworlds.world.enums.ObjectType.EDGE;
+
 public class LookData {
     Direction direction;
     ObjectType type;
@@ -25,7 +27,7 @@ public class LookData {
         if (this == o) return true;
         if (!(o instanceof LookData)) return false;
         LookData lookData = (LookData) o;
-        return distance == lookData.distance
+        return (EDGE == type || distance == lookData.distance)
                 && direction == lookData.direction
                 && type == lookData.type;
     }

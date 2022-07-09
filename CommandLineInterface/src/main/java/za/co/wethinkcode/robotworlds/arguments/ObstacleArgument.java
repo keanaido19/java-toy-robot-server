@@ -29,7 +29,7 @@ public class ObstacleArgument extends Argument{
 
         if (null == value || "none".equals(value)) return obstaclePositions;
 
-        Pattern pattern = Pattern.compile("^\\d+,\\d+$");
+        Pattern pattern = Pattern.compile("^-?\\d+,-?\\d+$");
         if (!pattern.matcher(value).find())
             throw new IllegalArgumentException(
                     "Position of fixed obstacle [x,y] must be in the " +

@@ -1,9 +1,7 @@
-package za.co.wethinkcode.robotworlds.clienthandler;
+package za.co.wethinkcode.robotworlds;
 
-import za.co.wethinkcode.robotworlds.RobotServer;
-import za.co.wethinkcode.robotworlds.response.ServerResponseBuilder;
-import za.co.wethinkcode.robotworlds.world.World;
-import za.co.wethinkcode.robotworlds.world.objects.robots.Robot;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,25 +9,19 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientHandler implements Runnable{
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final BufferedReader inputFromClient;
     private final PrintStream outputToClient;
     private final ServerSocket serverSocket;
     private final String clientIpAddress;
     private final Socket socket;
-    private final World world;
+    private final Play play;
 
-    private final List<Robot> robots = new ArrayList<>();
-    private final ServerResponseBuilder responseBuilder =
-            new ServerResponseBuilder(this);
-
-    private Robot robot;
-
-    public ClientHandler(RobotServer server) throws IOException {
-        this.serverSocket = server.getServerSocket();
+    public ClientHandler(ServerSocket serverSocket)
+            throws IOException {
+        this.serverSocket = serverSocket;
         this.socket = serverSocket.accept();
 
         clientIpAddress = socket.getInetAddress().getHostName();
@@ -42,23 +34,7 @@ public class ClientHandler implements Runnable{
         this.outputToClient =
                 new PrintStream(socket.getOutputStream(), true);
 
-        this.world = server.getWorld();
-    }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public Robot getRobot(String robotName) {
-        for (Robot r : robots) {
-            if (robotName.equals(r.getName())) return r;
-        }
-        return robot;
-    }
-
-    public void setRobot(Robot robot) {
-        this.robot = robot;
-        robots.add(robot);
+        play = new Play();
     }
 
     public void closeEverything(
@@ -66,9 +42,7 @@ public class ClientHandler implements Runnable{
             BufferedReader inputFromClient,
             PrintStream outputToClient
     ) {
-        for (Robot r : robots) {
-            world.getRobots().remove(r);
-        }
+        play.stop();
         System.out.println(
                 "Client (" + clientIpAddress + ") Has Disconnected!"
         );
@@ -78,9 +52,6 @@ public class ClientHandler implements Runnable{
             }
             if (outputToClient != null) {
                 outputToClient.close();
-            }
-            if (socket != null) {
-                socket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,9 +66,9 @@ public class ClientHandler implements Runnable{
                     !serverSocket.isClosed() &&
                     (commandFromClient = inputFromClient.readLine()) != null
             ) {
+                JsonNode jsonRequest = objectMapper.readTree(commandFromClient);
                 String jsonStringResponse =
-                        responseBuilder
-                                .getJsonStringResponse(commandFromClient);
+                        play.getJsonStringResponse(jsonRequest);
                 outputToClient.println(jsonStringResponse);
             }
             closeEverything(socket, inputFromClient, outputToClient);

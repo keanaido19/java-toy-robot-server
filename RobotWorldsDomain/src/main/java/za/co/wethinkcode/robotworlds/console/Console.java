@@ -1,5 +1,6 @@
 package za.co.wethinkcode.robotworlds.console;
 
+import za.co.wethinkcode.robotworlds.Play;
 import za.co.wethinkcode.robotworlds.console.commandhandler.ServerCommandHandler;
 import za.co.wethinkcode.robotworlds.console.commands.ConsoleCommand;
 
@@ -22,6 +23,7 @@ public class Console extends Thread{
                     ServerCommandHandler.getServerCommand(userInput);
             continueLoop = consoleCommand.execute();
         }
-        System.exit(0);
+        Play.setIsRunning(false);
+        this.interrupt();
     }
 }

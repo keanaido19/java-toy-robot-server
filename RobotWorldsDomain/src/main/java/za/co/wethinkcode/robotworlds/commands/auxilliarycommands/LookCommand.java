@@ -41,10 +41,9 @@ public class LookCommand extends AuxiliaryCommand {
 
         LookData lookData = new LookData(direction, objectType, distance);
 
-        if (EDGE.equals(objectType)) observedObjects.add(lookData);
+        if (EDGE.equals(objectType) && hasObjectBeenObserved(lookData)) return;
 
-        if (!hasObjectBeenObserved(lookData))
-            objects.add(new LookData(direction, objectType, distance));
+        objects.add(lookData);
     }
 
     private ObjectType lookForEdges(Position p) {

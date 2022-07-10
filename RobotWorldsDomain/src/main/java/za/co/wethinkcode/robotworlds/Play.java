@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Play {
+    private static boolean isRunning = true;
     private static World world;
 
     private final List<Robot> robots = new ArrayList<>();
@@ -18,11 +19,7 @@ public class Play {
     private final JsonResponseBuilder jsonResponseBuilder =
             new JsonResponseBuilder(this);
 
-    public Play(String[] args) {
-        new Console().start();
-        if (null == world)
-            world = WorldBuilder.getWorld(args);
-    }
+    public Play() {}
 
     public static World getWorld() {
         return world;
@@ -30,6 +27,14 @@ public class Play {
 
     public static void setWorld(World world) {
         Play.world = world;
+    }
+
+    public static boolean isIsRunning() {
+        return isRunning;
+    }
+
+    public static void setIsRunning(boolean isRunning) {
+        Play.isRunning = isRunning;
     }
 
     public void addRobot(Robot robot) {
@@ -40,12 +45,14 @@ public class Play {
         return jsonResponseBuilder.getStringResponse(jsonRequest);
     }
 
+    public static void start(String[] args) {
+        if (null == world)
+            world = WorldBuilder.getWorld(args);
+    }
+
     public void stop() {
         for (Robot robot : robots) {
             world.removeRobot(robot);
         }
-    }
-
-    public static void main(String[] args) {
     }
 }

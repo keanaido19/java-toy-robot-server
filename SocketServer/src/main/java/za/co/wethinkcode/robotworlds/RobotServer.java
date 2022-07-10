@@ -1,10 +1,7 @@
 package za.co.wethinkcode.robotworlds;
 
 import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.clienthandler.ClientHandler;
-import za.co.wethinkcode.robotworlds.console.ServerConsole;
-import za.co.wethinkcode.robotworlds.world.World;
-import za.co.wethinkcode.robotworlds.world.builders.WorldBuilder;
+import za.co.wethinkcode.robotworlds.console.Console;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -14,38 +11,21 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 public class RobotServer {
-
-    private final ServerConsole serverConsole;
     private final ServerSocket serverSocket;
-    private World world;
 
-    public RobotServer(ServerSocket serverSocket, World world){
+    public RobotServer(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
-        this.serverConsole = new ServerConsole(this);
-        this.world = world;
-    }
-
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
     }
 
     public void startServer(){
-        serverConsole.start();
+        new Console().start();
         try{
-            while(!serverSocket.isClosed()){
-                ClientHandler clientHandler = new ClientHandler(this);
+            while(Play.isIsRunning() && !serverSocket.isClosed()){
+                ClientHandler clientHandler =
+                        new ClientHandler(serverSocket);
                 Thread clientThread = new Thread(clientHandler);
                 clientThread.start();
             }
-
         } catch (IOException e) {
             stopServer();
         }
@@ -105,11 +85,7 @@ public class RobotServer {
 
         ServerSocket serverSocket = new ServerSocket(serverPortNumber);
 
-        RobotServer robotServer =
-                new RobotServer(
-                        serverSocket,
-                        WorldBuilder.getWorld(args)
-                );
+        RobotServer robotServer = new RobotServer(serverSocket);
 
         System.out.println(
                 "Welcome to Robot Worlds Server!\n" +
@@ -118,6 +94,7 @@ public class RobotServer {
                         "\n\tPort number:\t" + serverPortNumber
         );
 
+        Play.start(args);
         robotServer.startServer();
     }
 }

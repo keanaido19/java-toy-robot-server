@@ -76,6 +76,7 @@ public class LaunchCommand extends Command {
                 return JsonResponse.nameErrorResponse();
         }
 
+        play.addRobot(robot);
         world.addRobotToWorld(robot);
         robot.joinWorld(world);
 

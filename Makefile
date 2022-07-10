@@ -115,7 +115,7 @@ test_server_world2x2_obs:
 	$(MAKE) test_server_world2x2_obs_1_1
 
 test_server:
-	mvn test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector
+	mvn test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector -pl ApiServer
 	$(MAKE) test_server_world1x1
 	$(MAKE) test_server_world2x2
 	$(MAKE) test_server_world2x2_obs

@@ -29,7 +29,13 @@ public class WorldDbObjectConverter {
         List<WorldObjectDbData> pits = new ArrayList<>();
         List<WorldObjectDbData> mines = new ArrayList<>();
 
-        return new WorldDbObject(worldData, obstacles, pits, mines);
+        return new WorldDbObject(
+                world.getWorldName(),
+                worldData,
+                obstacles,
+                pits,
+                mines
+        );
     }
 
     private static List<WorldObjectDbData> getDbObjects(List<Obstacle> objects)
@@ -68,7 +74,7 @@ public class WorldDbObjectConverter {
                         worldConfigData
                 );
 
-        World world = new World(worldData);
+        World world = new World(worldDb.getWorldName(), worldData);
 
         world.setObstacles(getObstacles(worldDb.getObstacles()));
 

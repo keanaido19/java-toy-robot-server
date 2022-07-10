@@ -14,6 +14,7 @@
     <module>DatabaseConnector</module>
     <module>RobotWorldsDomain</module>
     <module>CommandLineInterface</module>
+      <module>ApiServer</module>
   </modules>
 
   <name>RobotWorlds</name>

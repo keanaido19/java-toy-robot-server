@@ -29,7 +29,7 @@ public class Play {
         Play.world = world;
     }
 
-    public static boolean isIsRunning() {
+    public static boolean isRunning() {
         return isRunning;
     }
 
@@ -46,6 +46,7 @@ public class Play {
     }
 
     public static void start(String[] args) {
+        new Console().start();
         if (null == world)
             world = WorldBuilder.getWorld(args);
     }

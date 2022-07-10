@@ -1,7 +1,6 @@
 package za.co.wethinkcode.robotworlds;
 
 import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.console.Console;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -17,10 +16,9 @@ public class RobotServer {
         this.serverSocket = serverSocket;
     }
 
-    public void startServer(){
-        new Console().start();
+    private void startServer(){
         try{
-            while(Play.isIsRunning() && !serverSocket.isClosed()){
+            while(!serverSocket.isClosed()){
                 ClientHandler clientHandler =
                         new ClientHandler(serverSocket);
                 Thread clientThread = new Thread(clientHandler);

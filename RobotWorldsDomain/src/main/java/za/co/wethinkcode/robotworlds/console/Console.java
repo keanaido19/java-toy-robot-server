@@ -24,6 +24,6 @@ public class Console extends Thread{
             continueLoop = consoleCommand.execute();
         }
         Play.setIsRunning(false);
-        this.interrupt();
+//        System.exit(0);
     }
 }

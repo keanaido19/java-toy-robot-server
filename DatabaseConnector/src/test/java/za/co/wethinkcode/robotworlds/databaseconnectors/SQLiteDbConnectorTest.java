@@ -1,6 +1,5 @@
 package za.co.wethinkcode.robotworlds.databaseconnectors;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDataDbObject;
 import za.co.wethinkcode.robotworlds.dbobjects.WorldDbObject;

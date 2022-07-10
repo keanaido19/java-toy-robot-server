@@ -22,12 +22,17 @@
 
     <dependencies>
         <dependency>
-            <artifactId>SocketServer</artifactId>
+            <artifactId>RobotWorldsDomain</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
             <version>1.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <artifactId>DatabaseConnector</artifactId>
+            <groupId>za.co.wethinkcode.robotworlds</groupId>
+            <version>1.4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>SocketServer</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
             <version>1.4.0-SNAPSHOT</version>
         </dependency>

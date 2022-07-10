@@ -23,7 +23,5 @@ public class Console extends Thread{
                     ServerCommandHandler.getServerCommand(userInput);
             continueLoop = consoleCommand.execute();
         }
-        Play.setIsRunning(false);
-//        System.exit(0);
     }
 }

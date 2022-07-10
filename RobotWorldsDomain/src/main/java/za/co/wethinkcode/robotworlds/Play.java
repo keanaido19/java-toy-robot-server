@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Play {
-    private static boolean isRunning = true;
+
     private static World world;
 
     private final List<Robot> robots = new ArrayList<>();
@@ -29,14 +29,6 @@ public class Play {
         Play.world = world;
     }
 
-    public static boolean isRunning() {
-        return isRunning;
-    }
-
-    public static void setIsRunning(boolean isRunning) {
-        Play.isRunning = isRunning;
-    }
-
     public void addRobot(Robot robot) {
         robots.add(robot);
     }
@@ -46,9 +38,9 @@ public class Play {
     }
 
     public static void start(String[] args) {
-        new Console().start();
         if (null == world)
             world = WorldBuilder.getWorld(args);
+        new Console().start();
     }
 
     public void stop() {

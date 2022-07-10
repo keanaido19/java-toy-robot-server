@@ -4,7 +4,7 @@
     <parent>
         <artifactId>RobotWorlds</artifactId>
         <groupId>za.co.wethinkcode.robotworlds</groupId>
-        <version>1.4.0-SNAPSHOT</version>
+        <version>1.5.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,14 +22,19 @@
 
     <dependencies>
         <dependency>
-            <artifactId>SocketServer</artifactId>
+            <artifactId>RobotWorldsDomain</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
-            <version>1.4.0-SNAPSHOT</version>
+            <version>1.5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <artifactId>DatabaseConnector</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
-            <version>1.4.0-SNAPSHOT</version>
+            <version>1.5.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>SocketServer</artifactId>
+            <groupId>za.co.wethinkcode.robotworlds</groupId>
+            <version>1.5.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

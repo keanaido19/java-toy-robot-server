@@ -30,10 +30,7 @@ public class AcceptanceTests {
         deleteWorld("testWorld");
     }
 
-    private List<String> getServerConsoleOutput(
-            String simulatedUserInput,
-            String[] serverArguments
-    ) {
+    private List<String> getServerConsoleOutput(String simulatedUserInput) {
         InputStream simulatedInputStream =
                 new ByteArrayInputStream(simulatedUserInput.getBytes());
         System.setIn(simulatedInputStream);
@@ -42,7 +39,7 @@ public class AcceptanceTests {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         try {
-            RobotServer.main(serverArguments);
+            RobotServer.main(new String[] {});
         } catch (IOException e) {
             fail("Not expecting an exception.");
         }
@@ -61,7 +58,7 @@ public class AcceptanceTests {
     void saveTheWorld() {
         String simulatedUserInput = "save testWorld\nquit\n";
         List<String> serverOutput =
-                getServerConsoleOutput(simulatedUserInput, new String[] {});
+                getServerConsoleOutput(simulatedUserInput);
         assertTrue(
                 serverOutput.contains(
                         "Saved world as \"testWorld\" in database."
@@ -81,7 +78,7 @@ public class AcceptanceTests {
     void restoreWorld() {
         String simulatedUserInput = "save testWorld\nrestore testWorld\nquit\n";
         List<String> serverOutput =
-                getServerConsoleOutput(simulatedUserInput, new String[] {});
+                getServerConsoleOutput(simulatedUserInput);
         assertTrue(
                 serverOutput.contains(
                         "World \"testWorld\" successfully restored."
@@ -91,15 +88,19 @@ public class AcceptanceTests {
 
     @Test
     void manyWorld() {
+        deleteWorld("testWorld2");
+        deleteWorld("testWorld3");
+
         String simulatedUserInput =
                 "save testWorld\n" +
                         "save testWorld\n" +
                         "restore testWorld\n" +
                         "save testWorld2\n" +
                         "restore testWorld2\n" +
+                        "restore testWorld3\n" +
                         "quit\n";
         List<String> serverOutput =
-                getServerConsoleOutput(simulatedUserInput, new String[] {});
+                getServerConsoleOutput(simulatedUserInput);
         assertTrue(
                 serverOutput.contains(
                         "Unable to save World (\"testWorld\"), " +

@@ -1,8 +1,15 @@
 package za.co.wethinkcode.robotworlds;
 
 import io.javalin.Javalin;
+import io.javalin.plugin.openapi.OpenApiOptions;
+import io.javalin.plugin.openapi.OpenApiPlugin;
+import io.javalin.plugin.openapi.ui.ReDocOptions;
+import io.javalin.plugin.openapi.ui.SwaggerOptions;
+import io.swagger.v3.oas.models.info.Info;
 import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.serverconsole.ServerConsole;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class ApiServer {
     private final Javalin server;
@@ -11,19 +18,41 @@ public class ApiServer {
     public ApiServer(int port) {
         this.port = port;
         this.server = Javalin.create(
-                config -> config.defaultContentType = "application/json"
+                config -> {
+                    config.registerPlugin(getConfiguredOpenApiPlugin());
+                    config.defaultContentType = "application/json";
+                }
+        ).routes(
+                () -> {
+                    path(
+                            "world",
+                            () -> {
+                                get(ApiHandler::getWorld);
+                                path(
+                                        "{worldName}",
+                                        () -> get(ApiHandler::getWorldByName)
+                                );
+                            }
+                    );
+                    path(
+                            "robot",
+                            () -> post(ApiHandler::getRobotResponse)
+                    );
+                }
         );
-
-        this.server.get("/world", ApiHandler::getWorld);
-
-        this.server.get("/world/{worldName}", ApiHandler::getWorldByName);
-
-        this.server.post("/robot", ApiHandler::getRobotResponse);
     }
 
     public void start(String[] args) {
         Play.start(args);
         this.server.start(port);
+        System.out.printf(
+                "Check out ReDoc docs at http://localhost:%d/redoc%n",
+                port
+        );
+        System.out.printf(
+                "Check out Swagger UI docs at http://localhost:%d/swagger-ui%n",
+                port
+        );
         new ServerConsole(this).start();
     }
 
@@ -31,6 +60,22 @@ public class ApiServer {
         ApiHandler.stop();
         Play.setWorld(null);
         this.server.stop();
+    }
+
+    private static OpenApiPlugin getConfiguredOpenApiPlugin() {
+        Info info = new Info().version("1.0").description("Robot Worlds API");
+        OpenApiOptions options = new OpenApiOptions(info)
+                .activateAnnotationScanningFor(
+                        "io.javalin.example.java"
+                )
+                .path("/swagger-docs") // endpoint for OpenAPI json
+                .swagger(new SwaggerOptions("/swagger-ui")) // endpoint for swagger-ui
+                .reDoc(new ReDocOptions("/redoc")) // endpoint for redoc
+                .defaultDocumentation(doc -> {
+                    doc.json("500", ErrorResponse.class);
+                    doc.json("503", ErrorResponse.class);
+                });
+        return new OpenApiPlugin(options);
     }
 
     public static void main(String[] args) {

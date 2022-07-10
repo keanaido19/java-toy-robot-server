@@ -6,20 +6,29 @@ import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ApiServerTest {
 
-    private ApiServer server;
+    private static ApiServer server;
 
-    @BeforeEach
-    void startServer() {
+    @BeforeAll
+    static void startServer(){
         server = new ApiServer(5000);
         server.start(new String[] {});
     }
-    @AfterEach
-    void stopServer() {
+
+    @BeforeEach
+    void resetWorld() {
         Play.setWorld(null);
+        Play.start(new String[] {});
+    }
+
+    @AfterAll
+    static void stopServer() {
         server.stop();
     }
 
@@ -96,5 +105,75 @@ class ApiServerTest {
                 jsonObject.toString());
     }
 
+    @Test
+    @DisplayName("POST /robot")
+    public void launchRobot() {
+        JsonRequest jsonRequest =new JsonRequest();
 
+        jsonRequest.setRobot("testBot");
+        jsonRequest.setCommand("launch");
+        jsonRequest.setArguments(List.of("sniper", 5, 5));
+
+        HttpResponse<JsonNode> response =
+                Unirest.post("http://localhost:5000/robot")
+                        .header("Content-Type", "application/json")
+                        .body(jsonRequest)
+                        .asJson();
+
+        assertEquals(200, response.getStatus());
+        assertEquals(
+                "/robot",
+                response.getHeaders().getFirst("Location")
+        );
+
+        assertEquals(
+                "{\"result\":\"OK\",\"data\":{\"visibility\":1," +
+                "\"position\":[0,0],\"objects\":[]},\"state\":{" +
+                        "\"position\":[0,0],\"direction\":\"NORTH\"," +
+                        "\"shields\":5,\"shots\":5,\"status\":\"NORMAL\"}}",
+                response.getBody().toString());
+    }
+
+    @Test
+    @DisplayName("POST /robot")
+    public void lookRobot() {
+        JsonRequest jsonRequest =new JsonRequest();
+
+        jsonRequest.setRobot("testBot");
+        jsonRequest.setCommand("launch");
+        jsonRequest.setArguments(List.of("sniper", 5, 5));
+
+        Unirest.post("http://localhost:5000/robot")
+                .header("Content-Type", "application/json")
+                .body(jsonRequest)
+                .asJson();
+
+        jsonRequest.setRobot("testBot");
+        jsonRequest.setCommand("look");
+        jsonRequest.setArguments(new ArrayList<>());
+
+        HttpResponse<JsonNode> response =
+                Unirest.post("http://localhost:5000/robot")
+                        .header("Content-Type", "application/json")
+                        .body(jsonRequest)
+                        .asJson();
+
+        assertEquals(200, response.getStatus());
+        assertEquals(
+                "/robot",
+                response.getHeaders().getFirst("Location")
+        );
+
+        assertEquals(
+                "{\"result\":\"OK\",\"data\":{\"visibility\":1," +
+                        "\"position\":[0,0],\"objects\":[{\"direction\":" +
+                        "\"NORTH\",\"type\":\"EDGE\",\"distance\":0}," +
+                        "{\"direction\":\"EAST\",\"type\":\"EDGE\"," +
+                        "\"distance\":0},{\"direction\":\"SOUTH\"," +
+                        "\"type\":\"EDGE\",\"distance\":0},{\"direction\":" +
+                        "\"WEST\",\"type\":\"EDGE\",\"distance\":0}]}," +
+                        "\"state\":{\"position\":[0,0],\"direction\":\"NORTH\"," +
+                        "\"shields\":5,\"shots\":5,\"status\":\"NORMAL\"}}",
+                response.getBody().toString());
+    }
 }

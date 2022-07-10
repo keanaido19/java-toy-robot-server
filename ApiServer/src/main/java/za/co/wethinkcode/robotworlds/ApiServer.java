@@ -29,6 +29,7 @@ public class ApiServer {
 
     public void stop() {
         ApiHandler.stop();
+        Play.setWorld(null);
         this.server.stop();
     }
 

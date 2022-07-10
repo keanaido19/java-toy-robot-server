@@ -1,10 +1,10 @@
-package za.co.wethinkcode.robotworlds.console.commandhandler;
+package za.co.wethinkcode.robotworlds.serverconsole.commandhandler;
 
-import za.co.wethinkcode.robotworlds.console.commands.ServerNullCommand;
-import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerNullCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerCommand;
 
 public class ServerCommandHandler {
-    private static final ServerCommandHandlerStrategy[]
+    private static final za.co.wethinkcode.robotworlds.serverconsole.commandhandler.ServerCommandHandlerStrategy[]
             ServerCommandHandlerStrategies =
             {new QuitCommandHandler(),
             new RobotsCommandHandler(),

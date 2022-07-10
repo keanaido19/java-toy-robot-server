@@ -1,7 +1,7 @@
-package za.co.wethinkcode.robotworlds.console.commandhandler;
+package za.co.wethinkcode.robotworlds.serverconsole.commandhandler;
 
-import za.co.wethinkcode.robotworlds.console.commands.ServerQuitCommand;
-import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerQuitCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerCommand;
 
 public class QuitCommandHandler extends ServerCommandHandlerStrategy {
     @Override

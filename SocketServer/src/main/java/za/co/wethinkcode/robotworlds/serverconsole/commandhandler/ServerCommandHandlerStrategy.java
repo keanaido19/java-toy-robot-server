@@ -1,6 +1,6 @@
-package za.co.wethinkcode.robotworlds.console.commandhandler;
+package za.co.wethinkcode.robotworlds.serverconsole.commandhandler;
 
-import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerCommand;
 
 public abstract class ServerCommandHandlerStrategy {
     public abstract boolean checkCommand(String command);

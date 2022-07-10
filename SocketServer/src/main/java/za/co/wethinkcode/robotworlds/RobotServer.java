@@ -1,7 +1,7 @@
 package za.co.wethinkcode.robotworlds;
 
 import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
-import za.co.wethinkcode.robotworlds.console.ServerConsole;
+import za.co.wethinkcode.robotworlds.serverconsole.ServerConsole;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -12,14 +12,13 @@ import java.util.Enumeration;
 
 public class RobotServer {
     private final ServerSocket serverSocket;
-    private final ServerConsole serverConsole = new ServerConsole(this);
 
     public RobotServer(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
     }
 
     private void startServer(){
-        serverConsole.start();
+        new ServerConsole(this).start();
         try{
             while(!serverSocket.isClosed()){
                 ClientHandler clientHandler =

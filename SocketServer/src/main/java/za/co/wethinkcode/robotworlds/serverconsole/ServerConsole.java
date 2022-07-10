@@ -1,8 +1,8 @@
-package za.co.wethinkcode.robotworlds.console;
+package za.co.wethinkcode.robotworlds.serverconsole;
 
 import za.co.wethinkcode.robotworlds.RobotServer;
-import za.co.wethinkcode.robotworlds.console.commandhandler.ServerCommandHandler;
-import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commandhandler.ServerCommandHandler;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerCommand;
 
 import java.util.Scanner;
 

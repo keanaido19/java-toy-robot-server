@@ -1,7 +1,7 @@
-package za.co.wethinkcode.robotworlds.console.commandhandler;
+package za.co.wethinkcode.robotworlds.serverconsole.commandhandler;
 
-import za.co.wethinkcode.robotworlds.console.commands.ServerRobotsCommand;
-import za.co.wethinkcode.robotworlds.console.commands.ServerCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerRobotsCommand;
+import za.co.wethinkcode.robotworlds.serverconsole.commands.ServerCommand;
 
 public class RobotsCommandHandler extends ServerCommandHandlerStrategy{
     @Override

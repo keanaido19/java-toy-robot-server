@@ -1,6 +1,7 @@
-package za.co.wethinkcode.robotworlds.console.commands;
+package za.co.wethinkcode.robotworlds.serverconsole.commands;
 
 import za.co.wethinkcode.robotworlds.RobotServer;
+import za.co.wethinkcode.robotworlds.console.commands.RestoreCommand;
 
 public class ServerRestoreCommand extends ServerCommand {
     private final String worldName;

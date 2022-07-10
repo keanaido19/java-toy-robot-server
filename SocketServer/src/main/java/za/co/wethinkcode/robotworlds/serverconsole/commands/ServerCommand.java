@@ -1,4 +1,4 @@
-package za.co.wethinkcode.robotworlds.console.commands;
+package za.co.wethinkcode.robotworlds.serverconsole.commands;
 
 import za.co.wethinkcode.robotworlds.RobotServer;
 

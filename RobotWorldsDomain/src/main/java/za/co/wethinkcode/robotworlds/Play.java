@@ -40,12 +40,16 @@ public class Play {
     public static void start(String[] args) {
         if (null == world)
             world = WorldBuilder.getWorld(args);
-        new Console().start();
     }
 
     public void stop() {
         for (Robot robot : robots) {
             world.removeRobot(robot);
         }
+    }
+
+    public static void main(String[] args) {
+        start(args);
+        new Console().start();
     }
 }

@@ -1,0 +1,7 @@
+FROM openjdk:11
+MAINTAINER keaton naidoo <keanaido021@student.wethinkcode.co.za>
+
+COPY target/ApiServer*.jar RobotWorldsServer.jar
+
+EXPOSE 5050
+CMD ["java", "-jar", "RobotWorldsServer.jar","-p","5050"]

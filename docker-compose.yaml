@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  api-server:
+    container_name: robot-worlds-api-server
+    image: robot-worlds-api-server
+    build:
+      context: .
+      dockerfile: "Dockerfiles/Dockerfile_ApiServer"
+    ports:
+      - "5000:5050"
+    volumes:
+      - .:/app
+  socket-server:
+    container_name: robot-worlds-socket-server
+    image: robot-worlds-socket-server
+    build:
+      context: .
+      dockerfile: "Dockerfiles/Dockerfile_SocketServer"
+    ports:
+      - "5000:5050"
+    volumes:
+      - .:/app/home

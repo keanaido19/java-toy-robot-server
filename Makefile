@@ -200,7 +200,7 @@ test_docker:
 	$(MAKE) test_docker_world2x2_obs
 
 docker_build: maven_package
-	docker-compose build
+	docker compose build
 
 docker_release: docker_build test_docker
 	docker login gitlab.wethinkco.de:5050

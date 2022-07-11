@@ -289,6 +289,7 @@ public class SQLiteDbConnector implements DbConnector {
     public WorldDbObject restoreWorld(String worldName) throws SQLException {
         int worldID = getWorldID(worldName);
         return new WorldDbObject(
+                worldName,
                 getWorldData(getWorldDataID(worldName)),
                 getWorldObjects("obstacles", worldID),
                 getWorldObjects("pits", worldID),

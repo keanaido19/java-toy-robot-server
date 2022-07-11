@@ -115,7 +115,7 @@ test_server_world2x2_obs:
 	$(MAKE) test_server_world2x2_obs_1_1
 
 test_server:
-	mvn test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector
+	mvn test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector -pl ApiServer
 	$(MAKE) test_server_world1x1
 	$(MAKE) test_server_world2x2
 	$(MAKE) test_server_world2x2_obs
@@ -157,7 +157,7 @@ get_running_docker_containers = docker container ls -q
 
 docker_arguments = java -jar RobotWorldsServer.jar -p 5050 $(1) $(2)
 
-run_docker_image = docker run -p 5000:5050 robot-worlds-server:$(1) $(2) & echo "Running docker image..."
+run_docker_image = docker run -p 5000:5050 robot-worlds-socket-server:latest $(1) & echo "Running docker image..."
 
 kill_docker_containers:
 ifneq ($(strip $(shell $(get_running_docker_containers))),)
@@ -166,25 +166,25 @@ endif
 
 test_docker_world1x1:
 	$(MAKE) kill_docker_containers
-	$(call run_docker_image,$(get_project_version),$(call docker_arguments))
+	$(call run_docker_image,$(call docker_arguments))
 	$(call acceptance_test,world1x1)
 	$(MAKE) kill_docker_containers
 
 test_docker_world2x2:
 	$(MAKE) kill_docker_containers
-	$(call run_docker_image,$(get_project_version),$(call docker_arguments,-s 2))
+	$(call run_docker_image,$(call docker_arguments,-s 2))
 	$(call acceptance_test,world2x2)
 	$(MAKE) kill_docker_containers
 
 test_docker_world2x2_obs_0_1:
 	$(MAKE) kill_docker_containers
-	$(call run_docker_image,$(get_project_version),$(call docker_arguments,-s 2,-o 0$(comma)1))
+	$(call run_docker_image,$(call docker_arguments,-s 2,-o 0$(comma)1))
 	$(call acceptance_test,obstacle0_1)
 	$(MAKE) kill_docker_containers
 
 test_docker_world2x2_obs_1_1:
 	$(MAKE) kill_docker_containers
-	$(call run_docker_image,$(get_project_version),$(call docker_arguments,-s2,-o 1$(comma)1))
+	$(call run_docker_image,$(call docker_arguments,-s2,-o 1$(comma)1))
 	$(call acceptance_test,obstacle1_1)
 	$(MAKE) kill_docker_containers
 
@@ -200,9 +200,11 @@ test_docker:
 	$(MAKE) test_docker_world2x2_obs
 
 docker_build: maven_package
-	docker build -t robot-worlds-server:$(get_project_version) .
+	docker compose build
 
 docker_release: docker_build test_docker
 	docker login gitlab.wethinkco.de:5050
-	docker tag robot-worlds-server:$(get_project_version) gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:$(get_project_version)
-	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:$(get_project_version)
+	docker tag robot-worlds-socket-server:latest gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:socket-server_$(get_project_version)
+	docker tag robot-worlds-api-server:latest gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:api-server_$(get_project_version)
+	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:socket-server_$(get_project_version)
+	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:api-server_$(get_project_version)

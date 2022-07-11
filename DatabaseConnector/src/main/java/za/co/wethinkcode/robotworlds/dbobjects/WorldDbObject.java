@@ -4,8 +4,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class WorldDbObject {
+    private final String worldName;
     private final WorldDataDbObject worldData;
     private final List<WorldObjectDbData> obstacles, pits, mines;
+
+    public WorldDbObject(
+            String worldName,
+            WorldDataDbObject worldData,
+            List<WorldObjectDbData> obstacles,
+            List<WorldObjectDbData> pits,
+            List<WorldObjectDbData> mines
+    ) {
+        this.worldName = worldName;
+        this.worldData = worldData;
+        this.obstacles = obstacles;
+        this.pits = pits;
+        this.mines = mines;
+    }
 
     public WorldDbObject(
             WorldDataDbObject worldData,
@@ -13,10 +28,11 @@ public class WorldDbObject {
             List<WorldObjectDbData> pits,
             List<WorldObjectDbData> mines
     ) {
-        this.worldData = worldData;
-        this.obstacles = obstacles;
-        this.pits = pits;
-        this.mines = mines;
+        this("", worldData, obstacles, pits, mines);
+    }
+
+    public String getWorldName() {
+        return worldName;
     }
 
     public WorldDataDbObject getWorldData() {

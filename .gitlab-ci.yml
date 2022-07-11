@@ -25,7 +25,7 @@ unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "Running unit tests..."
-    - mvn $MAVEN_CLI_OPTS test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector
+    - mvn $MAVEN_CLI_OPTS test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector -pl ApiServer
 
 acceptance-test-job:
   stage: test

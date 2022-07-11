@@ -14,6 +14,7 @@ import static za.co.wethinkcode.robotworlds.world.enums.Direction.*;
 import static za.co.wethinkcode.robotworlds.world.enums.UpdateResponse.*;
 
 public class World {
+    private final String worldName;
     private final List<Robot> robots = new ArrayList<>();
     private final Random random = new Random();
     private final WorldData worldData;
@@ -22,9 +23,14 @@ public class World {
     private Position bottomRight;
     private Position topLeft;
 
-    public World(WorldData worldData) {
+    public World(String worldName, WorldData worldData) {
+        this.worldName = worldName;
         this.worldData = worldData;
         this.setBounds(worldData.getWidth(), worldData.getHeight());
+    }
+
+    public World(WorldData worldData) {
+        this("", worldData);
     }
 
     private void setBounds(int width, int height) {
@@ -33,6 +39,10 @@ public class World {
 
         topLeft = new Position(-absWidth/2, absHeight/2);
         bottomRight = new Position(absWidth/2, -absHeight/2);
+    }
+
+    public String getWorldName() {
+        return worldName;
     }
 
     public WorldData getWorldData() {

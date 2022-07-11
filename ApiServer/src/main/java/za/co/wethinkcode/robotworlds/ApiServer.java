@@ -63,10 +63,15 @@ public class ApiServer {
     }
 
     private static OpenApiPlugin getConfiguredOpenApiPlugin() {
-        Info info = new Info().version("1.0").description("Robot Worlds API");
+        Info info =
+                new Info()
+                        .version("1.0")
+                        .title("Robot Worlds API")
+                        .description("Paths");
+
         OpenApiOptions options = new OpenApiOptions(info)
                 .activateAnnotationScanningFor(
-                        "io.javalin.example.java"
+                        "za.co.wethinkcode.robotworlds"
                 )
                 .path("/swagger-docs") // endpoint for OpenAPI json
                 .swagger(new SwaggerOptions("/swagger-ui")) // endpoint for swagger-ui

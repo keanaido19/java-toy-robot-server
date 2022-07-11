@@ -48,7 +48,7 @@ public class ApiHandler {
     @OpenApi(
             summary = "Get world by name",
             operationId = "getWorldByName",
-            path = "/world/:worldName",
+            path = "/world/{worldName}",
             method = HttpMethod.GET,
             pathParams = {
                     @OpenApiParam(

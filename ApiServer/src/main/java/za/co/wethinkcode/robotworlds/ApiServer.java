@@ -6,6 +6,7 @@ import io.javalin.plugin.openapi.OpenApiPlugin;
 import io.javalin.plugin.openapi.ui.ReDocOptions;
 import io.javalin.plugin.openapi.ui.SwaggerOptions;
 import io.swagger.v3.oas.models.info.Info;
+import org.slf4j.simple.SimpleLogger;
 import za.co.wethinkcode.robotworlds.arguments.ServerPortArgument;
 import za.co.wethinkcode.robotworlds.serverconsole.ServerConsole;
 
@@ -16,6 +17,7 @@ public class ApiServer {
     private final int port;
 
     public ApiServer(int port) {
+        System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
         this.port = port;
         this.server = Javalin.create(
                 config -> {
@@ -46,6 +48,10 @@ public class ApiServer {
         Play.start(args);
         this.server.start(port);
         System.out.printf(
+                "Listening on http://localhost:%d/%n",
+                port
+        );
+        System.out.printf(
                 "Check out ReDoc docs at http://localhost:%d/redoc%n",
                 port
         );
@@ -67,15 +73,15 @@ public class ApiServer {
                 new Info()
                         .version("1.0")
                         .title("Robot Worlds API")
-                        .description("Paths");
+                        .description("...");
 
         OpenApiOptions options = new OpenApiOptions(info)
                 .activateAnnotationScanningFor(
                         "za.co.wethinkcode.robotworlds"
                 )
-                .path("/swagger-docs") // endpoint for OpenAPI json
-                .swagger(new SwaggerOptions("/swagger-ui")) // endpoint for swagger-ui
-                .reDoc(new ReDocOptions("/redoc")) // endpoint for redoc
+                .path("/swagger-docs")
+                .swagger(new SwaggerOptions("/swagger-ui"))
+                .reDoc(new ReDocOptions("/redoc"))
                 .defaultDocumentation(doc -> {
                     doc.json("500", ErrorResponse.class);
                     doc.json("503", ErrorResponse.class);

@@ -204,7 +204,7 @@ docker_build: maven_package
 
 docker_release: docker_build test_docker
 	docker login gitlab.wethinkco.de:5050
-	docker tag robot-worlds-socket-server:latest gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:socket-server_$(get_project_version)
-	docker tag robot-worlds-api-server:latest gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:api-server_$(get_project_version)
-	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:socket-server_$(get_project_version)
-	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:api-server_$(get_project_version)
+	docker tag robot-worlds-socket-server:latest gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson/socket-server:$(get_project_version)
+	docker tag robot-worlds-api-server:latest gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson/api-server:$(get_project_version)
+	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson/socket-server:$(get_project_version)
+	docker push gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson/api-server:$(get_project_version)

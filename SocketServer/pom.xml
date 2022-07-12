@@ -4,7 +4,7 @@
     <parent>
         <artifactId>RobotWorlds</artifactId>
         <groupId>za.co.wethinkcode.robotworlds</groupId>
-        <version>1.6.0-SNAPSHOT</version>
+        <version>1.6.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,17 +24,17 @@
         <dependency>
             <artifactId>DatabaseConnector</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
-            <version>1.6.0-SNAPSHOT</version>
+            <version>1.6.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <artifactId>CommandLineInterface</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
-            <version>1.6.0-SNAPSHOT</version>
+            <version>1.6.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <artifactId>RobotWorldsDomain</artifactId>
             <groupId>za.co.wethinkcode.robotworlds</groupId>
-            <version>1.6.0-SNAPSHOT</version>
+            <version>1.6.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -89,7 +89,7 @@
                 <configuration>
                     <skip>false</skip>
                     <executable>java</executable>
-                    <mainClass>za.co.wethinkcode.robotworlds.RobotServer</mainClass>
+                    <mainClass>za.co.wethinkcode.robotworlds.socket.server.RobotServer</mainClass>
                     <includeProjectDependencies>
                     </includeProjectDependencies>
                 </configuration>
@@ -112,7 +112,7 @@
                                     <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                     <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                                     <mainClass>
-                                        za.co.wethinkcode.robotworlds.RobotServer
+                                        za.co.wethinkcode.robotworlds.socket.server.RobotServer
                                     </mainClass>
                                 </manifest>
                             </archive>

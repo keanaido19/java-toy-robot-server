@@ -1,4 +1,4 @@
-image: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson:test-environment
+image: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson/test-environment:latest
 
 stages:          # List of stages for jobs, and their order of execution
   - build

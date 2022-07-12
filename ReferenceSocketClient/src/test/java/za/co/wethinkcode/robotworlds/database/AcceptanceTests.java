@@ -3,9 +3,9 @@ package za.co.wethinkcode.robotworlds.database;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import za.co.wethinkcode.robotworlds.RobotServer;
-import za.co.wethinkcode.robotworlds.databaseconnectors.DbConnector;
-import za.co.wethinkcode.robotworlds.databaseconnectors.ORMLiteDbConnector;
+import za.co.wethinkcode.robotworlds.socket.server.RobotServer;
+import za.co.wethinkcode.robotworlds.database.connectors.DbConnector;
+import za.co.wethinkcode.robotworlds.database.connectors.ORMLiteDbConnector;
 
 import java.io.*;
 import java.sql.SQLException;

@@ -1,9 +1,5 @@
 package za.co.wethinkcode.robotworlds.api.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.List;
 
 public class JsonRequest {

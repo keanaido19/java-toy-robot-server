@@ -55,9 +55,9 @@ public class ApiServer {
                 MessageFormat.format(
                         "Welcome to Robot Worlds Server!\n" +
                                 "Server is listening on...\n" +
-                                "\tAddress :\thttp://localhost:{0}/\n" +
-                                "\tReDocs :\thttp://localhost:{0}/redoc\n" +
-                                "\tSwagger UI :\thttp://localhost:{0}/" +
+                                "\tAddress\t\t:\thttp://localhost:{0}/\n" +
+                                "\tReDocs\t\t:\thttp://localhost:{0}/redoc\n" +
+                                "\tSwagger UI\t:\thttp://localhost:{0}/" +
                                 "swagger-ui",
                         port + ""
                 )
@@ -84,11 +84,7 @@ public class ApiServer {
                 )
                 .path("/swagger-docs")
                 .swagger(new SwaggerOptions("/swagger-ui"))
-                .reDoc(new ReDocOptions("/redoc"))
-                .defaultDocumentation(doc -> {
-                    doc.json("500", ErrorResponse.class);
-                    doc.json("503", ErrorResponse.class);
-                });
+                .reDoc(new ReDocOptions("/redoc"));
         return new OpenApiPlugin(options);
     }
 

@@ -89,7 +89,7 @@
                 <configuration>
                     <skip>false</skip>
                     <executable>java</executable>
-                    <mainClass>za.co.wethinkcode.robotworlds.RobotServer</mainClass>
+                    <mainClass>za.co.wethinkcode.robotworlds.socket.server.RobotServer</mainClass>
                     <includeProjectDependencies>
                     </includeProjectDependencies>
                 </configuration>
@@ -112,7 +112,7 @@
                                     <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                     <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                                     <mainClass>
-                                        za.co.wethinkcode.robotworlds.RobotServer
+                                        za.co.wethinkcode.robotworlds.socket.server.RobotServer
                                     </mainClass>
                                 </manifest>
                             </archive>

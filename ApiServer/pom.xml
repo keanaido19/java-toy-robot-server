@@ -111,7 +111,7 @@
                                     <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                     <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                                     <mainClass>
-                                        za.co.wethinkcode.robotworlds.ApiServer
+                                        za.co.wethinkcode.robotworlds.api.server.ApiServer
                                     </mainClass>
                                 </manifest>
                             </archive>

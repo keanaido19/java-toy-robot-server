@@ -35,9 +35,6 @@
             <groupId>net.lemnik</groupId>
             <artifactId>eodsql</artifactId>
             <version>2.2</version>
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${basedir}/libs/eodsql.jar</systemPath>-->
-<!--            <type>jar</type>-->
         </dependency>
     </dependencies>
 
@@ -69,23 +66,6 @@
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
                     <version>2.5.2</version>
-                    <configuration>
-                        <groupId>net.lemnik</groupId>
-                        <artifactId>eodsql</artifactId>
-                        <version>2.2</version>
-                        <packaging>jar</packaging>
-                        <file>${basedir}/libs/eodsql.jar</file>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>install-jar-lib</id>
-                            <goals>
-                                <goal>install-file</goal>
-                            </goals>
-                            <phase>validate</phase>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>

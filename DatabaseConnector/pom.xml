@@ -35,6 +35,10 @@
             <groupId>net.lemnik</groupId>
             <artifactId>eodsql</artifactId>
             <version>2.2</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/eodsql.jar</systemPath>
+            <type>jar</type>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -88,7 +92,7 @@
                         <artifactId>eodsql</artifactId>
                         <version>2.2</version>
                         <packaging>jar</packaging>
-                        <file>${project.parent.basedir}/libs/eodsql.jar</file>
+                        <file>${basedir}/libs/eodsql.jar</file>
                         <generatePom>true</generatePom>
                     </configuration>
                     <executions>

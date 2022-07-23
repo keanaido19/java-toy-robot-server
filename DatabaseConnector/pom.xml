@@ -97,7 +97,7 @@
                             <goals>
                                 <goal>install-file</goal>
                             </goals>
-                            <phase>initialize</phase>
+                            <phase>validate</phase>
                         </execution>
                     </executions>
                 </plugin>

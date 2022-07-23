@@ -31,6 +31,11 @@
             <artifactId>ormlite-jdbc</artifactId>
             <version>6.1</version>
         </dependency>
+        <dependency>
+            <groupId>net.lemnik</groupId>
+            <artifactId>eodsql</artifactId>
+            <version>2.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -74,6 +79,27 @@
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                    <configuration>
+                        <groupId>net.lemnik</groupId>
+                        <artifactId>eodsql</artifactId>
+                        <version>2.2</version>
+                        <packaging>jar</packaging>
+                        <file>${project.parent.basedir}/libs/eodsql.jar</file>
+                        <generatePom>true</generatePom>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install-jar-lib</id>
+                            <goals>
+                                <goal>install-file</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

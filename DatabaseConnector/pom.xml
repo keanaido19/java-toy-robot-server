@@ -37,7 +37,7 @@
             <version>2.2</version>
 <!--            <scope>system</scope>-->
 <!--            <systemPath>${basedir}/libs/eodsql.jar</systemPath>-->
-<!--            <type>jar</type>-->
+            <type>jar</type>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,12 @@
 package za.co.wethinkcode.robotworlds.database.objects;
 
+import net.lemnik.eodsql.ResultColumn;
+
 import java.util.List;
 import java.util.Objects;
 
 public class WorldDO {
+    @ResultColumn(value = "worldName")
     private final String worldName;
     private final WorldDataDO worldData;
     private final List<WorldObjectDO> obstacles, pits, mines;

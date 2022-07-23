@@ -38,7 +38,6 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/eodsql.jar</systemPath>
             <type>jar</type>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

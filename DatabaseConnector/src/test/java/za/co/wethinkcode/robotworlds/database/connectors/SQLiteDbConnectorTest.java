@@ -14,6 +14,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SQLiteDbConnectorTest {
+    private final List<String> tableNames =
+            List.of("world", "worldData", "mines", "obstacles", "pits");
     SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
 
     SQLiteDbConnectorTest() throws SQLException {}
@@ -89,11 +91,9 @@ class SQLiteDbConnectorTest {
 
         dbConnector.saveWorld("world", createWorld());
 
-        assertFalse(checkTableEmpty("world", connection));
-        assertFalse(checkTableEmpty("worldData", connection));
-        assertFalse(checkTableEmpty("mines", connection));
-        assertFalse(checkTableEmpty("obstacles", connection));
-        assertFalse(checkTableEmpty("pits", connection));
+        for (String tableName : tableNames) {
+            assertFalse(checkTableEmpty(tableName, connection));
+        }
     }
 
     @Test
@@ -112,13 +112,12 @@ class SQLiteDbConnectorTest {
     void deleteWorld() throws SQLException {
         Connection connection = dbConnector.getConnection();
 
-        dbConnector.saveWorld("world", createWorld());
+        saveWorld();
+
         dbConnector.deleteWorld("world");
 
-        assertTrue(checkTableEmpty("world", connection));
-        assertTrue(checkTableEmpty("worldData", connection));
-        assertTrue(checkTableEmpty("mines", connection));
-        assertTrue(checkTableEmpty("obstacles", connection));
-        assertTrue(checkTableEmpty("pits", connection));
+        for (String tableName : tableNames) {
+            assertTrue(checkTableEmpty(tableName, connection));
+        }
     }
 }

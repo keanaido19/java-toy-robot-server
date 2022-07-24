@@ -16,6 +16,10 @@ import static za.co.wethinkcode.robotworlds.domain.world.enums.Direction.*;
 import static za.co.wethinkcode.robotworlds.domain.world.enums.UpdateResponse.FAILED_OBSTRUCTED;
 
 public class MovementCommand extends Command {
+    private Robot robot;
+    private Direction directionOfMovement;
+    private Position newPosition;
+
     public MovementCommand(
             String robotName,
             String command,
@@ -24,18 +28,18 @@ public class MovementCommand extends Command {
         super(robotName, command, commandArguments);
     }
 
-    @Override
-    public JsonResponse execute(Play play) {
-        Robot robot = world.getRobot(robotName);
-
+    private int getNumberOfSteps() {
         int commandArgument = getInteger(commandArguments.get(0));
-        int nrSteps =
-                "back".equals(command) ? -1 * commandArgument: commandArgument;
+        return "back".equals(command) ? -1 * commandArgument: commandArgument;
+    }
+
+    private void setPositionAndDirection() {
+        int nrSteps = getNumberOfSteps();
 
         int newX = robot.getPosition().getX();
         int newY = robot.getPosition().getY();
 
-        Direction directionOfMovement = "back".equals(command) ? SOUTH : NORTH;
+        directionOfMovement = "back".equals(command) ? SOUTH : NORTH;
 
         switch (robot.getDirection()) {
             case NORTH:
@@ -54,12 +58,17 @@ public class MovementCommand extends Command {
                 directionOfMovement = "back".equals(command) ? EAST : WEST;
         }
 
-        Position newPosition = new Position(newX, newY);
+        newPosition = new Position(newX, newY);
+    }
+
+    private JsonResponse getMovementResponse() {
+        LinkedHashMap<String, Object> dataMap =
+                DataMapBuilder.getDataMap(world, robot);
+
         UpdateResponse updateResponse =
                 world.moveRobot(robot, newPosition);
 
-        LinkedHashMap<String, Object> dataMap =
-                DataMapBuilder.getDataMap(world, robot);
+        String message = updateResponse.getMessage();
 
         Direction direction =
                 world.getEdge(
@@ -72,17 +81,23 @@ public class MovementCommand extends Command {
                         && world.isPositionAtWorldEdge(robot.getPosition())
                         && !updateResponse.equals(FAILED_OBSTRUCTED)
         ) {
-            dataMap.put(
-                    "message",
-                    "At the " + direction + " edge"
-            );
-        } else {
-            dataMap.put("message", updateResponse.getMessage());
+            message = "At the " + direction + " edge";
         }
+
+        dataMap.put("message", message);
 
         return JsonResponse.getSuccessResponse(
                 dataMap,
                 robot.getRobotData()
         );
+    }
+
+    @Override
+    public JsonResponse execute(Play play) {
+        robot = world.getRobot(robotName);
+
+        setPositionAndDirection();
+
+        return getMovementResponse();
     }
 }

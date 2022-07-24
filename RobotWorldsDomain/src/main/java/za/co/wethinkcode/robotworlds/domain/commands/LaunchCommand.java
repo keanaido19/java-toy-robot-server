@@ -41,14 +41,19 @@ public class LaunchCommand extends Command {
         }
     }
 
+    private boolean isRobotNameTaken() {
+        for (Robot worldRobot : world.getRobots()) {
+            if (worldRobot.getName().equals(robotName))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public JsonResponse execute(Play play) {
         Position position = world.getUnoccupiedPosition();
 
-        for (Robot worldRobot : world.getRobots()) {
-            if (worldRobot.getName().equals(robotName))
-                return JsonResponse.nameErrorResponse();
-        }
+        if (isRobotNameTaken()) return JsonResponse.nameErrorResponse();
 
         if (position == null) return JsonResponse.spaceErrorResponse();
 
@@ -71,10 +76,7 @@ public class LaunchCommand extends Command {
         if (null == robot)
             return JsonResponse.argumentErrorResponse();
 
-        for (Robot worldRobot : world.getRobots()) {
-            if (worldRobot.getName().equals(robot.getName()))
-                return JsonResponse.nameErrorResponse();
-        }
+        if (isRobotNameTaken()) return JsonResponse.nameErrorResponse();
 
         play.addRobot(robot);
         world.addRobotToWorld(robot);

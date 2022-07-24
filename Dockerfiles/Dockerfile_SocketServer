@@ -1,6 +1,8 @@
 FROM openjdk:11
 MAINTAINER keaton naidoo <keanaido021@student.wethinkcode.co.za>
 
+WORKDIR /app
+
 COPY target/SocketServer*.jar RobotWorldsServer.jar
 
 EXPOSE 5050

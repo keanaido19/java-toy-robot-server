@@ -21,6 +21,7 @@ public class FireCommand extends AuxiliaryCommand {
     private int distance;
     private int robotX;
     private int robotY;
+    private int range;
 
     public FireCommand(String robotName) {
         super(robotName, "fire");
@@ -55,11 +56,7 @@ public class FireCommand extends AuxiliaryCommand {
                         || hasBulletHitObstacle(p);
     }
 
-    private boolean loopCondition(
-            int range,
-            int coordinate,
-            Direction direction
-    ) {
+    private boolean loopCondition(int coordinate, Direction direction) {
         if (direction.equals(NORTH) || direction.equals(EAST))
             return bulletCoordinate <= coordinate + range;
         return bulletCoordinate >= range - coordinate;
@@ -73,11 +70,11 @@ public class FireCommand extends AuxiliaryCommand {
         }
     }
 
-    private void fire(int range, int coordinate, Direction direction) {
+    private void fire(int coordinate, Direction direction) {
         Position bulletPosition;
         for (
                 bulletCoordinate = coordinate;
-                loopCondition(range, coordinate, direction);
+                loopCondition(coordinate, direction);
                 incrementBulletCoordinate(direction)
         ) {
             if (direction.equals(NORTH) || direction.equals(SOUTH)) {
@@ -92,45 +89,45 @@ public class FireCommand extends AuxiliaryCommand {
         }
     }
 
-    private void shootXAxis(int range, Direction direction) {
-        fire(range, robotX, direction);
+    private void shootXAxis(Direction direction) {
+        fire(robotX, direction);
     }
 
-    private void shootYAxis(int range, Direction direction) {
-        fire(range, robotY, direction);
+    private void shootYAxis(Direction direction) {
+        fire(robotY, direction);
     }
 
-    private void shootEast(int range) {
-        shootXAxis(range, EAST);
+    private void shootEast() {
+        shootXAxis(EAST);
     }
 
-    private void shootWest(int range) {
-        shootXAxis(range, WEST);
+    private void shootWest() {
+        shootXAxis(WEST);
     }
 
-    private void shootNorth(int range) {
-        shootYAxis(range, NORTH);
+    private void shootNorth() {
+        shootYAxis(NORTH);
     }
 
-    private void shootSouth(int range) {
-        shootYAxis(range, SOUTH);
+    private void shootSouth() {
+        shootYAxis(SOUTH);
     }
 
-    private void shoot(int range) {
+    private void shoot() {
         robot.fire();
 
         switch (robot.getDirection()) {
             case NORTH:
-                shootNorth(range);
+                shootNorth();
                 break;
             case EAST:
-                shootEast(range);
+                shootEast();
                 break;
             case SOUTH:
-                shootSouth(range);
+                shootSouth();
                 break;
             case WEST:
-                shootWest(range);
+                shootWest();
                 break;
         }
     }
@@ -152,7 +149,8 @@ public class FireCommand extends AuxiliaryCommand {
                     robot.getRobotData()
             );
 
-        shoot(robot.getRange());
+        range = robot.getRange();
+        shoot();
 
         if (null == target)
             return JsonResponse.getSuccessResponse(

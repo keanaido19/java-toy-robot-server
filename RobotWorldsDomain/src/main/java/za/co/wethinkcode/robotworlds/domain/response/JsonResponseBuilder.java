@@ -1,6 +1,7 @@
 package za.co.wethinkcode.robotworlds.domain.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import za.co.wethinkcode.robotworlds.domain.JsonHandler;
 import za.co.wethinkcode.robotworlds.domain.Play;
 import za.co.wethinkcode.robotworlds.domain.commandhandler.CommandHandler;
@@ -37,7 +38,9 @@ public class JsonResponseBuilder {
         return returnList;
     }
 
-    private void processJsonRequest(JsonNode jsonRequest) {
+    private void processJsonStringRequest(String jsonStringRequest)
+            throws Exception {
+        JsonNode jsonRequest = new ObjectMapper().readTree(jsonStringRequest);
         robotName = jsonRequest.get("robot").asText();
         command = jsonRequest.get("command").asText();
         commandArguments =
@@ -53,11 +56,21 @@ public class JsonResponseBuilder {
                 );
     }
 
-    public synchronized String getStringResponse(JsonNode jsonRequest) {
-        JsonResponse jsonResponse;
+    public synchronized String getStringResponse(String jsonStringRequest) {
+        try {
+            processJsonStringRequest(jsonStringRequest);
+            setCommandHandler();
 
-        processJsonRequest(jsonRequest);
-        setCommandHandler();
+        } catch (Exception e) {
+            return JsonHandler.convertJavaObjectToJsonString(
+                    JsonResponse.badRequestErrorResponse()
+            );
+        }
+        return getStringResponse();
+    }
+
+    private String getStringResponse() {
+        JsonResponse jsonResponse;
 
         if (!commandHandler.isValidCommand()) {
             jsonResponse = JsonResponse.commandErrorResponse();

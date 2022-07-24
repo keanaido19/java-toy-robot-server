@@ -1,6 +1,8 @@
 package za.co.wethinkcode.robotworlds.domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import za.co.wethinkcode.robotworlds.domain.console.Console;
 import za.co.wethinkcode.robotworlds.domain.response.JsonResponseBuilder;
 import za.co.wethinkcode.robotworlds.domain.world.World;
@@ -33,8 +35,8 @@ public class Play {
         robots.add(robot);
     }
 
-    public String getJsonStringResponse(JsonNode jsonRequest) {
-        return jsonResponseBuilder.getStringResponse(jsonRequest);
+    public String getJsonStringResponse(String jsonStringRequest) {
+        return jsonResponseBuilder.getStringResponse(jsonStringRequest);
     }
 
     public static void start(String[] args) {
@@ -49,7 +51,14 @@ public class Play {
     }
 
     public static void main(String[] args) {
-        start(args);
-        new Console().start();
+        try {
+            String lol = "{}";
+            JsonNode loll = new ObjectMapper().readTree(lol);
+            loll.get("pie").asText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        start(args);
+//        new Console().start();
     }
 }

@@ -30,8 +30,8 @@ unit-test-job:   # This job runs in the test stage.
     when: always
     reports:
       junit:
-        - /**/target/surefire-reports/TEST-*.xml
-        - /**/target/surefire-reports/TEST-*.xml
+        - "**/target/surefire-reports/TEST-*.xml"
+        - "**/target/surefire-reports/TEST-*.xml"
 
 acceptance-test-job:
   stage: test
@@ -42,8 +42,8 @@ acceptance-test-job:
     when: always
     reports:
       junit:
-        - /**/target/surefire-reports/TEST-*.xml
-        - /**/target/surefire-reports/TEST-*.xml
+        - "**/target/surefire-reports/TEST-*.xml"
+        - "**/target/surefire-reports/TEST-*.xml"
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.

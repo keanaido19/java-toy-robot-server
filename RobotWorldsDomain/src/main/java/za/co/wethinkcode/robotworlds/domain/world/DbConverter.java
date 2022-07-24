@@ -55,17 +55,23 @@ public class DbConverter {
         return returnList;
     }
 
+    private static int[] getWorldConfigData(WorldDataDO worldDataDO) {
+        int[] returnArray = new int[6];
+        returnArray[0] = worldDataDO.getVisibility();
+        returnArray[1] = worldDataDO.getReloadTime();
+        returnArray[2] = worldDataDO.getRepairTime();
+        returnArray[3] = worldDataDO.getMaxShield();
+        returnArray[4] = worldDataDO.getMaxShots();
+        returnArray[5] = worldDataDO.getMineTime();
+        return  returnArray;
+    }
+
     public static World getWorld(WorldDO worldDO) {
         WorldDataDO worldDataDO = worldDO.getWorldData();
 
         WorldConfigData worldConfigData =
                 new WorldConfigData(
-                        worldDataDO.getVisibility(),
-                        worldDataDO.getReloadTime(),
-                        worldDataDO.getRepairTime(),
-                        worldDataDO.getMineTime(),
-                        worldDataDO.getMaxShield(),
-                        worldDataDO.getMaxShots()
+                        getWorldConfigData(worldDataDO)
                 );
 
         WorldData worldData =

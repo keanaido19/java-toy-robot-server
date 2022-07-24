@@ -51,14 +51,7 @@ public class Play {
     }
 
     public static void main(String[] args) {
-        try {
-            String lol = "{}";
-            JsonNode loll = new ObjectMapper().readTree(lol);
-            loll.get("pie").asText();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        start(args);
-//        new Console().start();
+        start(args);
+        new Console().start();
     }
 }

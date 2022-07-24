@@ -3,6 +3,7 @@ package za.co.wethinkcode.robotworlds.database.connectors;
 import za.co.wethinkcode.robotworlds.database.objects.WorldDataDO;
 import za.co.wethinkcode.robotworlds.database.objects.WorldDO;
 import za.co.wethinkcode.robotworlds.database.objects.WorldObjectDO;
+import za.co.wethinkcode.robotworlds.database.objects.orm.WorldData;
 
 import java.sql.*;
 import java.text.MessageFormat;
@@ -238,6 +239,19 @@ public class SQLiteDbConnector implements DbConnector {
         );
     }
 
+    private int[] getWorldDateArray(ResultSet resultSet) throws SQLException {
+        int[] returnArray = new int[8];
+        returnArray[0] = resultSet.getInt("width");
+        returnArray[1] = resultSet.getInt("height");
+        returnArray[2] = resultSet.getInt("visibility");
+        returnArray[3] = resultSet.getInt("repairTime");
+        returnArray[4] = resultSet.getInt("reloadTime");
+        returnArray[5] = resultSet.getInt("mineTime");
+        returnArray[6] = resultSet.getInt("maxShield");
+        returnArray[7] = resultSet.getInt("maxShots");
+        return returnArray;
+    }
+
     private WorldDataDO getWorldData(int worldDataID)
             throws SQLException {
         Statement statement = dbConnection.createStatement();
@@ -250,16 +264,7 @@ public class SQLiteDbConnector implements DbConnector {
                         )
                 );
         if (resultSet.isClosed()) return new WorldDataDO();
-        return new WorldDataDO(
-                resultSet.getInt("width"),
-                resultSet.getInt("height"),
-                resultSet.getInt("visibility"),
-                resultSet.getInt("repairTime"),
-                resultSet.getInt("reloadTime"),
-                resultSet.getInt("mineTime"),
-                resultSet.getInt("maxShield"),
-                resultSet.getInt("maxShots")
-        );
+        return new WorldDataDO(getWorldDateArray(resultSet));
     }
 
     private List<WorldObjectDO> getWorldObjects(

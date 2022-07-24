@@ -16,22 +16,34 @@ cache:
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - mvn verify -DskipTests
-    - echo "Compiling the code..."
+    - echo "Building project..."
+    - mvn $MAVEN_CLI_OPTS clean
+    - mvn $MAVEN_CLI_OPTS validate
     - mvn $MAVEN_CLI_OPTS compile
-    - mvn $MAVEN_CLI_OPTS clean install -DskipTests
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "Running unit tests..."
     - mvn $MAVEN_CLI_OPTS test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector -pl ApiServer
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - /**/target/surefire-reports/TEST-*.xml
+        - /**/target/surefire-reports/TEST-*.xml
 
 acceptance-test-job:
   stage: test
   script:
     - echo "Running acceptance tests..."
     - ./test_script.sh
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - /**/target/surefire-reports/TEST-*.xml
+        - /**/target/surefire-reports/TEST-*.xml
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.

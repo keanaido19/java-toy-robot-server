@@ -2,6 +2,7 @@ package za.co.wethinkcode.robotworlds.world1x1;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.Command;
 import za.co.wethinkcode.robotworlds.TestBase;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +31,7 @@ public class StateRobotTests extends TestBase {
 
         // When I send a valid state request to the server
         JsonNode response =
-                executeCommand("Hal", "state");
+                executeCommand("Hal", Command.state);
 
         // Then I should get an error response from the server
         testFailedCommand(response, "Robot does not exist");
@@ -46,7 +47,7 @@ public class StateRobotTests extends TestBase {
 
         // When I send a valid state request to the server
         JsonNode response =
-                executeCommand("HAL", "state");
+                executeCommand("HAL", Command.state);
 
         // Then I should get a valid response from the server
         testCommandSuccessful(response);

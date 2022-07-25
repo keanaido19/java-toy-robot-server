@@ -26,7 +26,7 @@ prepare-release-patch-job:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
     - git checkout -B "$CI_COMMIT_REF_NAME"
-    - mvn release:prepare -DreleaseVersion=v$($MAJOR_VERSION).$($MINOR_VERSION).$($NEXT_PATCH_VERSION) -DdevelopmentVersion=$($MAJOR_VERSION).$($MINOR_VERSION).$($NEXT_PATCH_VERSION)-SNAPSHOT -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings settings.xml -B
+    - mvn release:prepare -DreleaseVersion=v$($MAJOR_VERSION).$($MINOR_VERSION).$($NEXT_PATCH_VERSION) -DdevelopmentVersion=$($MAJOR_VERSION).$($MINOR_VERSION).$($NEXT_PATCH_VERSION)-SNAPSHOT -Dresume=false -DskipTests=true -Darguments=-DskipTests -DcheckModificationExcludeList=pom.xml --settings settings.xml -B
 
 perform-release-job:
   stage: perform-release
@@ -40,6 +40,6 @@ perform-release-job:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
     - git checkout -B "$CI_COMMIT_REF_NAME"
-    - mvn release:perform -DskipTests=true --settings settings.xml -B
+    - mvn release:perform -DskipTests=true -Darguments=-DskipTests --settings settings.xml -B
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG != ""'

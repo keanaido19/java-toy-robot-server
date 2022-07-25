@@ -29,7 +29,7 @@ maven_release = mvn build-helper:parse-version -B release:prepare -DskipTests \
 
 all: build maven_package
 
-build: maven_clean maven_validate maven_compile maven_test
+build: maven_install maven_clean maven_validate maven_compile maven_test
 
 maven_clean:
 	mvn clean
@@ -39,6 +39,9 @@ maven_validate:
 
 maven_compile:
 	mvn compile
+
+maven_install:
+	mvn clean install -DskipTests
 
 maven_test:
 	$(MAKE) test_reference_server

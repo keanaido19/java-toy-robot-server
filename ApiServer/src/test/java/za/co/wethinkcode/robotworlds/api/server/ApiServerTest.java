@@ -33,15 +33,45 @@ class ApiServerTest {
         server.stop();
     }
 
-    @Test
-    @DisplayName("GET /world")
-    public void getWorld() {
+    private JSONObject getServerResponse(String url) {
         HttpResponse<JsonNode> response =
-                Unirest.get("http://localhost:5000/world").asJson();
+                Unirest.get(url).asJson();
         assertEquals(200, response.getStatus());
         assertEquals("application/json",
                 response.getHeaders().getFirst("Content-Type"));
-        JSONObject jsonObject = response.getBody().getObject();
+        return response.getBody().getObject();
+    }
+
+    private HttpResponse<JsonNode> operateRobot(
+            String name,
+            String command,
+            List<Object> arguments
+    ) {
+        JsonRequest jsonRequest =new JsonRequest();
+
+        jsonRequest.setRobot(name);
+        jsonRequest.setCommand(command);
+        jsonRequest.setArguments(arguments);
+
+        return Unirest.post("http://localhost:5000/robot")
+                .header("Content-Type", "application/json")
+                .body(jsonRequest)
+                .asJson();
+    }
+
+    private HttpResponse<JsonNode> launchTestRobot() {
+        return operateRobot(
+                "testBot",
+                "launch",
+                List.of("sniper", 5, 5)
+        );
+    }
+
+    @Test
+    @DisplayName("GET /world")
+    public void getWorld() {
+        JSONObject jsonObject =
+                getServerResponse("http://localhost:5000/world");
 
         assertEquals(
                 "{\"worldName\":\"\"," +
@@ -63,12 +93,8 @@ class ApiServerTest {
     @Test
     @DisplayName("GET /world/world1")
     public void getWorld1() {
-        HttpResponse<JsonNode> response =
-                Unirest.get("http://localhost:5000/world/world1").asJson();
-        assertEquals(200, response.getStatus());
-        assertEquals("application/json",
-                response.getHeaders().getFirst("Content-Type"));
-        JSONObject jsonObject = response.getBody().getObject();
+        JSONObject jsonObject =
+                getServerResponse("http://localhost:5000/world/world1");
 
         assertEquals(
                 "{\"worldName\":\"world1\"," +
@@ -109,17 +135,7 @@ class ApiServerTest {
     @Test
     @DisplayName("POST /robot")
     public void launchRobot() {
-        JsonRequest jsonRequest =new JsonRequest();
-
-        jsonRequest.setRobot("testBot");
-        jsonRequest.setCommand("launch");
-        jsonRequest.setArguments(List.of("sniper", 5, 5));
-
-        HttpResponse<JsonNode> response =
-                Unirest.post("http://localhost:5000/robot")
-                        .header("Content-Type", "application/json")
-                        .body(jsonRequest)
-                        .asJson();
+        HttpResponse<JsonNode> response = launchTestRobot();
 
         assertEquals(200, response.getStatus());
         assertEquals(
@@ -138,26 +154,10 @@ class ApiServerTest {
     @Test
     @DisplayName("POST /robot")
     public void lookRobot() {
-        JsonRequest jsonRequest =new JsonRequest();
-
-        jsonRequest.setRobot("testBot");
-        jsonRequest.setCommand("launch");
-        jsonRequest.setArguments(List.of("sniper", 5, 5));
-
-        Unirest.post("http://localhost:5000/robot")
-                .header("Content-Type", "application/json")
-                .body(jsonRequest)
-                .asJson();
-
-        jsonRequest.setRobot("testBot");
-        jsonRequest.setCommand("look");
-        jsonRequest.setArguments(new ArrayList<>());
+        launchTestRobot();
 
         HttpResponse<JsonNode> response =
-                Unirest.post("http://localhost:5000/robot")
-                        .header("Content-Type", "application/json")
-                        .body(jsonRequest)
-                        .asJson();
+                operateRobot("testBot", "look", new ArrayList<>());
 
         assertEquals(200, response.getStatus());
         assertEquals(

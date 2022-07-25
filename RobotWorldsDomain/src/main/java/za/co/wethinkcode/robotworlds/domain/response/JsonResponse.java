@@ -64,6 +64,10 @@ public class JsonResponse {
         return new JsonResponse(CommandResult.ERROR, data);
     }
 
+    public static JsonResponse badRequestErrorResponse() {
+        return getErrorResponse("Malformed RobotWorlds JSON request!");
+    }
+
     public static JsonResponse launchErrorResponse() {
         return getErrorResponse("Robot has not been launched");
     }

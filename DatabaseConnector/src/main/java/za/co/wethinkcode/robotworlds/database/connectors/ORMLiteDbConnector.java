@@ -164,17 +164,21 @@ public class ORMLiteDbConnector implements DbConnector {
         return worldDao.getWorld(worldName);
     }
 
+    private int[] getWorldDateArray(WorldData worldData) {
+        int[] returnArray = new int[8];
+        returnArray[0] = worldData.getWidth();
+        returnArray[1] = worldData.getHeight();
+        returnArray[2] = worldData.getVisibility();
+        returnArray[3] = worldData.getRepairTime();
+        returnArray[4] = worldData.getReloadTime();
+        returnArray[5] = worldData.getMineTime();
+        returnArray[6] = worldData.getMaxShield();
+        returnArray[7] = worldData.getMaxShots();
+        return returnArray;
+    }
+
     private WorldDataDO getWorldData(WorldData worldData) {
-        return new WorldDataDO(
-                worldData.getWidth(),
-                worldData.getHeight(),
-                worldData.getVisibility(),
-                worldData.getRepairTime(),
-                worldData.getReloadTime(),
-                worldData.getMineTime(),
-                worldData.getMaxShield(),
-                worldData.getMaxShots()
-        );
+        return new WorldDataDO(getWorldDateArray(worldData));
     }
 
     private WorldObjectDO getWorldObject(WorldObject worldObject) {

@@ -14,22 +14,27 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SQLiteDbConnectorTest {
+    private final List<String> tableNames =
+            List.of("world", "worldData", "mines", "obstacles", "pits");
     SQLiteDbConnector dbConnector = new SQLiteDbConnector(":memory:");
 
     SQLiteDbConnectorTest() throws SQLException {}
 
+    private static int[] getWorldData() {
+        int[] returnArray = new int[8];
+        returnArray[0] = 10;
+        returnArray[1] = 10;
+        returnArray[2] = 10;
+        returnArray[3] = 3;
+        returnArray[4] = 3;
+        returnArray[5] = 3;
+        returnArray[6] = 5;
+        returnArray[7] = 5;
+        return returnArray;
+    }
+
     WorldDO createWorld() {
-        WorldDataDO worldData =
-                new WorldDataDO(
-                        10,
-                        10,
-                        10,
-                        3,
-                        3,
-                        3,
-                        5,
-                        5
-        );
+        WorldDataDO worldData = new WorldDataDO(getWorldData());
 
         WorldObjectDO worldObject1 =
                 new WorldObjectDO(1, 1, 0, 1);
@@ -89,11 +94,9 @@ class SQLiteDbConnectorTest {
 
         dbConnector.saveWorld("world", createWorld());
 
-        assertFalse(checkTableEmpty("world", connection));
-        assertFalse(checkTableEmpty("worldData", connection));
-        assertFalse(checkTableEmpty("mines", connection));
-        assertFalse(checkTableEmpty("obstacles", connection));
-        assertFalse(checkTableEmpty("pits", connection));
+        for (String tableName : tableNames) {
+            assertFalse(checkTableEmpty(tableName, connection));
+        }
     }
 
     @Test
@@ -112,13 +115,12 @@ class SQLiteDbConnectorTest {
     void deleteWorld() throws SQLException {
         Connection connection = dbConnector.getConnection();
 
-        dbConnector.saveWorld("world", createWorld());
+        saveWorld();
+
         dbConnector.deleteWorld("world");
 
-        assertTrue(checkTableEmpty("world", connection));
-        assertTrue(checkTableEmpty("worldData", connection));
-        assertTrue(checkTableEmpty("mines", connection));
-        assertTrue(checkTableEmpty("obstacles", connection));
-        assertTrue(checkTableEmpty("pits", connection));
+        for (String tableName : tableNames) {
+            assertTrue(checkTableEmpty(tableName, connection));
+        }
     }
 }

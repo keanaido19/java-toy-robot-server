@@ -1,7 +1,5 @@
 package za.co.wethinkcode.robotworlds.socket.server;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import za.co.wethinkcode.robotworlds.domain.Play;
 
 import java.io.BufferedReader;
@@ -12,7 +10,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable{
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final BufferedReader inputFromClient;
     private final PrintStream outputToClient;
     private final ServerSocket serverSocket;
@@ -70,9 +67,8 @@ public class ClientHandler implements Runnable{
                     !serverSocket.isClosed() &&
                     (commandFromClient = inputFromClient.readLine()) != null
             ) {
-                JsonNode jsonRequest = objectMapper.readTree(commandFromClient);
                 String jsonStringResponse =
-                        play.getJsonStringResponse(jsonRequest);
+                        play.getJsonStringResponse(commandFromClient);
                 outputToClient.println(jsonStringResponse);
             }
             closeEverything(socket, inputFromClient, outputToClient);

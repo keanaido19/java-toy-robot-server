@@ -2,6 +2,7 @@ package za.co.wethinkcode.robotworlds.world1x1;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.Command;
 import za.co.wethinkcode.robotworlds.TestBase;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class LookRobotTests extends TestBase {
         launchRobot("HAL");
 
         // When I send a valid look request to the server
-        JsonNode response = executeCommand("HAL", "look");
+        JsonNode response = executeCommand("HAL", Command.look);
 
         // Then I should get a valid response from the server
         testCommandSuccessful(response);

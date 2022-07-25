@@ -7,28 +7,19 @@ public class WorldDataDO {
             width, height, visibility, repairTime, reloadTime, mineTime,
             maxShield, maxShots;
 
-    public WorldDataDO() {
-        this(0, 0, 0, 0, 0, 0, 0, 0);
+    public WorldDataDO(int[] worldData) {
+        this.width = worldData[0];
+        this.height = worldData[1];
+        this.visibility = worldData[2];
+        this.repairTime = worldData[3];
+        this.reloadTime = worldData[4];
+        this.mineTime = worldData[5];
+        this.maxShield = worldData[6];
+        this.maxShots = worldData[7];
     }
 
-    public WorldDataDO(
-            int width,
-            int height,
-            int visibility,
-            int repairTime,
-            int reloadTime,
-            int mineTime,
-            int maxShield,
-            int maxShots
-    ) {
-        this.width = width;
-        this.height = height;
-        this.visibility = visibility;
-        this.repairTime = repairTime;
-        this.reloadTime = reloadTime;
-        this.mineTime = mineTime;
-        this.maxShield = maxShield;
-        this.maxShots = maxShots;
+    public WorldDataDO() {
+        this(new int[8]);
     }
 
     public int getWidth() {
@@ -68,14 +59,7 @@ public class WorldDataDO {
         if (this == o) return true;
         if (!(o instanceof WorldDataDO)) return false;
         WorldDataDO that = (WorldDataDO) o;
-        return width == that.width
-                && height == that.height
-                && visibility == that.visibility
-                && repairTime == that.repairTime
-                && reloadTime == that.reloadTime
-                && mineTime == that.mineTime
-                && maxShield == that.maxShield
-                && maxShots == that.maxShots;
+        return this.hashCode() == that.hashCode();
     }
 
     @Override

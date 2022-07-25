@@ -1,7 +1,8 @@
 package za.co.wethinkcode.robotworlds.database.connectors;
 
-import za.co.wethinkcode.robotworlds.database.objects.WorldDataDO;
+import za.co.wethinkcode.robotworlds.database.TableName;
 import za.co.wethinkcode.robotworlds.database.objects.WorldDO;
+import za.co.wethinkcode.robotworlds.database.objects.WorldDataDO;
 import za.co.wethinkcode.robotworlds.database.objects.WorldObjectDO;
 
 import java.sql.*;
@@ -11,6 +12,9 @@ import java.util.List;
 
 public class SQLiteDbConnector implements DbConnector {
     private final Connection dbConnection;
+
+    private String worldName;
+    private int worldID;
 
     public SQLiteDbConnector(String dbUrl) throws SQLException {
         dbConnection =
@@ -40,7 +44,7 @@ public class SQLiteDbConnector implements DbConnector {
         );
     }
 
-    private void createObjectTable(String tableName) throws SQLException {
+    private void createObjectTable(TableName tableName) throws SQLException {
         Statement sqlStatement = dbConnection.createStatement();
         sqlStatement.executeUpdate(
                 MessageFormat.format(
@@ -73,12 +77,15 @@ public class SQLiteDbConnector implements DbConnector {
     private void createTables() throws SQLException {
         createWorldTable();
         createWorldDataTable();
-        createObjectTable("obstacles");
-        createObjectTable("mines");
-        createObjectTable("pits");
+        for (
+                TableName tableName :
+                List.of(TableName.obstacles, TableName.pits, TableName.mines)
+        ) {
+            createObjectTable(tableName);
+        }
     }
 
-    private int getLastTableIndex(String tableName) throws SQLException {
+    private int getLastTableIndex(TableName tableName) throws SQLException {
         Statement statement = dbConnection.createStatement();
         ResultSet result =
                 statement.executeQuery(
@@ -92,15 +99,18 @@ public class SQLiteDbConnector implements DbConnector {
         return result.getInt(tableName + "ID");
     }
 
-    private void saveWorldName(String worldName, int worldDataID)
-            throws SQLException {
+    private void saveWorldName() throws SQLException {
+        int worldDataID = getLastTableIndex(TableName.worldData);
+
         Statement statement = dbConnection.createStatement();
+
         String sqlStatement;
+
         if (worldName == null) {
             sqlStatement = MessageFormat.format(
                     "INSERT INTO world(worldID, name, worldData_id) " +
                             "VALUES({0}, {0}, {1})",
-                    getLastTableIndex("world") + 1,
+                    getLastTableIndex(TableName.world) + 1,
                     worldDataID
             );
         } else {
@@ -142,11 +152,8 @@ public class SQLiteDbConnector implements DbConnector {
         );
     }
 
-    private void saveObjects(
-            String tableName,
-            List<WorldObjectDO> objects,
-            int worldID
-    ) throws SQLException {
+    private void saveObjects(TableName tableName, List<WorldObjectDO> objects)
+            throws SQLException {
         Statement statement = dbConnection.createStatement();
         for (WorldObjectDO object : objects) {
             statement.executeUpdate(
@@ -165,36 +172,37 @@ public class SQLiteDbConnector implements DbConnector {
         }
     }
 
-    private void saveObstacles(List<WorldObjectDO> obstacles, int worldID)
+    private void saveObstacles(List<WorldObjectDO> obstacles)
             throws SQLException {
-        saveObjects("obstacles", obstacles, worldID);
+        saveObjects(TableName.obstacles, obstacles);
     }
 
-    private void savePits(List<WorldObjectDO> pits, int worldID)
+    private void savePits(List<WorldObjectDO> pits)
             throws SQLException {
-        saveObjects("pits", pits, worldID);
+        saveObjects(TableName.pits, pits);
     }
 
-    private void saveMines(List<WorldObjectDO> mines, int worldID)
+    private void saveMines(List<WorldObjectDO> mines)
             throws SQLException {
-        saveObjects("mines", mines, worldID);
+        saveObjects(TableName.mines, mines);
     }
 
     @Override
     public void saveWorld(String worldName, WorldDO world)
             throws SQLException {
+        this.worldName = worldName;
         createTables();
         saveWorldData(world.getWorldData());
-        saveWorldName(worldName, getLastTableIndex("worldData"));
+        saveWorldName();
 
-        int worldID = getLastTableIndex("world");
+        worldID = getLastTableIndex(TableName.world);
 
-        saveObstacles(world.getObstacles(), worldID);
-        savePits(world.getPits(), worldID);
-        saveMines(world.getMines(), worldID);
+        saveObstacles(world.getObstacles());
+        savePits(world.getPits());
+        saveMines(world.getMines());
     }
 
-    private int getWorldID(String worldName) throws SQLException {
+    private int getWorldID() throws SQLException {
         Statement statement = dbConnection.createStatement();
         ResultSet resultSet =
                 statement.executeQuery(
@@ -209,7 +217,7 @@ public class SQLiteDbConnector implements DbConnector {
         return resultSet.getInt("worldID");
     }
 
-    private int getWorldDataID(String worldName) throws SQLException {
+    private int getWorldDataID() throws SQLException {
         Statement statement = dbConnection.createStatement();
         ResultSet resultSet =
                 statement.executeQuery(
@@ -224,10 +232,8 @@ public class SQLiteDbConnector implements DbConnector {
         return resultSet.getInt("worldData_id");
     }
 
-    private ResultSet getResultsLinkedToWorldID(
-            String tableName,
-            int worldID
-    ) throws SQLException {
+    private ResultSet getResultsLinkedToWorldID(TableName tableName)
+            throws SQLException {
         Statement statement = dbConnection.createStatement();
         return statement.executeQuery(
                 MessageFormat.format(
@@ -238,7 +244,20 @@ public class SQLiteDbConnector implements DbConnector {
         );
     }
 
-    private WorldDataDO getWorldData(int worldDataID)
+    private int[] getWorldDateArray(ResultSet resultSet) throws SQLException {
+        int[] returnArray = new int[8];
+        returnArray[0] = resultSet.getInt("width");
+        returnArray[1] = resultSet.getInt("height");
+        returnArray[2] = resultSet.getInt("visibility");
+        returnArray[3] = resultSet.getInt("repairTime");
+        returnArray[4] = resultSet.getInt("reloadTime");
+        returnArray[5] = resultSet.getInt("mineTime");
+        returnArray[6] = resultSet.getInt("maxShield");
+        returnArray[7] = resultSet.getInt("maxShots");
+        return returnArray;
+    }
+
+    private WorldDataDO getWorldData()
             throws SQLException {
         Statement statement = dbConnection.createStatement();
         ResultSet resultSet =
@@ -246,30 +265,19 @@ public class SQLiteDbConnector implements DbConnector {
                         MessageFormat.format(
                                 "SELECT * FROM worldData WHERE " +
                                         "worldDataID = {0}",
-                                worldDataID
+                                getWorldDataID()
                         )
                 );
         if (resultSet.isClosed()) return new WorldDataDO();
-        return new WorldDataDO(
-                resultSet.getInt("width"),
-                resultSet.getInt("height"),
-                resultSet.getInt("visibility"),
-                resultSet.getInt("repairTime"),
-                resultSet.getInt("reloadTime"),
-                resultSet.getInt("mineTime"),
-                resultSet.getInt("maxShield"),
-                resultSet.getInt("maxShots")
-        );
+        return new WorldDataDO(getWorldDateArray(resultSet));
     }
 
-    private List<WorldObjectDO> getWorldObjects(
-            String tableName,
-            int worldID
-    ) throws SQLException {
+    private List<WorldObjectDO> getWorldObjects(TableName tableName)
+            throws SQLException {
         ArrayList<WorldObjectDO> returnList = new ArrayList<>();
 
         ResultSet resultSet =
-                getResultsLinkedToWorldID(tableName, worldID);
+                getResultsLinkedToWorldID(tableName);
 
         while (!resultSet.isClosed() && resultSet.next()) {
             returnList.add(
@@ -287,17 +295,18 @@ public class SQLiteDbConnector implements DbConnector {
 
     @Override
     public WorldDO restoreWorld(String worldName) throws SQLException {
-        int worldID = getWorldID(worldName);
+        setWorldNameAndID(worldName);
+
         return new WorldDO(
                 worldName,
-                getWorldData(getWorldDataID(worldName)),
-                getWorldObjects("obstacles", worldID),
-                getWorldObjects("pits", worldID),
-                getWorldObjects("mines", worldID)
+                getWorldData(),
+                getWorldObjects(TableName.obstacles),
+                getWorldObjects(TableName.pits),
+                getWorldObjects(TableName.mines)
         );
     }
 
-    private void deleteRowUsingWorldID(String tableName, int worldID)
+    private void deleteRowUsingWorldID(TableName tableName)
             throws SQLException {
         dbConnection.createStatement().executeUpdate(
                 String.format(
@@ -308,36 +317,41 @@ public class SQLiteDbConnector implements DbConnector {
         );
     }
 
-    private void deleteWorldDataRow(String worldName) throws SQLException {
+    private void deleteWorldDataRow() throws SQLException {
         dbConnection.createStatement().executeUpdate(
                 String.format(
                         "DELETE FROM worldData WHERE worldDataID = %d",
-                        getWorldDataID(worldName)
+                        getWorldDataID()
                 )
         );
     }
 
-    private void deleteWorldRow(String worldName) throws  SQLException {
+    private void deleteWorldRow() throws  SQLException {
         dbConnection.createStatement().executeUpdate(
                 String.format(
                         "DELETE FROM world WHERE worldID = %d",
-                        getWorldID(worldName)
+                        worldID
                 )
         );
     }
 
     @Override
     public void deleteWorld(String worldName) throws SQLException {
-        int worldID = getWorldID(worldName);
+        setWorldNameAndID(worldName);
 
-        deleteWorldDataRow(worldName);
-        deleteWorldRow(worldName);
+        deleteWorldDataRow();
+        deleteWorldRow();
 
         for (
-                String tableName :
-                List.of("pits", "obstacles", "mines")
+                TableName tableName :
+                List.of(TableName.pits, TableName.obstacles, TableName.mines)
         ) {
-            deleteRowUsingWorldID(tableName, worldID);
+            deleteRowUsingWorldID(tableName);
         }
+    }
+
+    private void setWorldNameAndID(String worldName) throws SQLException {
+        this.worldName = worldName;
+        this.worldID = getWorldID();
     }
 }

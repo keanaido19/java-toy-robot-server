@@ -3,6 +3,8 @@ package za.co.wethinkcode.robotworlds.world2x2.obstacles.obstacle0_1;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import za.co.wethinkcode.robotworlds.Command;
+import za.co.wethinkcode.robotworlds.Direction;
 import za.co.wethinkcode.robotworlds.world2x2.TestBaseExtension;
 
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class LookRobotTests extends TestBaseExtension {
         testSuccessfulLaunch(launchRobot("HAL"));
 
         // When I send a valid look request to the server
-        JsonNode response = executeCommand("HAL", "look");
+        JsonNode response = executeCommand("HAL", Command.look);
 
         // Then I should get a valid response from the server
         testCommandSuccessful(response);
@@ -58,7 +60,7 @@ public class LookRobotTests extends TestBaseExtension {
         List<String> objects =
                 new ArrayList<>(
                         List.of(
-                                createObstacle("NORTH", 1)
+                                createObstacle(Direction.NORTH, 1)
                         )
                 );
         assertTrue(checkIfObjectsAreSeen(response, objects));
@@ -77,7 +79,7 @@ public class LookRobotTests extends TestBaseExtension {
         multiRobotLaunch(7);
 
         // When I send a valid look request to the server
-        JsonNode response = executeCommand("HAL", "look");
+        JsonNode response = executeCommand("HAL", Command.look);
 
         // Then I should get a valid response from the server
         testCommandSuccessful(response);
@@ -89,10 +91,10 @@ public class LookRobotTests extends TestBaseExtension {
         List<String> objects =
                 new ArrayList<>(
                         List.of(
-                                createObstacle("NORTH", 1),
-                                createRobot("EAST", 1),
-                                createRobot("WEST", 1),
-                                createRobot("SOUTH", 1)
+                                createObstacle(Direction.NORTH, 1),
+                                createRobot(Direction.EAST, 1),
+                                createRobot(Direction.WEST, 1),
+                                createRobot(Direction.SOUTH, 1)
                         )
                 );
         assertTrue(checkIfObjectsAreSeen(response, objects));

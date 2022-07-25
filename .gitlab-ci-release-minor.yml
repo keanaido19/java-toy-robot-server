@@ -1,0 +1,44 @@
+image: maven:3.6-jdk-11
+
+stages:          # List of stages for jobs, and their order of execution
+  - prepare-release
+  - perform-release
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - .m2/repository/
+    - release.properties
+
+variables:
+  MAJOR_VERSION: mvn build-helper:parse-version help:evaluate -Dexpression=parsedVersion.majorVersion -q -DforceStdout
+  NEXT_MINOR_VERSION: mvn build-helper:parse-version help:evaluate -Dexpression=parsedVersion.nextMinorVersion -q -DforceStdout
+
+prepare-release-minor-job:
+  stage: prepare-release
+  script:
+    - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
+    - git config user.email keanaido021@student.wethinkcode.co.za
+    - git config user.name keanaido021
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
+    - git checkout -B "$CI_COMMIT_REF_NAME"
+    - mvn release:prepare -DreleaseVersion=v$($MAJOR_VERSION).$($NEXT_MINOR_VERSION).0 -DdevelopmentVersion=$($MAJOR_VERSION).$($NEXT_MINOR_VERSION).0-SNAPSHOT -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings settings.xml -B
+
+perform-release-job:
+  stage: perform-release
+  needs: ["prepare-release-minor-job"]
+  script:
+    - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
+    - git config user.email keanaido021@student.wethinkcode.co.za
+    - git config user.name keanaido021
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
+    - git checkout -B "$CI_COMMIT_REF_NAME"
+    - mvn release:perform -DskipTests=true --settings settings.xml -B
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG != ""'

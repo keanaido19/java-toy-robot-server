@@ -159,14 +159,20 @@ public class Robot{
         return false;
     }
 
+    private static void resetRobotStatus(Robot robot, Status status) {
+        if (Status.DEAD.equals(robot.getRobotStatus())) return;
+        if (status.equals(Status.RELOAD)) robot.reload();
+        if (status.equals(Status.REPAIR)) robot.repair();
+        if (status.equals(robot.getRobotStatus()))
+            robot.setRobotStatus(Status.NORMAL);
+    }
+
     private static synchronized void statusTimer(
             Robot robot,
             Status status,
             int milliSeconds
     ) {
-        Status dead = Status.DEAD;
-
-        if (dead.equals(robot.getRobotStatus())) return;
+        if (Status.DEAD.equals(robot.getRobotStatus())) return;
 
         robot.setRobotStatus(status);
 
@@ -176,11 +182,7 @@ public class Robot{
             e.printStackTrace();
         }
 
-        if (dead.equals(robot.getRobotStatus())) return;
-        if (status.equals(Status.RELOAD)) robot.reload();
-        if (status.equals(Status.REPAIR)) robot.repair();
-        if (status.equals(robot.getRobotStatus()))
-            robot.setRobotStatus(Status.NORMAL);
+        resetRobotStatus(robot, status);
     }
 
     private static class StatusTimer implements Runnable {
@@ -209,18 +211,7 @@ public class Robot{
         if (this == o) return true;
         if (!(o instanceof Robot)) return false;
         Robot robot = (Robot) o;
-        return
-                maximumShields == robot.maximumShields
-                        && maximumShots == robot.maximumShots
-                        && range == robot.range
-                        && currentShields == robot.currentShields
-                        && currentShots == robot.currentShots
-                        && name.equals(robot.name)
-                        && objectType == robot.objectType
-                        && direction == robot.direction
-                        && currentStatus == robot.currentStatus
-                        && position.equals(robot.position)
-                        && world.equals(robot.world);
+        return this.hashCode() == o.hashCode();
     }
 
     @Override

@@ -3,6 +3,8 @@ image: gitlab.wethinkco.de:5050/mxomagub021/gerald_lawson/test-environment:lates
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
+  - package
+  - release
   - deploy
 
 variables:
@@ -16,27 +18,95 @@ cache:
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - mvn verify -DskipTests
-    - echo "Compiling the code..."
+    - echo "Building project..."
+    - mvn $MAVEN_CLI_OPTS clean
+    - mvn $MAVEN_CLI_OPTS validate
     - mvn $MAVEN_CLI_OPTS compile
-    - mvn $MAVEN_CLI_OPTS clean install -DskipTests
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "Running unit tests..."
     - mvn $MAVEN_CLI_OPTS test -pl RobotWorldsDomain -pl SocketClient -pl DatabaseConnector -pl ApiServer
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - "**/target/surefire-reports/TEST-*.xml"
+        - "**/target/surefire-reports/TEST-*.xml"
 
 acceptance-test-job:
   stage: test
   script:
     - echo "Running acceptance tests..."
     - ./test_script.sh
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - "**/target/surefire-reports/TEST-*.xml"
+        - "**/target/surefire-reports/TEST-*.xml"
+
+package-job:
+  stage: package
+  script:
+    - mvn $MAVEN_CLI_OPTS package -DskipTests
+  only:
+    - tags
+  artifacts:
+    paths:
+      - target/*.jar
+
+release-patch:
+  stage: release
+  trigger:
+    include: .gitlab-ci-release-patch.yml
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push" '
+      when: manual
+    - when: never
+
+release-minor:
+  stage: release
+  trigger:
+    include: .gitlab-ci-release-minor.yml
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push" '
+      when: manual
+    - when: never
+
+release-major:
+  stage: release
+  trigger:
+    include: .gitlab-ci-release-major.yml
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push" '
+      when: manual
+    - when: never
+
+deploy-container-job:
+  image: docker:latest
+  stage: deploy
+  dependencies:
+    - package-job
+  services:
+    - docker:dind
+  variables:
+    SOCKET_IMAGE_TAG: $CI_REGISTRY_IMAGE/socket-server:$CI_COMMIT_TAG
+    API_IMAGE_TAG: $CI_REGISTRY_IMAGE/api-server:$CI_COMMIT_TAG
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build -t $SOCKET_IMAGE_TAG --file Dockerfiles/Dockerfile_SocketServer .
+    - docker build -t $API_IMAGE_TAG --file Dockerfiles/Dockerfile_ApiServer .
+    - docker push $SOCKET_IMAGE_TAG
+    - docker push $API_IMAGE_TAG
+  only:
+    - tags
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: staging
   script:
     - echo "Deploying application..."
-    - mvn $MAVEN_CLI_OPTS clean $MAVEN_OPTS
-    - mvn $MAVEN_CLI_OPTS package $MAVEN_OPTS -DskipTests
+    - mvn $MAVEN_CLI_OPTS deploy -s settings.xml
+  only:
+    - tags

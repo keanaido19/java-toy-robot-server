@@ -59,7 +59,7 @@ public class TestBase {
 
     public JsonNode executeCommand(
             String robotName,
-            String command,
+            Command command,
             List<Object> arguments
     ) {
         List<String> listOfArguments = new ArrayList<>();
@@ -78,21 +78,21 @@ public class TestBase {
         return serverClient.sendRequest(request);
     }
 
-    public JsonNode executeCommand(String robotName, String command) {
+    public JsonNode executeCommand(String robotName, Command command) {
         return executeCommand(robotName, command, new ArrayList<>());
     }
 
-    public void testCommandResult(JsonNode response, String result) {
+    public void testCommandResult(JsonNode response, CommandResult result) {
         assertNotNull(response.get("result"));
-        assertEquals(result, response.get("result").asText());
+        assertEquals(result.toString(), response.get("result").asText());
     }
 
     public void testCommandSuccessful(JsonNode response) {
-        testCommandResult(response, "OK");
+        testCommandResult(response, CommandResult.OK);
     }
 
     public void testCommandFailed(JsonNode response) {
-        testCommandResult(response, "ERROR");
+        testCommandResult(response, CommandResult.ERROR);
     }
 
     public void testSuccessfulLaunch(JsonNode response, int worldSize) {
@@ -139,18 +139,18 @@ public class TestBase {
         testFailedCommand(response, "No more space in this world");
     }
 
-    public String createObject(String objectType, String direction,
+    public String createObject(ObjectType objectType, Direction direction,
                              int distance) {
         return "{\"direction\":\"" + direction + "\"," +
                 "\"type\":\"" + objectType + "\",\"distance\":" +
                 distance + "}";
     }
 
-    public String createObstacle(String direction, int distance) {
-        return createObject("OBSTACLE", direction, distance);
+    public String createObstacle(Direction direction, int distance) {
+        return createObject(ObjectType.OBSTACLE, direction, distance);
     }
 
-    public String createRobot(String direction, int distance) {
-        return createObject("ROBOT", direction, distance);
+    public String createRobot(Direction direction, int distance) {
+        return createObject(ObjectType.ROBOT, direction, distance);
     }
 }

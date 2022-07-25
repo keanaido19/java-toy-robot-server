@@ -124,14 +124,10 @@ public class ApiHandler {
 
         try {
             JsonRequest jsonRequest = context.bodyAsClass(JsonRequest.class);
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonStringRequest =
-                    objectMapper.writeValueAsString(jsonRequest);
 
-            String jsonStringResponse =
-                    play.getJsonStringResponse(
-                            objectMapper.readTree(jsonStringRequest)
-                    );
+            String jsonStringResponse = play.getJsonStringResponse(
+                    new ObjectMapper().writeValueAsString(jsonRequest)
+            );
 
             context.header("Location", "/robot");
             context.json(jsonStringResponse);
